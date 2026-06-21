@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxxonTek | Complete Technology Solutions</title>
+    <meta name="description" content="AxxonTek is Rwanda's trusted technology partner, delivering comprehensive tech solutions across East Africa.">
+    <link rel="icon" href="assets/axxon tek icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="glow-border-wrapper">
+        <div class="glow-border"></div>
+    </div>
+
+    <nav id="main-nav" class="vertical-nav">
+        <div class="nav-brand">
+            <img src="assets/axxontek logo.png" alt="AxxonTek Logo" class="nav-logo">
+        </div>
+        <div class="nav-links">
+            <a href="index.html#technology">Services</a>
+            <a href="index.html#sourcing">Expertise</a>
+            <a href="index.html#about">Why Us</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-primary nav-cta">Get a Proposal</button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <h1>Complete Technology<br><span>Solutions for Africa.</span></h1>
+                <p>Rwanda's trusted technology partner, delivering comprehensive tech solutions to businesses and individuals across East Africa and the continent.</p>
+                <div class="cta-group">
+                    <input type="email" placeholder="Enter your work email" class="email-input">
+                    <button class="btn btn-primary">Let's Build It Together</button>
+                </div>
+                <div class="social-proof">
+                    <span>LOCALLY ROOTED IN RWANDA. GLOBALLY CAPABLE.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="particle-section" id="technology">
+            <div id="particle-canvas"></div>
+            <div class="container particle-content">
+                <h2>We design and deploy everything you need to compete, automate, and scale in today's digital economy.</h2>
+            </div>
+        </section>
+
+        <section class="scroll-spy-section" id="sourcing">
+            <div class="container scroll-spy-grid">
+                <div class="scroll-spy-text">
+                    <div class="spy-item active" data-target="panel-1">
+                        <h3>Custom Websites & Apps</h3>
+                        <p>We build custom websites and applications that drive growth and digital presence.</p>
+                    </div>
+                    <div class="spy-item" data-target="panel-2">
+                        <h3>Intelligent Systems & Security</h3>
+                        <p>We develop intelligent building systems that automate operations, and implement advanced security infrastructure to protect assets.</p>
+                    </div>
+                    <div class="spy-item" data-target="panel-3">
+                        <h3>SaaS & Hardware</h3>
+                        <p>We deliver Software as a Service platforms and integrate cutting-edge technology products tailored to your industry.</p>
+                    </div>
+                </div>
+                <div class="scroll-spy-visuals">
+                    <div class="glass-panel active" id="panel-1">
+                        <div class="panel-header">Custom Development</div>
+                        <div class="panel-body">
+                            <div class="code-line w-full"></div>
+                            <div class="code-line w-3-4"></div>
+                            <div class="code-line w-1-2"></div>
+                            <div class="chart-mock"></div>
+                        </div>
+                    </div>
+                    <div class="glass-panel" id="panel-2">
+                        <div class="panel-header">Security Infrastructure</div>
+                        <div class="panel-body">
+                            <div class="stat-grid">
+                                <div class="stat-box">24/7</div>
+                                <div class="stat-box">Secure</div>
+                            </div>
+                            <div class="code-line w-full mt-4"></div>
+                            <div class="code-line w-full"></div>
+                        </div>
+                    </div>
+                    <div class="glass-panel" id="panel-3">
+                        <div class="panel-header">Cloud Services</div>
+                        <div class="panel-body">
+                            <div class="profile-mock">
+                                <div class="avatar-mock"></div>
+                                <div class="profile-lines">
+                                    <div class="code-line w-full"></div>
+                                    <div class="code-line w-1-2"></div>
+                                </div>
+                            </div>
+                            <div class="match-score">99% Match</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Introduction Section -->
+        <section class="services-intro-section" id="services-intro">
+            <div class="container services-intro-content">
+                <div class="services-intro-text">
+                    <span class="services-intro-label">OUR SERVICES</span>
+                    <h2 class="services-intro-heading">Comprehensive Technology Solutions</h2>
+                    <p class="services-intro-description">From custom applications to intelligent systems, security infrastructure, and scalable software platforms. We deliver complete solutions that drive innovation and growth across your organization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Split Sections -->
+        <section class="services-split-section" id="services-split">
+            <div class="container split-container">
+                <div class="split-left">
+                    <div class="split-text-block" id="split-text-1">
+                        <h3 class="service-title">Custom Websites & Apps</h3>
+                        <p class="service-description">Turn ideas into digital experiences people love to use. We create fast, modern websites and applications that help businesses connect with customers, build trust, and grow with confidence.</p>
+                        <button class="btn btn-primary btn-service">Learn More</button>
+                    </div>
+                    
+                    <div class="split-text-block" id="split-text-2">
+                        <h3 class="service-title">Smart Building Systems</h3>
+                        <p class="service-description">Create smarter, more efficient spaces with intelligent building systems that automate lighting, energy management, access control, monitoring, and daily operations. Our solutions help businesses reduce costs, improve efficiency, and gain greater control over their facilities.</p>
+                        <button class="btn btn-primary btn-service">Learn More</button>
+                    </div>
+                    
+                    <div class="split-text-block" id="split-text-3">
+                        <h3 class="service-title">Security Systems</h3>
+                        <p class="service-description">Protect what matters most with modern security solutions. From CCTV surveillance and access control to alarm systems and monitoring, we help businesses and homeowners create safer environments with reliable, easy-to-manage security infrastructure.</p>
+                        <button class="btn btn-primary btn-service">Learn More</button>
+                    </div>
+                    
+                    <div class="split-text-block" id="split-text-4">
+                        <h3 class="service-title">SaaS & Hardware</h3>
+                        <p class="service-description">Technology should make work easier. We provide scalable software platforms and innovative hardware solutions that help organizations streamline operations, improve productivity, and support long-term growth.</p>
+                        <button class="btn btn-primary btn-service">Learn More</button>
+                    </div>
+                </div>
+                
+                <div class="split-right">
+                    <div class="split-image-wrapper">
+                        <img src="assets/Custom%20Websites.png" alt="Custom Websites" class="split-img active" id="split-img-1">
+                        <img src="assets/smart-buildings.jpg" alt="Smart Building Systems" class="split-img" id="split-img-2">
+                        <img src="assets/house%20security.jpeg" alt="Security Systems" class="split-img" id="split-img-3">
+                        <img src="assets/saas.avif" alt="SaaS & Hardware" class="split-img" id="split-img-4">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section" id="about">
+            <div class="container">
+                <h2 class="text-center section-title">Why AxxonTek</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">💡</div>
+                        <h4>Market Understanding</h4>
+                        <p>We don't just sell solutions — we understand the African market and its unique challenges.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🌍</div>
+                        <h4>Locally Rooted</h4>
+                        <p>We're locally rooted in Rwanda but globally capable, serving clients across East Africa and beyond.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🎯</div>
+                        <h4>Precision & Reliability</h4>
+                        <p>Whether you're a startup or an enterprise, we deliver precision, reliability, and measurable results.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-banner">
+            <div class="container">
+                <h2>Your success is our mission.<br>Let's build it together.</h2>
+                <button class="btn btn-primary btn-large">Contact Us</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-top">
+            <div class="footer-slogan">
+                <h2>Complete technology.</h2>
+            </div>
+            <div class="link-column">
+                <a href="sourcing.html">Sourcing</a>
+                <a href="interviews.html">Interviews</a>
+                <a href="analytics.html">Analytics</a>
+                <a href="security.html">Security</a>
+                <a href="infrastructure.html">Infrastructure</a>
+                <a href="cloud.html">Cloud Services</a>
+            </div>
+            <div class="link-column">
+                <a href="blog.html">Blog</a>
+                <a href="careers.html">Careers</a>
+                <a href="about.html">About Us</a>
+            </div>
+        </div>
+
+        <div class="container footer-center-text">
+            <span>AxxonTek</span>
+        </div>
+
+        <div class="container footer-bottom-row">
+            <div class="footer-bottom-brand">
+                <img src="assets/axxontek logo.png" alt="AxxonTek Logo" class="footer-bottom-logo">
+            </div>
+            <div class="footer-bottom-links">
+                <a href="about.html">About AxxonTek</a>
+                <a href="index.html#technology">Services</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

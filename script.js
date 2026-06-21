@@ -1,0 +1,158 @@
+// Navbar Transition Logic
+const nav = document.getElementById('main-nav');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 150) {
+        nav.classList.remove('vertical-nav');
+        nav.classList.add('horizontal-nav');
+    } else {
+        nav.classList.add('vertical-nav');
+        nav.classList.remove('horizontal-nav');
+    }
+});
+
+// GSAP Scroll Spy Logic
+gsap.registerPlugin(ScrollTrigger);
+
+const spyItems = document.querySelectorAll('.spy-item');
+const panels = document.querySelectorAll('.glass-panel');
+
+spyItems.forEach((item, index) => {
+    ScrollTrigger.create({
+        trigger: item,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => activatePanel(index),
+        onEnterBack: () => activatePanel(index),
+    });
+    
+    // Click interaction
+    item.addEventListener('click', () => {
+        activatePanel(index);
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+});
+
+function activatePanel(index) {
+    spyItems.forEach(i => i.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    
+    if(spyItems[index]) spyItems[index].classList.add('active');
+    if(panels[index]) panels[index].classList.add('active');
+}
+
+// Services Split Scroll Logic
+const splitTextBlocks = document.querySelectorAll('.split-text-block');
+const splitImages = document.querySelectorAll('.split-img');
+
+if (splitTextBlocks.length > 0 && splitImages.length > 0) {
+    splitTextBlocks.forEach((block, index) => {
+        ScrollTrigger.create({
+            trigger: block,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => activateSplitImage(index),
+            onEnterBack: () => activateSplitImage(index),
+        });
+    });
+}
+
+function activateSplitImage(index) {
+    splitImages.forEach(img => img.classList.remove('active'));
+    if(splitImages[index]) splitImages[index].classList.add('active');
+}
+
+// Three.js Particle Wave Animation
+function initThreeJs() {
+    const canvasContainer = document.getElementById('particle-canvas');
+    if (!canvasContainer) return;
+
+    const scene = new THREE.Scene();
+    
+    // Adjust camera to look nicely at the wave
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 15;
+    camera.position.y = 8;
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    canvasContainer.appendChild(renderer.domElement);
+
+    // Create particles
+    const geometry = new THREE.BufferGeometry();
+    const count = 4000;
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const color = new THREE.Color();
+
+    for(let i = 0; i < count; i++) {
+        // Spread particles out in X and Z
+        const x = (Math.random() - 0.5) * 40;
+        const z = (Math.random() - 0.5) * 40;
+        
+        positions[i*3] = x;
+        positions[i*3+1] = 0; // Y will be animated
+        positions[i*3+2] = z;
+        
+        // Add subtle orange color variation matching the new #e46201 theme
+        const mixRatio = Math.random();
+        color.setHSL(0.06 + mixRatio * 0.04, 0.9, 0.5 + mixRatio * 0.2);
+        colors[i*3] = color.r;
+        colors[i*3+1] = color.g;
+        colors[i*3+2] = color.b;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+        size: 0.1,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Animation Loop
+    let time = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.015;
+        
+        const positions = particles.geometry.attributes.position.array;
+        for(let i = 0; i < count; i++) {
+            const x = positions[i*3];
+            const z = positions[i*3+2];
+            
+            // Calculate wave math
+            // Mix of sine waves on x and z axis for a more organic flowing feel
+            positions[i*3+1] = Math.sin(x * 0.3 + time) * 1.5 + Math.cos(z * 0.2 + time) * 1.5;
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+        
+        // Slowly rotate entire particle field
+        particles.rotation.y = time * 0.05;
+        
+        renderer.render(scene, camera);
+    }
+    
+    animate();
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    initThreeJs();
+});

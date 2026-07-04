@@ -113,22 +113,38 @@ function initThreeJs() {
     // when the cursor hovers near the right side of the field.
     function buildDevSymbolPoints() {
         const pts = [];
+        // Single quadratic curve per bracket gives a smooth, rounded "<"/">" stroke
+        // instead of a sharp angular joint.
+        const sampleQuadratic = (x0, z0, cx, cz, x1, z1, steps) => {
+            for (let s = 0; s <= steps; s++) {
+                const t = s / steps;
+                const mt = 1 - t;
+                pts.push({
+                    x: mt * mt * x0 + 2 * mt * t * cx + t * t * x1,
+                    z: mt * mt * z0 + 2 * mt * t * cz + t * t * z1,
+                });
+            }
+        };
         const sampleLine = (x1, z1, x2, z2, steps) => {
             for (let s = 0; s <= steps; s++) {
                 const t = s / steps;
                 pts.push({ x: x1 + (x2 - x1) * t, z: z1 + (z2 - z1) * t });
             }
         };
-        sampleLine(-2, -3, -5, 0, 24);   // <  upper stroke
-        sampleLine(-5, 0, -2, 3, 24);    // <  lower stroke
-        sampleLine(-1.5, -3, 1.5, 3, 28); // /
-        sampleLine(2, 3, 5, 0, 24);      // >  upper stroke
-        sampleLine(5, 0, 2, -3, 24);     // >  lower stroke
+
+        const H = 4.5;   // top/bottom reach of each bracket
+        const W = 4.5;   // how far the bracket's point bulges outward
+        const Wc = 1.5;  // top/bottom inset near the opening
+        const gap = 6.5; // spacing that separates "<", "/" and ">"
+
+        sampleQuadratic(-gap - Wc, H, -gap - W, 0, -gap - Wc, -H, 60); // <
+        sampleLine(-3, -H, 3, H, 40);                                  // /
+        sampleQuadratic(gap + Wc, H, gap + W, 0, gap + Wc, -H, 60);    // >
         return pts;
     }
 
-    const symbolCenter = { x: 12, z: 0 };
-    const symbolRadius = 10;
+    const symbolCenter = { x: 11, z: 0 };
+    const symbolRadius = 14;
     const symbolPoints = buildDevSymbolPoints();
     const glyphCount = symbolPoints.length;
     const glyphHomeX = new Float32Array(glyphCount);
@@ -210,38 +226,43 @@ function initThreeJs() {
             let y = Math.sin(x * 0.3 + time) * 1.5 + Math.cos(z * 0.2 + time) * 1.5;
             let glow = 0;
 
-            // Settle the gathered symbol particles so the shape reads clearly, and light it up
-            if (i < glyphCount && morphAmount > 0.001) {
-                y *= 1 - morphAmount * 0.85;
-                y += morphAmount * 1.2;
+            // Settle the gathered symbol particles so the shape sits still and reads clearly
+            const isGlyph = i < glyphCount;
+            if (isGlyph && morphAmount > 0.001) {
+                y *= 1 - morphAmount; // fully flattens the wave once formed - no bobbing
+                y += morphAmount * 1.4;
                 glow += morphAmount * 0.9;
             }
+            // A formed glyph particle ignores ambient hover/ripple disturbance so the shape stays stable
+            const disturbance = isGlyph ? 1 - morphAmount : 1;
 
             // Cursor lifts and brightens particles within its radius
-            if (pointerActive) {
+            if (pointerActive && disturbance > 0) {
                 const dx = x - pointerWorld.x;
                 const dz = z - pointerWorld.z;
-                const influence = Math.exp(-(dx * dx + dz * dz) / 16);
+                const influence = Math.exp(-(dx * dx + dz * dz) / 16) * disturbance;
                 y += influence * 2.5;
                 glow += influence;
             }
 
             // Click ripples expand outward and fade over time
-            for (let r = ripples.length - 1; r >= 0; r--) {
-                const ripple = ripples[r];
-                const age = time - ripple.start;
-                if (age > 2.5) {
-                    ripples.splice(r, 1);
-                    continue;
+            if (disturbance > 0) {
+                for (let r = ripples.length - 1; r >= 0; r--) {
+                    const ripple = ripples[r];
+                    const age = time - ripple.start;
+                    if (age > 2.5) {
+                        ripples.splice(r, 1);
+                        continue;
+                    }
+                    const dx = x - ripple.x;
+                    const dz = z - ripple.z;
+                    const dist = Math.sqrt(dx * dx + dz * dz);
+                    const ringRadius = age * 6;
+                    const ring = Math.exp(-Math.pow(dist - ringRadius, 2) / 4.5) * disturbance;
+                    const fade = 1 - age / 2.5;
+                    y += ring * fade * 3;
+                    glow += ring * fade;
                 }
-                const dx = x - ripple.x;
-                const dz = z - ripple.z;
-                const dist = Math.sqrt(dx * dx + dz * dz);
-                const ringRadius = age * 6;
-                const ring = Math.exp(-Math.pow(dist - ringRadius, 2) / 4.5);
-                const fade = 1 - age / 2.5;
-                y += ring * fade * 3;
-                glow += ring * fade;
             }
 
             positions[i*3+1] = y;

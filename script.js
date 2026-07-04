@@ -110,25 +110,46 @@ function initThreeJs() {
     const baseColors = colors.slice();
 
     // "</>" formation: a pool of particles that gather into a dev-symbol shape
-    // when the cursor hovers near the right side of the field.
+    // when the cursor hovers near the right side of the field. Each stroke is
+    // sampled as a center-line, then thickened into a cloud of particles
+    // scattered perpendicular to it (denser toward the middle) instead of a
+    // single thin row of dots.
     function buildDevSymbolPoints() {
         const pts = [];
+        const THICKNESS = 1.6;
+        const DOTS_PER_STEP = 6;
+
+        function addThickPoint(x, z, tx, tz) {
+            const nx = -tz, nz = tx; // perpendicular to the stroke direction
+            for (let d = 0; d < DOTS_PER_STEP; d++) {
+                // sum of randoms biases the spread toward the centerline (soft cloud edge)
+                const r = (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+                const offset = r * THICKNESS;
+                pts.push({ x: x + nx * offset, z: z + nz * offset });
+            }
+        }
+
         // Single quadratic curve per bracket gives a smooth, rounded "<"/">" stroke
         // instead of a sharp angular joint.
         const sampleQuadratic = (x0, z0, cx, cz, x1, z1, steps) => {
             for (let s = 0; s <= steps; s++) {
                 const t = s / steps;
                 const mt = 1 - t;
-                pts.push({
-                    x: mt * mt * x0 + 2 * mt * t * cx + t * t * x1,
-                    z: mt * mt * z0 + 2 * mt * t * cz + t * t * z1,
-                });
+                const x = mt * mt * x0 + 2 * mt * t * cx + t * t * x1;
+                const z = mt * mt * z0 + 2 * mt * t * cz + t * t * z1;
+                const dx = 2 * mt * (cx - x0) + 2 * t * (x1 - cx);
+                const dz = 2 * mt * (cz - z0) + 2 * t * (z1 - cz);
+                const len = Math.hypot(dx, dz) || 1;
+                addThickPoint(x, z, dx / len, dz / len);
             }
         };
         const sampleLine = (x1, z1, x2, z2, steps) => {
+            const dx = x2 - x1, dz = z2 - z1;
+            const len = Math.hypot(dx, dz) || 1;
+            const tx = dx / len, tz = dz / len;
             for (let s = 0; s <= steps; s++) {
                 const t = s / steps;
-                pts.push({ x: x1 + (x2 - x1) * t, z: z1 + (z2 - z1) * t });
+                addThickPoint(x1 + dx * t, z1 + dz * t, tx, tz);
             }
         };
 
@@ -137,9 +158,9 @@ function initThreeJs() {
         const Wc = 1.5;  // top/bottom inset near the opening
         const gap = 6.5; // spacing that separates "<", "/" and ">"
 
-        sampleQuadratic(-gap - Wc, H, -gap - W, 0, -gap - Wc, -H, 60); // <
-        sampleLine(-3, -H, 3, H, 40);                                  // /
-        sampleQuadratic(gap + Wc, H, gap + W, 0, gap + Wc, -H, 60);    // >
+        sampleQuadratic(-gap - Wc, H, -gap - W, 0, -gap - Wc, -H, 36); // <
+        sampleLine(-3, -H, 3, H, 24);                                  // /
+        sampleQuadratic(gap + Wc, H, gap + W, 0, gap + Wc, -H, 36);    // >
         return pts;
     }
 
@@ -208,7 +229,10 @@ function initThreeJs() {
 
         // Gather (or release) the dev-symbol particle pool based on cursor proximity
         const nearSymbol = pointerActive && Math.hypot(pointerWorld.x - symbolCenter.x, pointerWorld.z - symbolCenter.z) < symbolRadius;
-        morphAmount += ((nearSymbol ? 1 : 0) - morphAmount) * 0.06;
+        morphAmount += ((nearSymbol ? 1 : 0) - morphAmount) * 0.08;
+        // Snap fully once settled so it locks in place instead of drifting asymptotically
+        if (nearSymbol && morphAmount > 0.995) morphAmount = 1;
+        if (!nearSymbol && morphAmount < 0.005) morphAmount = 0;
 
         if (morphAmount > 0.001) {
             for (let g = 0; g < glyphCount; g++) {
@@ -233,8 +257,8 @@ function initThreeJs() {
                 y += morphAmount * 1.4;
                 glow += morphAmount * 0.9;
             }
-            // A formed glyph particle ignores ambient hover/ripple disturbance so the shape stays stable
-            const disturbance = isGlyph ? 1 - morphAmount : 1;
+            // A gathering/formed glyph particle ignores ambient hover/ripple entirely so it anchors in place
+            const disturbance = isGlyph && nearSymbol ? 0 : 1;
 
             // Cursor lifts and brightens particles within its radius
             if (pointerActive && disturbance > 0) {

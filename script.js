@@ -107,6 +107,7 @@ function initThreeJs() {
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    const baseColors = colors.slice();
 
     const material = new THREE.PointsMaterial({
         size: 0.1,
@@ -119,29 +120,99 @@ function initThreeJs() {
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
+    // Mouse Interaction: pointer raises/brightens nearby particles, clicks send out a ripple
+    const raycaster = new THREE.Raycaster();
+    const pointerNDC = new THREE.Vector2();
+    const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const pointerWorld = new THREE.Vector3();
+    let pointerActive = false;
+    const ripples = [];
+    const interactionZone = canvasContainer.closest('.particle-section') || canvasContainer;
+
+    function updatePointer(event) {
+        const rect = interactionZone.getBoundingClientRect();
+        pointerNDC.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        pointerNDC.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(pointerNDC, camera);
+        pointerActive = raycaster.ray.intersectPlane(groundPlane, pointerWorld) !== null;
+    }
+
+    interactionZone.addEventListener('pointermove', updatePointer);
+    interactionZone.addEventListener('pointerleave', () => { pointerActive = false; });
+    interactionZone.addEventListener('pointerdown', (event) => {
+        updatePointer(event);
+        if (pointerActive) {
+            ripples.push({ x: pointerWorld.x, z: pointerWorld.z, start: time });
+        }
+    });
+
     // Animation Loop
     let time = 0;
     function animate() {
         requestAnimationFrame(animate);
         time += 0.015;
-        
+
         const positions = particles.geometry.attributes.position.array;
+        const colorAttr = particles.geometry.attributes.color.array;
+
         for(let i = 0; i < count; i++) {
             const x = positions[i*3];
             const z = positions[i*3+2];
-            
+
             // Calculate wave math
             // Mix of sine waves on x and z axis for a more organic flowing feel
-            positions[i*3+1] = Math.sin(x * 0.3 + time) * 1.5 + Math.cos(z * 0.2 + time) * 1.5;
+            let y = Math.sin(x * 0.3 + time) * 1.5 + Math.cos(z * 0.2 + time) * 1.5;
+            let glow = 0;
+
+            // Cursor lifts and brightens particles within its radius
+            if (pointerActive) {
+                const dx = x - pointerWorld.x;
+                const dz = z - pointerWorld.z;
+                const influence = Math.exp(-(dx * dx + dz * dz) / 16);
+                y += influence * 2.5;
+                glow += influence;
+            }
+
+            // Click ripples expand outward and fade over time
+            for (let r = ripples.length - 1; r >= 0; r--) {
+                const ripple = ripples[r];
+                const age = time - ripple.start;
+                if (age > 2.5) {
+                    ripples.splice(r, 1);
+                    continue;
+                }
+                const dx = x - ripple.x;
+                const dz = z - ripple.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                const ringRadius = age * 6;
+                const ring = Math.exp(-Math.pow(dist - ringRadius, 2) / 4.5);
+                const fade = 1 - age / 2.5;
+                y += ring * fade * 3;
+                glow += ring * fade;
+            }
+
+            positions[i*3+1] = y;
+
+            if (glow > 0) {
+                glow = Math.min(glow, 1);
+                colorAttr[i*3] = baseColors[i*3] + (1 - baseColors[i*3]) * glow;
+                colorAttr[i*3+1] = baseColors[i*3+1] + (1 - baseColors[i*3+1]) * glow;
+                colorAttr[i*3+2] = baseColors[i*3+2] + (1 - baseColors[i*3+2]) * glow;
+            } else {
+                colorAttr[i*3] = baseColors[i*3];
+                colorAttr[i*3+1] = baseColors[i*3+1];
+                colorAttr[i*3+2] = baseColors[i*3+2];
+            }
         }
         particles.geometry.attributes.position.needsUpdate = true;
-        
+        particles.geometry.attributes.color.needsUpdate = true;
+
         // Slowly rotate entire particle field
         particles.rotation.y = time * 0.05;
-        
+
         renderer.render(scene, camera);
     }
-    
+
     animate();
 
     // Handle Resize

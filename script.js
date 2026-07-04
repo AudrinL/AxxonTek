@@ -152,6 +152,42 @@ function initThreeJs() {
     });
 }
 
+// Newsletter Form Submission (Netlify Forms via AJAX)
+function encodeFormData(form) {
+    return Array.from(new FormData(form))
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join('&');
+}
+
+document.querySelectorAll('.newsletter-form').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = 'Subscribing...';
+
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeFormData(form),
+        })
+            .then(() => {
+                button.textContent = 'Subscribed!';
+                form.reset();
+            })
+            .catch(() => {
+                button.textContent = 'Something went wrong';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 3000);
+            });
+    });
+});
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initThreeJs();

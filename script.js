@@ -109,6 +109,41 @@ function initThreeJs() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const baseColors = colors.slice();
 
+    // "</>" formation: a pool of particles that gather into a dev-symbol shape
+    // when the cursor hovers near the right side of the field.
+    function buildDevSymbolPoints() {
+        const pts = [];
+        const sampleLine = (x1, z1, x2, z2, steps) => {
+            for (let s = 0; s <= steps; s++) {
+                const t = s / steps;
+                pts.push({ x: x1 + (x2 - x1) * t, z: z1 + (z2 - z1) * t });
+            }
+        };
+        sampleLine(-2, -3, -5, 0, 24);   // <  upper stroke
+        sampleLine(-5, 0, -2, 3, 24);    // <  lower stroke
+        sampleLine(-1.5, -3, 1.5, 3, 28); // /
+        sampleLine(2, 3, 5, 0, 24);      // >  upper stroke
+        sampleLine(5, 0, 2, -3, 24);     // >  lower stroke
+        return pts;
+    }
+
+    const symbolCenter = { x: 12, z: 0 };
+    const symbolRadius = 10;
+    const symbolPoints = buildDevSymbolPoints();
+    const glyphCount = symbolPoints.length;
+    const glyphHomeX = new Float32Array(glyphCount);
+    const glyphHomeZ = new Float32Array(glyphCount);
+    const glyphTargetX = new Float32Array(glyphCount);
+    const glyphTargetZ = new Float32Array(glyphCount);
+
+    for (let g = 0; g < glyphCount; g++) {
+        glyphHomeX[g] = positions[g * 3];
+        glyphHomeZ[g] = positions[g * 3 + 2];
+        glyphTargetX[g] = symbolCenter.x + symbolPoints[g].x;
+        glyphTargetZ[g] = symbolCenter.z + symbolPoints[g].z;
+    }
+    let morphAmount = 0;
+
     const material = new THREE.PointsMaterial({
         size: 0.1,
         vertexColors: true,
@@ -155,6 +190,17 @@ function initThreeJs() {
         const positions = particles.geometry.attributes.position.array;
         const colorAttr = particles.geometry.attributes.color.array;
 
+        // Gather (or release) the dev-symbol particle pool based on cursor proximity
+        const nearSymbol = pointerActive && Math.hypot(pointerWorld.x - symbolCenter.x, pointerWorld.z - symbolCenter.z) < symbolRadius;
+        morphAmount += ((nearSymbol ? 1 : 0) - morphAmount) * 0.06;
+
+        if (morphAmount > 0.001) {
+            for (let g = 0; g < glyphCount; g++) {
+                positions[g * 3] = glyphHomeX[g] + (glyphTargetX[g] - glyphHomeX[g]) * morphAmount;
+                positions[g * 3 + 2] = glyphHomeZ[g] + (glyphTargetZ[g] - glyphHomeZ[g]) * morphAmount;
+            }
+        }
+
         for(let i = 0; i < count; i++) {
             const x = positions[i*3];
             const z = positions[i*3+2];
@@ -163,6 +209,13 @@ function initThreeJs() {
             // Mix of sine waves on x and z axis for a more organic flowing feel
             let y = Math.sin(x * 0.3 + time) * 1.5 + Math.cos(z * 0.2 + time) * 1.5;
             let glow = 0;
+
+            // Settle the gathered symbol particles so the shape reads clearly, and light it up
+            if (i < glyphCount && morphAmount > 0.001) {
+                y *= 1 - morphAmount * 0.85;
+                y += morphAmount * 1.2;
+                glow += morphAmount * 0.9;
+            }
 
             // Cursor lifts and brightens particles within its radius
             if (pointerActive) {

@@ -109,8 +109,8 @@ function initThreeJs() {
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const baseColors = colors.slice();
 
-    // "</>" formation: a pool of particles that gather into a dev-symbol shape
-    // when the cursor hovers near the right side of the field. Each stroke is
+    // Circle formation: a pool of particles that gather into a ring shape
+    // when the cursor hovers near the right side of the field. The ring is
     // sampled as a center-line, then thickened into a cloud of particles
     // scattered perpendicular to it (denser toward the middle) instead of a
     // single thin row of dots.
@@ -120,7 +120,7 @@ function initThreeJs() {
         const DOTS_PER_STEP = 6;
 
         function addThickPoint(x, z, tx, tz) {
-            const nx = -tz, nz = tx; // perpendicular to the stroke direction
+            const nx = -tz, nz = tx; // perpendicular to the ring direction
             for (let d = 0; d < DOTS_PER_STEP; d++) {
                 // sum of randoms biases the spread toward the centerline (soft cloud edge)
                 const r = (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
@@ -129,38 +129,14 @@ function initThreeJs() {
             }
         }
 
-        // Single quadratic curve per bracket gives a smooth, rounded "<"/">" stroke
-        // instead of a sharp angular joint.
-        const sampleQuadratic = (x0, z0, cx, cz, x1, z1, steps) => {
-            for (let s = 0; s <= steps; s++) {
-                const t = s / steps;
-                const mt = 1 - t;
-                const x = mt * mt * x0 + 2 * mt * t * cx + t * t * x1;
-                const z = mt * mt * z0 + 2 * mt * t * cz + t * t * z1;
-                const dx = 2 * mt * (cx - x0) + 2 * t * (x1 - cx);
-                const dz = 2 * mt * (cz - z0) + 2 * t * (z1 - cz);
-                const len = Math.hypot(dx, dz) || 1;
-                addThickPoint(x, z, dx / len, dz / len);
-            }
-        };
-        const sampleLine = (x1, z1, x2, z2, steps) => {
-            const dx = x2 - x1, dz = z2 - z1;
-            const len = Math.hypot(dx, dz) || 1;
-            const tx = dx / len, tz = dz / len;
-            for (let s = 0; s <= steps; s++) {
-                const t = s / steps;
-                addThickPoint(x1 + dx * t, z1 + dz * t, tx, tz);
-            }
-        };
-
-        const H = 4.5;   // top/bottom reach of each bracket
-        const W = 4.5;   // how far the bracket's point bulges outward
-        const Wc = 1.5;  // top/bottom inset near the opening
-        const gap = 6.5; // spacing that separates "<", "/" and ">"
-
-        sampleQuadratic(-gap - Wc, H, -gap - W, 0, -gap - Wc, -H, 36); // <
-        sampleLine(-3, -H, 3, H, 24);                                  // /
-        sampleQuadratic(gap + Wc, H, gap + W, 0, gap + Wc, -H, 36);    // >
+        const R = 9;      // circle radius
+        const steps = 140;
+        for (let s = 0; s < steps; s++) {
+            const theta = (s / steps) * Math.PI * 2;
+            const x = Math.cos(theta) * R;
+            const z = Math.sin(theta) * R;
+            addThickPoint(x, z, -Math.sin(theta), Math.cos(theta));
+        }
         return pts;
     }
 

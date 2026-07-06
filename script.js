@@ -63,16 +63,30 @@ function activateSplitImage(index) {
 }
 
 // Three.js Particle Wave Animation
-function initThreeJs() {
-    const canvasContainer = document.getElementById('particle-canvas');
+// Generic particle field: powers both the homepage hero wave (dense, with the
+// hover-triggered "</>" formation) and the lighter, dimmer footer version.
+function createParticleField(options) {
+    const {
+        containerId,
+        interactionSelector,
+        count = 4000,
+        spread = 40,
+        opacity = 0.8,
+        size = 0.1,
+        includeSymbol = true,
+        cameraY = 8,
+        cameraZ = 15,
+    } = options;
+
+    const canvasContainer = document.getElementById(containerId);
     if (!canvasContainer) return;
 
     const scene = new THREE.Scene();
-    
+
     // Adjust camera to look nicely at the wave
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 15;
-    camera.position.y = 8;
+    camera.position.z = cameraZ;
+    camera.position.y = cameraY;
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -82,7 +96,6 @@ function initThreeJs() {
 
     // Create particles
     const geometry = new THREE.BufferGeometry();
-    const count = 4000;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
@@ -90,13 +103,13 @@ function initThreeJs() {
 
     for(let i = 0; i < count; i++) {
         // Spread particles out in X and Z
-        const x = (Math.random() - 0.5) * 40;
-        const z = (Math.random() - 0.5) * 40;
-        
+        const x = (Math.random() - 0.5) * spread;
+        const z = (Math.random() - 0.5) * spread;
+
         positions[i*3] = x;
         positions[i*3+1] = 0; // Y will be animated
         positions[i*3+2] = z;
-        
+
         // Add subtle orange color variation matching the new #e46201 theme
         const mixRatio = Math.random();
         color.setHSL(0.06 + mixRatio * 0.04, 0.9, 0.5 + mixRatio * 0.2);
@@ -142,7 +155,7 @@ function initThreeJs() {
 
     const symbolCenter = { x: 11, z: 0 };
     const symbolRadius = 14;
-    const symbolPoints = buildDevSymbolPoints();
+    const symbolPoints = includeSymbol ? buildDevSymbolPoints() : [];
     const glyphCount = symbolPoints.length;
     const glyphHomeX = new Float32Array(glyphCount);
     const glyphHomeZ = new Float32Array(glyphCount);
@@ -158,10 +171,10 @@ function initThreeJs() {
     let morphAmount = 0;
 
     const material = new THREE.PointsMaterial({
-        size: 0.1,
+        size,
         vertexColors: true,
         transparent: true,
-        opacity: 0.8,
+        opacity,
         blending: THREE.AdditiveBlending
     });
 
@@ -175,7 +188,7 @@ function initThreeJs() {
     const pointerWorld = new THREE.Vector3();
     let pointerActive = false;
     const ripples = [];
-    const interactionZone = canvasContainer.closest('.particle-section') || canvasContainer;
+    const interactionZone = canvasContainer.closest(interactionSelector) || canvasContainer;
 
     function updatePointer(event) {
         const rect = interactionZone.getBoundingClientRect();
@@ -335,5 +348,29 @@ document.querySelectorAll('.newsletter-form').forEach((form) => {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initThreeJs();
+    createParticleField({
+        containerId: 'particle-canvas',
+        interactionSelector: '.particle-section',
+        count: 4000,
+        spread: 40,
+        opacity: 0.8,
+        size: 0.1,
+        includeSymbol: true,
+        cameraY: 8,
+        cameraZ: 15,
+    });
+
+    // Footer field: fewer, dimmer particles, no "</>" formation - just an ambient,
+    // interactive backdrop for the footer on every page.
+    createParticleField({
+        containerId: 'footer-particle-canvas',
+        interactionSelector: 'footer',
+        count: 600,
+        spread: 50,
+        opacity: 0.35,
+        size: 0.08,
+        includeSymbol: false,
+        cameraY: 10,
+        cameraZ: 22,
+    });
 });

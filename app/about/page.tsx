@@ -64,6 +64,7 @@ export default function AboutPage() {
         heading={"Three commitments we do not trade away."}
         accent={["away."]}
         features={values}
+        surface="band"
       />
 
       <div className="pb-[clamp(6rem,13vw,11rem)]">

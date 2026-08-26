@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
+import { Stats } from "@/components/sections/Stats";
 import { ParticleStatement } from "@/components/sections/ParticleStatement";
 import { Expertise } from "@/components/sections/Expertise";
+import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { Capabilities } from "@/components/sections/Capabilities";
+import { EmberBand } from "@/components/sections/EmberBand";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 import { site } from "@/lib/site";
@@ -31,14 +34,23 @@ const whyUs = [
   },
 ] as const;
 
+/**
+ * Section order is deliberate. Surfaces alternate (ink -> band -> ink -> ember)
+ * so the page has vertical rhythm rather than reading as one continuous black
+ * scroll, and there is a conversion point roughly every two screens: hero,
+ * services grid, ember band, and the closing banner.
+ */
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Marquee />
+      <Stats />
       <ParticleStatement />
       <Expertise />
+      <ServicesGrid />
       <Capabilities />
+      <EmberBand />
       <FeatureGrid
         id="why"
         eyebrow="Why AxxonTek"

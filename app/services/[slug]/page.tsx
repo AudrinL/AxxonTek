@@ -58,7 +58,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         imageAlt={service.title}
       />
 
-      <FeatureGrid heading={service.pillarsTitle} features={service.pillars} />
+      <FeatureGrid heading={service.pillarsTitle} features={service.pillars} surface="band" />
 
       {/* Cross-links keep every service one click from every other. */}
       <section className="section-y pt-0">

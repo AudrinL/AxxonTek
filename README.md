@@ -83,6 +83,21 @@ sitemap all read from it.
 
 ---
 
+## Layout & conversion structure
+
+Sections alternate across a three-step surface ladder so the page has vertical rhythm instead of
+reading as one continuous black scroll:
+
+| Token | Use |
+| --- | --- |
+| `--color-surface-0` (`#030303`) | Default page ground |
+| `--color-surface-1` (`#0a0a0c`) | `band` utility — raised sections (Stats, Services grid) |
+| `--color-surface-2` (`#101014`) | Cards sitting on a band |
+| `band-ember` | The one high-contrast break per page |
+
+The homepage places a conversion point roughly every two screens — announcement bar, hero email
+capture, services grid, ember band, closing banner — rather than a single CTA at the end.
+
 ## Motion architecture
 
 - **Lenis** provides inertial scrolling, wired into GSAP's ticker so **ScrollTrigger** stays in sync.

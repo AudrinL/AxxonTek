@@ -58,6 +58,7 @@ export default function CareersPage() {
         heading={"How the work actually feels."}
         accent={["feels."]}
         features={culture}
+        surface="band"
       />
 
       <div className="pb-[clamp(6rem,13vw,11rem)]">

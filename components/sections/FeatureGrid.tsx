@@ -16,6 +16,8 @@ type FeatureGridProps = {
   accent?: string[];
   lede?: string;
   features: readonly Feature[];
+  /** "band" lifts the section onto the raised surface, so pages alternate. */
+  surface?: "ink" | "band";
 };
 
 export function FeatureGrid({
@@ -25,9 +27,10 @@ export function FeatureGrid({
   accent = [],
   lede,
   features,
+  surface = "ink",
 }: FeatureGridProps) {
   return (
-    <section id={id} className="section-y relative">
+    <section id={id} className={`section-y relative ${surface === "band" ? "band" : ""}`}>
       <div className="container-x">
         <div className="mb-[clamp(3rem,6vw,5rem)] max-w-2xl">
           {eyebrow && (
@@ -78,7 +81,7 @@ function SpotlightCard({ feature }: { feature: Feature }) {
     <div
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className="group relative h-full overflow-hidden rounded-2xl border border-hairline bg-ink-raised p-8 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 sm:p-9"
+      className="group relative h-full overflow-hidden rounded-2xl border border-hairline bg-surface-2 p-8 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 sm:p-9"
     >
       {/* Lit border */}
       <motion.div

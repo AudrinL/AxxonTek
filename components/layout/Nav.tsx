@@ -63,6 +63,46 @@ export function Nav() {
         animate={{ y: hidden ? -110 : 0, opacity: 1 }}
         transition={{ duration: reduced ? 0 : 0.7, ease: easeOutExpo }}
       >
+        {/* Utility bar: one line, one offer, collapses the moment you scroll so
+            it never competes with the nav. */}
+        <motion.div
+          aria-hidden={condensed}
+          initial={false}
+          animate={{ height: condensed ? 0 : 38, opacity: condensed ? 0 : 1 }}
+          transition={{ duration: reduced ? 0 : 0.45, ease: easeOutExpo }}
+          className="overflow-hidden border-b border-hairline bg-surface-2"
+        >
+          <div className="container-x flex h-[38px] items-center justify-center gap-3 text-[0.8125rem]">
+            <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-ember sm:block" />
+            <span className="truncate text-mute">
+              Taking on new projects for {new Date().getFullYear()}.
+            </span>
+            <Link
+              href="/contact"
+              tabIndex={condensed ? -1 : 0}
+              className="group inline-flex shrink-0 items-center gap-1.5 font-medium text-bone transition-colors hover:text-ember"
+            >
+              Book a call
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden
+                className="transition-transform duration-400 group-hover:translate-x-0.5"
+              >
+                <path
+                  d="M5 12h14m-6-6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          </div>
+        </motion.div>
+
         <div
           className={`transition-all duration-500 ${
             condensed

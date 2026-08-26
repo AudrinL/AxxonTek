@@ -55,6 +55,7 @@ export default function BlogPage() {
         heading={"Three things worth your time."}
         accent={["time."]}
         features={topics}
+        surface="band"
       />
 
       <div className="pb-[clamp(6rem,13vw,11rem)]">

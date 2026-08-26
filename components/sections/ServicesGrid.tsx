@@ -7,7 +7,7 @@ import { Icon } from "@/components/Icon";
 import { services } from "@/lib/site";
 import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
-import { fadeUp, viewportOnce } from "@/lib/motion";
+import { easeOutExpo, viewportOnce } from "@/lib/motion";
 
 const icons: Record<string, string> = {
   sourcing: "users",
@@ -19,45 +19,52 @@ const icons: Record<string, string> = {
 };
 
 /**
- * Every service on one scannable screen, each a direct link to its page.
- * The split-scroll narrative below is persuasive but slow; a buyer who already
- * knows what they need should be one click from it.
+ * The catalogue: what you can actually buy, one generous row per service.
+ *
+ * Rows rather than a compact card grid, because this is the section that has
+ * to make the offer concrete — each service gets room to state its case, and
+ * the whole list still scans in one pass.
  */
 export function ServicesGrid() {
   return (
-    <section className="band">
+    <section id="services" className="band">
       <div className="container-x py-[clamp(5rem,10vw,8rem)]">
-        <div className="mb-[clamp(3rem,6vw,4.5rem)] flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-xl">
-            <Reveal>
-              <p className="eyebrow mb-6">What we do</p>
-            </Reveal>
-            <MaskedWords
-              as="h2"
-              text={"Six ways we can help."}
-              accent={["help."]}
-              className="text-heading"
-            />
-          </div>
-          <Reveal delay={0.1}>
-            <p className="text-lede max-w-sm text-[0.9375rem]">
-              Pick the one closest to your problem — or tell us the problem and we will point you at
-              the right place.
+        <div className="mb-[clamp(3rem,6vw,5rem)] max-w-2xl">
+          <Reveal>
+            <p className="eyebrow mb-6">What we do</p>
+          </Reveal>
+          <MaskedWords
+            as="h2"
+            text={"Six engagements. One standard."}
+            accent={["standard."]}
+            className="text-heading"
+          />
+          <Reveal delay={0.12}>
+            <p className="text-lede mt-7">
+              Pick the one closest to your problem — or describe the problem and we will tell you
+              which of these actually fits, including when the answer is none of them.
             </p>
           </Reveal>
         </div>
 
         <motion.ul
-          className="grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3"
+          className="flex flex-col border-t border-hairline"
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          variants={{ show: { transition: { staggerChildren: 0.06 } } }}
+          variants={{ show: { transition: { staggerChildren: 0.07 } } }}
         >
-          {services.map((service) => (
-            <motion.li key={service.slug} variants={fadeUp}>
-              <ServiceCard
+          {services.map((service, index) => (
+            <motion.li
+              key={service.slug}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeOutExpo } },
+              }}
+            >
+              <ServiceRow
                 href={`/services/${service.slug}`}
+                index={String(index + 1).padStart(2, "0")}
                 icon={icons[service.slug] ?? "target"}
                 eyebrow={service.eyebrow}
                 title={service.title}
@@ -71,38 +78,34 @@ export function ServicesGrid() {
   );
 }
 
-function ServiceCard({
+function ServiceRow({
   href,
+  index,
   icon,
   eyebrow,
   title,
   body,
 }: {
   href: string;
+  index: string;
   icon: string;
   eyebrow: string;
   title: string;
   body: string;
 }) {
-  const mouseX = useMotionValue(-300);
-  const mouseY = useMotionValue(-300);
-  const spotlight = useMotionTemplate`radial-gradient(340px circle at ${mouseX}px ${mouseY}px, rgba(228,98,1,0.12), transparent 62%)`;
+  const mouseX = useMotionValue(-400);
+  const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px 50%, rgba(228,98,1,0.08), transparent 60%)`;
 
   function handleMove(event: MouseEvent<HTMLAnchorElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    mouseX.set(event.clientX - rect.left);
-    mouseY.set(event.clientY - rect.top);
+    mouseX.set(event.clientX - event.currentTarget.getBoundingClientRect().left);
   }
 
   return (
     <Link
       href={href}
       onMouseMove={handleMove}
-      onMouseLeave={() => {
-        mouseX.set(-300);
-        mouseY.set(-300);
-      }}
-      className="group relative flex h-full flex-col justify-between gap-10 bg-surface-1 p-8 transition-colors duration-500 hover:bg-surface-2 sm:p-9"
+      onMouseLeave={() => mouseX.set(-400)}
+      className="group relative flex flex-col gap-6 border-b border-hairline py-9 md:flex-row md:items-center md:gap-12 md:py-11"
     >
       <motion.span
         aria-hidden
@@ -110,28 +113,35 @@ function ServiceCard({
         style={{ background: spotlight }}
       />
 
-      <span className="relative">
-        <span className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl border border-hairline bg-white/[0.02] text-ember transition-colors duration-500 group-hover:border-ember/40 group-hover:bg-ember/10">
+      <span className="relative flex items-center gap-6 md:w-[34%] md:shrink-0">
+        <span className="font-mono text-[0.6875rem] tracking-widest text-faint transition-colors duration-500 group-hover:text-ember">
+          {index}
+        </span>
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-hairline bg-white/[0.02] text-ember transition-colors duration-500 group-hover:border-ember/40 group-hover:bg-ember/10">
           <Icon name={icon} />
         </span>
-        <span className="mb-2.5 block text-[0.6875rem] font-medium tracking-[0.18em] text-faint uppercase">
-          {eyebrow}
+        <span>
+          <span className="mb-1 block text-[0.6875rem] font-medium tracking-[0.18em] text-faint uppercase">
+            {eyebrow}
+          </span>
+          <span className="block text-[clamp(1.375rem,2.2vw,1.75rem)] leading-tight tracking-tight text-bone">
+            {title}
+          </span>
         </span>
-        <span className="mb-3 block text-[1.375rem] leading-tight tracking-tight text-bone">
-          {title}
-        </span>
-        <span className="block text-[0.9375rem] leading-relaxed text-mute">{body}</span>
       </span>
 
-      <span className="relative flex items-center gap-2.5 text-sm text-mute transition-colors duration-300 group-hover:text-ember">
-        Explore
+      <span className="relative flex-1 text-[0.9375rem] leading-relaxed text-mute">{body}</span>
+
+      <span
+        aria-hidden
+        className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline text-faint transition-all duration-500 group-hover:border-ember group-hover:bg-ember/10 group-hover:text-ember"
+      >
         <svg
-          width="14"
-          height="14"
+          width="15"
+          height="15"
           viewBox="0 0 24 24"
           fill="none"
-          aria-hidden
-          className="transition-transform duration-500 group-hover:translate-x-1"
+          className="transition-transform duration-500 group-hover:translate-x-0.5"
         >
           <path
             d="M5 12h14m-6-6l6 6-6 6"

@@ -83,20 +83,40 @@ sitemap all read from it.
 
 ---
 
-## Layout & conversion structure
+## Homepage narrative
 
-Sections alternate across a three-step surface ladder so the page has vertical rhythm instead of
-reading as one continuous black scroll:
+The section order is the design. Each block answers the question the previous one raises, so the
+value proposition sharpens on the way down rather than being restated:
+
+| Position | Section | Job | Leaves the reader asking |
+| --- | --- | --- | --- |
+| 0% | Hero | The promise, one CTA | "Like what?" |
+| 9% | Statement | The thesis in one sentence | "So what can I buy?" |
+| 17% | **Services** | The catalogue — six engagements, one row each | "Does it actually work?" |
+| 30% | **Proof** | Track record and evidence | "What do you build?" |
+| 38% | Capabilities | The four delivery domains | "How do you work?" |
+| 66% | **Ember band** | Research-first process | "Why you?" |
+| 72% | Why AxxonTek | Differentiators | "Are you real?" |
+| 81% | **Stats** | Credibility numbers | "How do I start?" |
+| 86% | Closing CTA | The ask | — |
+
+Two rules this order follows:
+
+- **CTAs are sparse and placed at peak intent** — hero, after proof, after the process band, and the
+  close. The catalogue rows link to their own pages and deliberately do not compete.
+- **Credibility numbers sit late**, as closing reassurance before the ask, not as an early boast.
+
+### Surfaces
+
+Sections alternate across a surface ladder so the page has vertical rhythm instead of reading as one
+continuous black scroll:
 
 | Token | Use |
 | --- | --- |
 | `--color-surface-0` (`#030303`) | Default page ground |
-| `--color-surface-1` (`#0a0a0c`) | `band` utility — raised sections (Stats, Services grid) |
+| `--color-surface-1` (`#0a0a0c`) | `band` utility — raised sections (Services, Stats) |
 | `--color-surface-2` (`#101014`) | Cards sitting on a band |
 | `band-ember` | The one high-contrast break per page |
-
-The homepage places a conversion point roughly every two screens — announcement bar, hero email
-capture, services grid, ember band, closing banner — rather than a single CTA at the end.
 
 ## Motion architecture
 

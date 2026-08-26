@@ -271,31 +271,3 @@ export const capabilities = [
     href: "/services/cloud",
   },
 ] as const;
-
-/** Homepage expertise scroll-spy. */
-export const expertise = [
-  {
-    id: "panel-1",
-    title: "Custom Websites & Apps",
-    body: "We build custom websites and applications that drive growth and digital presence.",
-    panelLabel: "Custom Development",
-    image: "/assets/custom-development.webp",
-    alt: "Custom website and app development",
-  },
-  {
-    id: "panel-2",
-    title: "Intelligent Systems & Security",
-    body: "We develop intelligent building systems that automate operations, and implement advanced security infrastructure to protect assets.",
-    panelLabel: "Security Infrastructure",
-    image: "/assets/security-systems.webp",
-    alt: "Security infrastructure and surveillance",
-  },
-  {
-    id: "panel-3",
-    title: "SaaS & Hardware",
-    body: "We deliver Software as a Service platforms and integrate cutting-edge technology products tailored to your industry.",
-    panelLabel: "Cloud Services",
-    image: "/assets/saas.avif",
-    alt: "Cloud services and SaaS platforms",
-  },
-] as const;

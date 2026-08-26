@@ -63,7 +63,7 @@ export function Capabilities() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="services" className="section-y relative">
+    <section ref={sectionRef} id="expertise" className="section-y relative">
       <div className="container-x">
         <div className="mb-[clamp(4rem,8vw,7rem)] max-w-3xl">
           <Reveal>
@@ -93,7 +93,7 @@ export function Capabilities() {
                 ref={(el) => {
                   blockRefs.current[index] = el;
                 }}
-                className="flex min-h-[70vh] flex-col justify-center py-14 lg:min-h-[85vh]"
+                className="flex min-h-[52vh] flex-col justify-center py-10 lg:min-h-[64vh] lg:py-12"
               >
                 {/* Inline image on small screens, where the pinned column collapses */}
                 <div className="relative mb-8 aspect-4/3 w-full overflow-hidden rounded-xl lg:hidden">

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
-import { Stats } from "@/components/sections/Stats";
 import { ParticleStatement } from "@/components/sections/ParticleStatement";
-import { Expertise } from "@/components/sections/Expertise";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { Proof } from "@/components/sections/Proof";
 import { Capabilities } from "@/components/sections/Capabilities";
 import { EmberBand } from "@/components/sections/EmberBand";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
+import { Stats } from "@/components/sections/Stats";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 import { site } from "@/lib/site";
 
@@ -35,20 +35,31 @@ const whyUs = [
 ] as const;
 
 /**
- * Section order is deliberate. Surfaces alternate (ink -> band -> ink -> ember)
- * so the page has vertical rhythm rather than reading as one continuous black
- * scroll, and there is a conversion point roughly every two screens: hero,
- * services grid, ember band, and the closing banner.
+ * Homepage narrative. Each section answers the question the previous one
+ * raises, so the value proposition sharpens on the way down:
+ *
+ *   Hero          - what we do, broadly            -> "like what?"
+ *   Marquee       - the shape of the offering
+ *   Statement     - the thesis, in one sentence    -> "so what can I buy?"
+ *   Services      - the catalogue, six engagements -> "does it actually work?"
+ *   Proof         - track record + evidence        -> "what do you build?"
+ *   Capabilities  - the four delivery domains      -> "how do you work?"
+ *   EmberBand     - research-first process         -> "why you?"
+ *   Why AxxonTek  - the differentiators            -> "are you real?"
+ *   Stats         - credibility numbers            -> "ok, how do I start?"
+ *   CtaBanner     - the ask
+ *
+ * CTAs are deliberately sparse - hero, proof, ember band, closing. The
+ * catalogue rows link to their own pages and do not compete with them.
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Marquee />
-      <Stats />
       <ParticleStatement />
-      <Expertise />
       <ServicesGrid />
+      <Proof />
       <Capabilities />
       <EmberBand />
       <FeatureGrid
@@ -59,7 +70,8 @@ export default function HomePage() {
         lede="We are a small, senior team. That means the people who scope your project are the people who build it — and the standard never changes between the two."
         features={whyUs}
       />
-      <div className="pb-[clamp(6rem,13vw,11rem)]">
+      <Stats />
+      <div className="pt-[clamp(6rem,13vw,11rem)] pb-[clamp(6rem,13vw,11rem)]">
         <CtaBanner
           heading={"Your success is our mission. Let's build it together."}
           accent={["together."]}

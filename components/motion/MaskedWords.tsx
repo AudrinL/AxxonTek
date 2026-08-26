@@ -70,22 +70,24 @@ export function MaskedWords({
     >
       {lines.map((line, lineIndex) => (
         <span key={lineIndex} className="block" aria-hidden>
-          {line.split(" ").map((word, wordIndex) => {
+          {line.split(" ").map((word, wordIndex, allWords) => {
             const clean = word.replace(/[.,—:;!?]/g, "").toLowerCase();
             const isAccent = accentSet.has(clean);
             return (
-              <span
-                key={`${lineIndex}-${wordIndex}`}
-                className="mr-[0.26em] inline-block overflow-hidden pb-[0.12em] align-bottom"
-              >
-                <motion.span
-                  className={`inline-block ${isAccent ? "text-ember-gradient font-display italic" : ""}`}
-                  variants={wordMask}
-                  transition={{ duration: 1, ease: easeOutExpo }}
-                >
-                  {word}
-                </motion.span>
-              </span>
+              <Fragment key={`${lineIndex}-${wordIndex}`}>
+                <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+                  <motion.span
+                    className={`inline-block ${isAccent ? "text-ember-gradient font-display italic" : ""}`}
+                    variants={wordMask}
+                    transition={{ duration: 1, ease: easeOutExpo }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+                {/* Real space between masks: keeps the DOM text readable and
+                    lets the line wrap naturally. */}
+                {wordIndex < allWords.length - 1 ? " " : null}
+              </Fragment>
             );
           })}
         </span>

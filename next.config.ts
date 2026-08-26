@@ -5,10 +5,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
-  // three/drei ship untranspiled ESM helpers; let Next optimize the barrel imports
-  experimental: {
-    optimizePackageImports: ["@react-three/drei", "framer-motion"],
-  },
+  // NOTE: do not add `experimental.optimizePackageImports` for framer-motion or
+  // @react-three/drei here. Next 15 already optimizes framer-motion by default,
+  // and forcing it broke the module graph for runtime-rendered routes: /contact
+  // returned a 500 ("TypeError: a[d] is not a function" from webpack-runtime)
+  // in production builds while working fine in dev.
 };
 
 export default nextConfig;

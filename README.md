@@ -115,17 +115,55 @@ sitemap all read from it.
 
 ---
 
-## Deployment
+## Deployment (Netlify)
 
-Deploy as a standard Next.js app (Vercel, or any Node host):
+[`netlify.toml`](netlify.toml) configures the build. It must exist — this site is a compiled
+Next.js app, not static HTML, so Netlify cannot serve the repo root directly.
+
+It sets:
+
+- `command = "npm run build"` and `publish = ".next"`
+- `@netlify/plugin-nextjs` — turns SSR pages, `/api/*` routes, and `next/image` into Netlify
+  Functions. Without it the build output is unservable.
+- `NODE_VERSION = "20"`
+- Cache headers for immutable assets, security headers, and 301s from the old `*.html` URLs.
+
+Because `netlify.toml` exists, it **overrides the build settings in the Netlify UI**. If a deploy
+still misbehaves, check *Site configuration → Build & deploy* and make sure **Base directory is
+empty**; that one setting is not controlled by this file.
+
+### Required environment variables
+
+Set these in *Site configuration → Environment variables*:
+
+| Variable | Notes |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Production domain, e.g. `https://axxontek.com`. Drives canonical URLs, `sitemap.xml`, `robots.txt`. |
+| `SUPABASE_URL` | Server-side only. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side only. Never prefix with `NEXT_PUBLIC_`. |
+
+Without the two Supabase values the site deploys and renders fine, but the contact and newsletter
+forms return a clear "not connected yet" message instead of saving anything.
+
+### Forms no longer use Netlify Forms
+
+The old static site collected the newsletter through Netlify Forms (`data-netlify="true"`). That is
+gone — submissions now POST to `/api/contact` and `/api/newsletter` and are stored in Supabase, which
+is what `supabase-schema.sql` was written for. If the Netlify Forms dashboard still lists an old
+`newsletter` form, it will not receive anything further.
+
+### Verifying a deploy locally
 
 ```bash
-npm run build
-npm start
+npx netlify-cli build
 ```
 
-Set the environment variables above in your host's dashboard. Update `NEXT_PUBLIC_SITE_URL` to the
-production domain so canonical URLs, `sitemap.xml`, and `robots.txt` resolve correctly.
+This runs the real Netlify pipeline, including the Next.js Runtime plugin and function bundling.
+
+### Other hosts
+
+The app is a standard Next.js server app (`npm run build && npm start`) and runs on Vercel or any
+Node host without the Netlify plugin.
 
 ---
 

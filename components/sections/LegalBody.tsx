@@ -44,7 +44,7 @@ export function LegalBody({ sections, updated }: { sections: LegalSection[]; upd
               <Reveal key={section.heading}>
                 <div
                   id={section.id ?? slugify(section.heading)}
-                  className="hairline-t scroll-mt-28 py-10 first:pt-0 first:border-t-0"
+                  className="scroll-mt-28 border-t border-hairline py-10 first:border-t-0 first:pt-0"
                 >
                   <h2 className="mb-5 flex items-baseline gap-4 text-[1.375rem] tracking-tight">
                     <span className="font-mono text-[0.6875rem] text-ember">

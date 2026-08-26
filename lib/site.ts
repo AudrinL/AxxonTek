@@ -73,7 +73,7 @@ export const services: Service[] = [
       },
     ],
     closing: "Tell us who you are looking for.",
-    image: "/assets/custom-websites.png",
+    image: "/assets/custom-websites.webp",
   },
   {
     slug: "interviews",
@@ -104,7 +104,7 @@ export const services: Service[] = [
       },
     ],
     closing: "Need candidates properly vetted?",
-    image: "/assets/custom-development.png",
+    image: "/assets/custom-development.webp",
   },
   {
     slug: "analytics",
@@ -166,7 +166,7 @@ export const services: Service[] = [
       },
     ],
     closing: "Protect what matters.",
-    image: "/assets/security-systems.jpg",
+    image: "/assets/security-systems.webp",
   },
   {
     slug: "infrastructure",
@@ -197,7 +197,7 @@ export const services: Service[] = [
       },
     ],
     closing: "Let us build a foundation that holds.",
-    image: "/assets/infrastructure.jpg",
+    image: "/assets/infrastructure.webp",
   },
   {
     slug: "cloud",
@@ -243,7 +243,7 @@ export const capabilities = [
     index: "01",
     title: "Custom Websites & Apps",
     body: "Turn ideas into digital experiences people love to use. We create fast, modern websites and applications that help businesses connect with customers, build trust, and grow with confidence.",
-    image: "/assets/custom-websites.png",
+    image: "/assets/custom-websites.webp",
     href: "/contact",
   },
   {
@@ -259,7 +259,7 @@ export const capabilities = [
     index: "03",
     title: "Security Systems",
     body: "Protect what matters most with modern security solutions. From CCTV surveillance and access control to alarm systems and monitoring, we build safer environments with reliable, easy-to-manage infrastructure.",
-    image: "/assets/security-systems.jpg",
+    image: "/assets/security-systems.webp",
     href: "/services/security",
   },
   {
@@ -279,7 +279,7 @@ export const expertise = [
     title: "Custom Websites & Apps",
     body: "We build custom websites and applications that drive growth and digital presence.",
     panelLabel: "Custom Development",
-    image: "/assets/custom-development.png",
+    image: "/assets/custom-development.webp",
     alt: "Custom website and app development",
   },
   {
@@ -287,7 +287,7 @@ export const expertise = [
     title: "Intelligent Systems & Security",
     body: "We develop intelligent building systems that automate operations, and implement advanced security infrastructure to protect assets.",
     panelLabel: "Security Infrastructure",
-    image: "/assets/security-systems.jpg",
+    image: "/assets/security-systems.webp",
     alt: "Security infrastructure and surveillance",
   },
   {

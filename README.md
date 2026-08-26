@@ -18,7 +18,7 @@ The site runs at <http://localhost:3000>.
 
 | Script              | What it does                              |
 | ------------------- | ----------------------------------------- |
-| `npm run dev`       | Dev server with hot reload                |
+| `npm run dev`       | Dev server (Turbopack) with hot reload     |
 | `npm run build`     | Production build                          |
 | `npm start`         | Serve the production build                |
 | `npm run typecheck` | TypeScript check, no emit                 |
@@ -93,6 +93,14 @@ sitemap all read from it.
 
 ### Performance rules the code follows
 
+- **Nothing contentful waits on JavaScript.** The page-transition curtain runs only on client-side
+  navigations, never the first load. Covering server-rendered HTML and starting content at
+  `opacity: 0` pushed First Contentful Paint from ~0.35s to ~2.4s.
+- Source images are pre-optimised (WebP, sensibly sized). `public/assets` is ~1.4MB total; it was
+  9.8MB, including a 6.1MB PNG screenshot.
+- Components that render the same image at two breakpoints share one `sizes` value, so the browser
+  downloads one derivative instead of two.
+
 - The particle field does all per-particle work — wave displacement, pointer falloff, ring
   formation, glow — **in a GLSL shader on the GPU**, not in a JS loop.
 - Three.js is **lazy-loaded** (`components/three/LazyParticleField.tsx`), so it is not in the
@@ -164,6 +172,30 @@ This runs the real Netlify pipeline, including the Next.js Runtime plugin and fu
 
 The app is a standard Next.js server app (`npm run build && npm start`) and runs on Vercel or any
 Node host without the Netlify plugin.
+
+---
+
+## Troubleshooting
+
+**"Port 3000 is in use, using 3002 instead"** — an earlier dev server is still running. Whatever is
+on 3000 is serving a stale build and will throw 500s and 404s for chunks that no longer exist. Kill
+it rather than using the new port:
+
+```bash
+npx kill-port 3000
+```
+
+On Windows, find and kill it directly:
+
+```bash
+netstat -ano | findstr :3000
+```
+
+Then `taskkill /F /PID <pid>`. Orphaned servers are the most common cause of "the local site is
+broken but the code looks fine".
+
+**First page compile takes ~14s** — expected. Turbopack compiles each route on first request in dev;
+subsequent loads are under a second, and production TTFB is 10-90ms.
 
 ---
 

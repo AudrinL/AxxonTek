@@ -82,7 +82,7 @@ export function Nav() {
               aria-label={`${site.name} home`}
             >
               <Image
-                src="/assets/logo.png"
+                src="/assets/logo.webp"
                 alt=""
                 width={132}
                 height={30}

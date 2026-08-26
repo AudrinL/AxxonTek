@@ -101,7 +101,11 @@ export function Capabilities() {
                     src={item.image}
                     alt={item.title}
                     fill
-                    sizes="100vw"
+                    /* Same `sizes` as the pinned desktop copy below: both render
+                       the same src, so matching them means one download serves
+                       both breakpoints instead of two derivatives. */
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    loading="lazy"
                     className="object-cover"
                   />
                 </div>
@@ -172,7 +176,7 @@ export function Capabilities() {
                       src={item.image}
                       alt={item.title}
                       fill
-                      sizes="50vw"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
                       priority={index === 0}
                     />

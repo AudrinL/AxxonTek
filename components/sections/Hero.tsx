@@ -42,7 +42,7 @@ export function Hero() {
         style={reduced ? undefined : { y: bgY, scale: bgScale }}
       >
         <Image
-          src="/assets/hero-bg.png"
+          src="/assets/hero-bg.webp"
           alt=""
           fill
           priority

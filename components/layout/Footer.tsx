@@ -124,7 +124,7 @@ export function Footer() {
         <div className="hairline-t mt-12 flex flex-col-reverse items-center justify-between gap-6 pt-8 sm:flex-row">
           <div className="flex items-center gap-4">
             <Image
-              src="/assets/logo.png"
+              src="/assets/logo.webp"
               alt={site.name}
               width={104}
               height={24}

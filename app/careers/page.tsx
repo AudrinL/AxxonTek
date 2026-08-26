@@ -49,7 +49,7 @@ export default function CareersPage() {
         heading={"Small team, real ownership."}
         accent={["ownership."]}
         body="There is no ladder to climb here yet — there is just work that matters, and a team small enough that your name is on all of it. If you want to be the fifth person building serious technology for Africa from day one, we want to hear from you."
-        image="/assets/custom-development.png"
+        image="/assets/custom-development.webp"
         imageAlt="Working at AxxonTek"
       />
 

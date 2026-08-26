@@ -8,10 +8,11 @@
 [build.environment]
   # Next 15 requires Node 18.18+. Pin it so local and CI agree.
   NODE_VERSION = "20"
-  # Skip Netlify's secrets scanner on the build output: the Supabase service
-  # role key is only ever read server-side, but its value appears in the
-  # function bundle, which the scanner otherwise flags.
-  SECRETS_SCAN_OMIT_PATHS = ".next/**"
+  # The Supabase service-role key is legitimately server-side (read only inside
+  # app/api/* route handlers), but Netlify's secrets scanner can still spot it
+  # in the function bundle and fail the build. Exempt that one key rather than
+  # the whole output, so everything else is still scanned.
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_SERVICE_ROLE_KEY"
 
 # Turns App Router SSR pages, /api routes, next/image, and middleware into
 # Netlify Functions + Edge Functions. Without this the build produces output

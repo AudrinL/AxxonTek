@@ -1,0 +1,119 @@
+[build]
+  command = "npm run build"
+  # The Next.js Runtime rewrites this to the real serverless output. Do not
+  # point it at the repo root - that was the old static-site setup, and it is
+  # why nothing rendered after the Next.js migration.
+  publish = ".next"
+
+[build.environment]
+  # Next 15 requires Node 18.18+. Pin it so local and CI agree.
+  NODE_VERSION = "20"
+  # Skip Netlify's secrets scanner on the build output: the Supabase service
+  # role key is only ever read server-side, but its value appears in the
+  # function bundle, which the scanner otherwise flags.
+  SECRETS_SCAN_OMIT_PATHS = ".next/**"
+
+# Turns App Router SSR pages, /api routes, next/image, and middleware into
+# Netlify Functions + Edge Functions. Without this the build produces output
+# Netlify cannot serve.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Hashed build assets are immutable.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Legacy .html URLs from the old static site -> their new routes, so existing
+# links and search-engine results keep working.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about.html"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact.html"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog.html"
+  to = "/blog"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/careers.html"
+  to = "/careers"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy.html"
+  to = "/privacy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terms.html"
+  to = "/terms"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sourcing.html"
+  to = "/services/sourcing"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interviews.html"
+  to = "/services/interviews"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/analytics.html"
+  to = "/services/analytics"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/security.html"
+  to = "/services/security"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/infrastructure.html"
+  to = "/services/infrastructure"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cloud.html"
+  to = "/services/cloud"
+  status = 301
+  force = true

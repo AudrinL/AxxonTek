@@ -10,7 +10,7 @@ import {
 } from "framer-motion";
 import { useRef, type MouseEvent, type ReactNode } from "react";
 
-type Variant = "primary" | "ghost" | "outline";
+type Variant = "primary" | "ghost" | "outline" | "inverse";
 
 const base =
   "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full text-[0.9375rem] font-medium tracking-tight transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-55";
@@ -21,9 +21,12 @@ const sizes = {
 } as const;
 
 const variants: Record<Variant, string> = {
-  primary: "bg-ember text-white hover:bg-ember-soft",
-  outline: "border border-hairline-strong text-bone hover:border-ember hover:text-white",
-  ghost: "text-mute hover:text-bone",
+  primary:
+    "bg-ember text-white shadow-[0_1px_2px_rgba(0,0,0,0.12),0_8px_20px_-8px_var(--color-ember)] hover:bg-ember-deep",
+  outline: "border border-hairline-strong bg-ink-raised text-bone hover:border-ember hover:text-ember",
+  ghost: "text-bone hover:bg-ink-panel",
+  /** For use on the orange band: white button, orange text. */
+  inverse: "bg-white text-ember-deep hover:bg-[#fff4ec]",
 };
 
 type MagneticProps = {

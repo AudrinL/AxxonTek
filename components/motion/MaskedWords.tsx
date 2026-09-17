@@ -77,7 +77,7 @@ export function MaskedWords({
               <Fragment key={`${lineIndex}-${wordIndex}`}>
                 <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
                   <motion.span
-                    className={`inline-block ${isAccent ? "text-ember-gradient font-display italic" : ""}`}
+                    className={`inline-block ${isAccent ? "font-display text-ember italic font-normal" : ""}`}
                     variants={wordMask}
                     transition={{ duration: 1, ease: easeOutExpo }}
                   >

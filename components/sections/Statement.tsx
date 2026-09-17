@@ -39,7 +39,7 @@ export function Statement({ label, heading, accent = [], body, image, imageAlt }
         >
           <div>
             <Reveal>
-              <p className="eyebrow mb-7">{label}</p>
+              <p className="eyebrow mb-5">{label}</p>
             </Reveal>
             <MaskedWords
               as="h2"
@@ -48,13 +48,13 @@ export function Statement({ label, heading, accent = [], body, image, imageAlt }
               className="text-heading max-w-[18ch]"
             />
             <Reveal delay={0.12}>
-              <p className="text-lede mt-8 max-w-xl">{body}</p>
+              <p className="text-lede mt-6 max-w-xl">{body}</p>
             </Reveal>
           </div>
 
           {image && (
             <motion.div
-              className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-hairline"
+              className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-hairline shadow-card"
               variants={imageWipe}
               initial="hidden"
               whileInView="show"
@@ -74,7 +74,7 @@ export function Statement({ label, heading, accent = [], body, image, imageAlt }
               </motion.div>
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"
               />
             </motion.div>
           )}

@@ -1,171 +1,185 @@
 "use client";
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { easeOutExpo } from "@/lib/motion";
+import { services, trustPoints } from "@/lib/site";
+import { Icon } from "@/components/Icon";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { MaskedWords } from "@/components/motion/MaskedWords";
 
+const rise = (delay: number) => ({
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: easeOutExpo, delay },
+});
+
+/**
+ * The hero has one job: tell a stranger what we sell and give them one clear
+ * next step. Copy on the left, a preview of the engagement on the right so
+ * the page shows the product instead of a stock photo.
+ */
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const router = useRouter();
   const reduced = useReducedMotion();
-  const [email, setEmail] = useState("");
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  // Layered parallax: background drifts slowest, content lifts and fades out.
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
-
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    const trimmed = email.trim();
-    router.push(trimmed ? `/contact?email=${encodeURIComponent(trimmed)}` : "/contact");
-  }
 
   return (
-    <section
-      ref={ref}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden"
-    >
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 -z-20"
-        style={reduced ? undefined : { y: bgY, scale: bgScale }}
-      >
-        <Image
-          src="/assets/hero-bg.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-45"
-        />
-      </motion.div>
-
-      {/* Vignette + warm floor glow */}
+    <section className="relative isolate overflow-hidden pt-[clamp(7.5rem,16vh,10rem)] pb-[clamp(3.5rem,7vw,6rem)]">
+      {/* Warm bloom top-right, and a faint dot grid that fades out downwards. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,transparent_10%,rgba(3,3,3,0.55)_55%,var(--color-ink)_92%)]"
+        className="pointer-events-none absolute -top-40 right-[-10%] -z-10 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(closest-side,var(--color-ember-tint),transparent)] opacity-90 blur-2xl"
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[radial-gradient(60%_100%_at_50%_120%,rgba(228,98,1,0.22),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5] [background-image:radial-gradient(var(--color-hairline)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:linear-gradient(to_bottom,#000_20%,transparent_85%)]"
       />
 
-      <motion.div
-        className="container-x relative pt-32 pb-24"
-        style={reduced ? undefined : { y: contentY, opacity: contentOpacity }}
-      >
-        <motion.p
-          className="eyebrow mb-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: easeOutExpo, delay: 0.15 }}
-        >
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_var(--color-ember)]" />
-          Kigali, Rwanda
-        </motion.p>
+      <div className="container-x">
+        <div className="grid items-center gap-x-16 gap-y-14 lg:grid-cols-[1.05fr_0.95fr]">
+          {/* Copy */}
+          <div>
+            <motion.p className="eyebrow mb-7" {...rise(0.05)}>
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-ember" />
+              Kigali, Rwanda · Taking on projects for {new Date().getFullYear()}
+            </motion.p>
 
-        <MaskedWords
-          as="h1"
-          text={"Next-generation\ndigital innovation."}
-          accent={["innovation"]}
-          className="text-display max-w-[16ch]"
-          immediate
-          delay={0.25}
-        />
-
-        <motion.p
-          className="text-lede mt-8 max-w-xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: easeOutExpo, delay: 0.7 }}
-        >
-          A technology partner delivering researched, engineered solutions across software,
-          intelligent systems, security, and cloud — built for enterprises that cannot afford to
-          guess.
-        </motion.p>
-
-        <motion.div
-          className="mt-11 flex flex-col gap-5 sm:flex-row sm:items-center"
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: easeOutExpo, delay: 0.85 }}
-        >
-          <form
-            onSubmit={handleSubmit}
-            className="group flex h-14 w-full max-w-md items-center gap-2 rounded-full border border-hairline bg-ink/40 p-1.5 pl-6 backdrop-blur-md transition-colors duration-300 focus-within:border-ember/60 hover:border-hairline-strong"
-          >
-            <label htmlFor="hero-email" className="sr-only">
-              Your work email
-            </label>
-            <input
-              id="hero-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your work email"
-              autoComplete="email"
-              className="min-w-0 flex-1 bg-transparent text-[0.9375rem] text-bone outline-none placeholder:text-faint"
+            <MaskedWords
+              as="h1"
+              text="Software, security and cloud — built after we understand your problem."
+              accent={["understand"]}
+              className="text-display max-w-[17ch]"
+              immediate
+              delay={0.15}
             />
-            <MagneticButton type="submit" size="md" strength={8}>
-              Let&rsquo;s build it
-            </MagneticButton>
-          </form>
 
-          <MagneticButton href="/#services" variant="ghost" size="md">
-            Explore services
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M12 5v14m0 0l-6-6m6 6l6-6"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </MagneticButton>
-        </motion.div>
+            <motion.p className="text-lede mt-7 max-w-[34rem]" {...rise(0.55)}>
+              AxxonTek is a senior engineering team in Kigali. We build custom software, security
+              and IT systems, and cloud platforms for businesses across East Africa — and we research
+              the problem before we quote on it.
+            </motion.p>
 
-        <motion.div
-          className="mt-20 flex items-center gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.1 }}
-        >
-          <span className="h-px w-12 bg-gradient-to-r from-ember to-transparent" />
-          <p className="text-[0.6875rem] font-medium tracking-[0.22em] text-faint uppercase">
-            Engineering excellence. Global reach.
-          </p>
-        </motion.div>
-      </motion.div>
+            <motion.div
+              className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+              {...rise(0.7)}
+            >
+              <MagneticButton href="/contact" size="lg" strength={8}>
+                Book a call
+                <Icon name="arrow" size={16} />
+              </MagneticButton>
+              <MagneticButton href="/#services" variant="ghost" size="lg" strength={6}>
+                See what we do
+              </MagneticButton>
+            </motion.div>
 
-      {/* Scroll cue */}
-      <motion.div
-        aria-hidden
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 md:block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 1 }}
-        style={reduced ? undefined : { opacity: contentOpacity }}
-      >
-        <div className="flex h-11 w-6 justify-center rounded-full border border-hairline-strong pt-2">
-          <motion.span
-            className="h-1.5 w-1.5 rounded-full bg-ember"
-            animate={reduced ? undefined : { y: [0, 14, 0], opacity: [1, 0.2, 1] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          />
+            <motion.ul
+              className="mt-9 flex flex-wrap gap-x-6 gap-y-2.5 text-[0.875rem] text-mute"
+              {...rise(0.85)}
+            >
+              {trustPoints.map((point) => (
+                <li key={point} className="flex items-center gap-2">
+                  <span className="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-ember-tint text-ember">
+                    <Icon name="check" size={11} strokeWidth={2.2} />
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </motion.ul>
+          </div>
+
+          {/* Engagement preview */}
+          <motion.div
+            className="relative lg:justify-self-end"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 28, rotate: -1 }}
+            animate={{ opacity: 1, y: 0, rotate: 0 }}
+            transition={{ duration: 1, ease: easeOutExpo, delay: 0.35 }}
+          >
+            <EngagementCard />
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
+  );
+}
+
+/**
+ * A stylised "what you get" panel — a first-call summary, a checklist of the
+ * six services, and a reply-time badge. It stands in for a screenshot
+ * because the product is an engagement, not an app.
+ */
+function EngagementCard() {
+  return (
+    <div className="relative w-full max-w-[34rem]">
+      {/* Backing card, slightly offset, for depth */}
+      <div
+        aria-hidden
+        className="absolute inset-0 translate-x-4 translate-y-4 rounded-[1.5rem] border border-hairline bg-surface-1"
+      />
+
+      <div className="card relative overflow-hidden rounded-[1.5rem] p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-faint uppercase">
+              After your first call
+            </p>
+            <h2 className="mt-2 text-[1.375rem] leading-tight font-semibold tracking-tight">
+              A written read on your problem
+            </h2>
+          </div>
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
+            <Icon name="clipboard" />
+          </span>
+        </div>
+
+        <ul className="mt-6 flex flex-col gap-3 text-[0.9375rem]">
+          {[
+            "What you are actually trying to fix",
+            "Which of our services fits — or none",
+            "A proposed first step, with a price",
+          ].map((line, i) => (
+            <li key={line} className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ember text-[0.6875rem] font-semibold text-white">
+                {i + 1}
+              </span>
+              <span className="text-bone">{line}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-7 border-t border-hairline pt-6">
+          <p className="mb-3 text-[0.6875rem] font-semibold tracking-[0.16em] text-faint uppercase">
+            What we can take on
+          </p>
+          <ul className="grid grid-cols-2 gap-2">
+            {services.map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="flex items-center gap-2.5 rounded-lg border border-hairline bg-ink px-3 py-2 text-[0.8125rem] text-mute transition-colors duration-300 hover:border-ember/50 hover:text-bone"
+                >
+                  <Icon name={s.icon} size={15} className="shrink-0 text-ember" />
+                  <span className="truncate">{s.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Floating badge */}
+      <motion.div
+        className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised py-2 pr-5 pl-2 shadow-card sm:-left-8"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: easeOutExpo, delay: 1 }}
+      >
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">
+          <Icon name="clock" size={15} />
+        </span>
+        <span className="text-[0.8125rem] leading-tight">
+          <span className="block font-semibold text-bone">Reply in 1 business day</span>
+          <span className="text-mute">from an engineer, not a bot</span>
+        </span>
+      </motion.div>
+    </div>
   );
 }

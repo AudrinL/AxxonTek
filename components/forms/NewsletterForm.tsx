@@ -56,7 +56,7 @@ export function NewsletterForm() {
         className={`group relative flex items-center gap-2 rounded-full border p-1.5 pl-5 transition-colors duration-300 ${
           status === "error"
             ? "border-red-500/50"
-            : "border-hairline focus-within:border-ember/60 hover:border-hairline-strong"
+            : "border-hairline bg-ink-raised focus-within:border-ember hover:border-hairline-strong"
         }`}
       >
         <label htmlFor="newsletter-email" className="sr-only">
@@ -95,7 +95,7 @@ export function NewsletterForm() {
         <button
           type="submit"
           disabled={busy || status === "success"}
-          className="relative h-10 shrink-0 overflow-hidden rounded-full bg-ember px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-ember-soft disabled:opacity-70"
+          className="relative h-10 shrink-0 overflow-hidden rounded-full bg-ember px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-ember-deep disabled:opacity-70"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span

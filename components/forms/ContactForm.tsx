@@ -8,11 +8,12 @@ import { MagneticButton } from "@/components/motion/MagneticButton";
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Record<string, string>;
 
+/* Boxed fields with a visible label: the clearest affordance on a light page,
+   and the label never disappears while you type. */
 const fieldBase =
-  "peer w-full border-b border-hairline bg-transparent pt-7 pb-3 text-[1.0625rem] text-bone outline-none transition-colors duration-300 placeholder:text-transparent hover:border-hairline-strong focus:border-ember";
+  "w-full rounded-xl border border-hairline bg-ink-raised px-4 py-3.5 text-[1rem] text-bone outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-faint hover:border-hairline-strong focus:border-ember focus:shadow-[0_0_0_3px_var(--color-ember-tint)] disabled:opacity-60";
 
-const labelBase =
-  "pointer-events-none absolute left-0 top-7 origin-left text-[1.0625rem] text-faint transition-all duration-300 peer-focus:top-0 peer-focus:text-[0.75rem] peer-focus:tracking-[0.16em] peer-focus:text-ember peer-focus:uppercase peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-[0.75rem] peer-[:not(:placeholder-shown)]:tracking-[0.16em] peer-[:not(:placeholder-shown)]:uppercase";
+const labelBase = "mb-2 block text-[0.875rem] font-medium text-bone";
 
 export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
   const [status, setStatus] = useState<Status>("idle");
@@ -65,10 +66,10 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: easeOutExpo }}
-        className="glass rounded-2xl p-10 text-center sm:p-14"
+        className="card p-10 text-center sm:p-14"
         role="status"
       >
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-ember/40 bg-ember/10">
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-ember-tint">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
               d="M4 12.5l5 5L20 6.5"
@@ -79,7 +80,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
             />
           </svg>
         </div>
-        <h3 className="mb-3 text-2xl">Message received.</h3>
+        <h3 className="mb-3 text-2xl font-semibold">Message received.</h3>
         <p className="text-lede mx-auto max-w-md">
           Thank you for reaching out. We read every message ourselves — expect a reply within one
           business day.
@@ -98,7 +99,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
   const busy = status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-9">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
       {/* Honeypot */}
       <div aria-hidden className="pointer-events-none absolute left-[-9999px] opacity-0">
         <label>
@@ -107,10 +108,11 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
         </label>
       </div>
 
-      <div className="grid gap-9 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         <Field
           name="name"
           label="Your name"
+          placeholder="Jane Doe"
           autoComplete="name"
           error={errors.name}
           disabled={busy}
@@ -118,7 +120,8 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
         <Field
           name="email"
           type="email"
-          label="Email address"
+          label="Work email"
+          placeholder="you@company.com"
           autoComplete="email"
           defaultValue={defaultEmail}
           error={errors.email}
@@ -129,25 +132,26 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
       <Field
         name="company"
         label="Company (optional)"
+        placeholder="Where you work"
         autoComplete="organization"
         error={errors.company}
         disabled={busy}
       />
 
-      <div className="relative">
+      <div>
+        <label htmlFor="message" className={labelBase}>
+          What are you trying to solve?
+        </label>
         <textarea
           id="message"
           name="message"
           rows={5}
-          placeholder=" "
+          placeholder="A sentence or two is enough — we will ask the rest on the call."
           disabled={busy}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
-          className={`${fieldBase} resize-none ${errors.message ? "border-red-500/60" : ""}`}
+          className={`${fieldBase} resize-y ${errors.message ? "border-red-500/70" : ""}`}
         />
-        <label htmlFor="message" className={labelBase}>
-          What are you building?
-        </label>
         <FieldError id="message-error" message={errors.message} />
       </div>
 
@@ -171,7 +175,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
         </MagneticButton>
 
         <p className="text-[0.8125rem] text-faint">
-          We reply within one business day.
+          No newsletter, no sales sequence. One reply, within a business day.
         </p>
       </div>
 
@@ -182,7 +186,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-400"
+              className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500"
             >
               {formError}
             </motion.p>
@@ -197,6 +201,7 @@ function Field({
   name,
   label,
   type = "text",
+  placeholder,
   autoComplete,
   defaultValue,
   error,
@@ -205,28 +210,29 @@ function Field({
   name: string;
   label: string;
   type?: string;
+  placeholder?: string;
   autoComplete?: string;
   defaultValue?: string;
   error?: string;
   disabled?: boolean;
 }) {
   return (
-    <div className="relative">
+    <div>
+      <label htmlFor={name} className={labelBase}>
+        {label}
+      </label>
       <input
         id={name}
         name={name}
         type={type}
-        placeholder=" "
+        placeholder={placeholder}
         defaultValue={defaultValue}
         autoComplete={autoComplete}
         disabled={disabled}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
-        className={`${fieldBase} ${error ? "border-red-500/60" : ""}`}
+        className={`${fieldBase} ${error ? "border-red-500/70" : ""}`}
       />
-      <label htmlFor={name} className={labelBase}>
-        {label}
-      </label>
       <FieldError id={`${name}-error`} message={error} />
     </div>
   );
@@ -242,7 +248,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="absolute -bottom-6 left-0 text-[0.8125rem] text-red-400"
+          className="mt-2 text-[0.8125rem] text-red-500"
         >
           {message}
         </motion.p>

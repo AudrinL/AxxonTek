@@ -4,7 +4,6 @@ import "./globals.css";
 
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { site } from "@/lib/site";
@@ -64,14 +63,27 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030303",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbfaf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0b0a" },
+  ],
 };
+
+/**
+ * Applies the stored theme before first paint so a dark-mode visitor never
+ * sees a light flash. Light is the default when nothing is stored — the
+ * system preference is deliberately not consulted, the site is light-first.
+ * Must match STORAGE_KEY in components/layout/ThemeToggle.tsx.
+ */
+const themeBootstrap = `(function(){try{var t=localStorage.getItem("axxontek-theme");if(t==="dark"){document.documentElement.dataset.theme="dark"}}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable}`}>
-      <body className="grain antialiased">
+    <html lang="en" className={`${inter.variable} ${display.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
+      </head>
+      <body className="antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-ember focus:px-5 focus:py-2.5 focus:text-sm focus:text-white"
@@ -79,19 +91,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
 
-        {/* Glowing viewport frame */}
-        <div aria-hidden className="pointer-events-none fixed inset-0 z-[65] p-2.5">
-          <div className="h-full w-full rounded-[20px] border border-white/[0.07] shadow-[0_0_24px_rgba(228,98,1,0.13),inset_0_0_28px_rgba(228,98,1,0.07)]" />
-        </div>
-
-        <SmoothScroll>
-          <ScrollProgress />
-          <Nav />
-          <main id="main">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-        </SmoothScroll>
+        <ScrollProgress />
+        <Nav />
+        <main id="main">
+          <PageTransition>{children}</PageTransition>
+        </main>
+        <Footer />
       </body>
     </html>
   );

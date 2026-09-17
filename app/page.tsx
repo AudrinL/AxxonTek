@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { Marquee } from "@/components/sections/Marquee";
-import { ParticleStatement } from "@/components/sections/ParticleStatement";
-import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { Proof } from "@/components/sections/Proof";
-import { Capabilities } from "@/components/sections/Capabilities";
-import { EmberBand } from "@/components/sections/EmberBand";
-import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { Stats } from "@/components/sections/Stats";
-import { CtaBanner } from "@/components/sections/CtaBanner";
+import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { ProcessBand } from "@/components/sections/ProcessBand";
+import { FeatureGrid } from "@/components/sections/FeatureGrid";
+import { Faq } from "@/components/sections/Faq";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -18,68 +15,51 @@ export const metadata: Metadata = {
 
 const whyUs = [
   {
-    icon: "bulb",
-    title: "Strategic Innovation",
-    body: "We build future-proof architectures that align technology with your core business objectives.",
+    icon: "microscope",
+    title: "Researched before quoted",
+    body: "You are never priced on a guess. We study the problem first, then put a number on a scope we understand.",
   },
   {
-    icon: "globe",
-    title: "Global Capabilities",
-    body: "Our solutions scale across borders, delivering enterprise-grade performance wherever you operate.",
+    icon: "users",
+    title: "No handoffs",
+    body: "The engineer on your first call is the engineer who builds it, and you keep their direct contact throughout.",
   },
   {
-    icon: "target",
-    title: "Uncompromising Quality",
-    body: "From complex cloud deployments to intelligent security, we execute with precision and reliability.",
+    icon: "shield",
+    title: "Supported past launch",
+    body: "We stay involved after delivery, because the version that ships is rarely the version that lasts.",
   },
 ] as const;
 
 /**
- * Homepage narrative. Each section answers the question the previous one
- * raises, so the value proposition sharpens on the way down:
+ * Homepage, ordered for conversion. Each section answers the question the
+ * previous one raises, and the ask is never more than one screen away:
  *
- *   Hero          - what we do, broadly            -> "like what?"
- *   Marquee       - the shape of the offering
- *   Statement     - the thesis, in one sentence    -> "so what can I buy?"
- *   Services      - the catalogue, six engagements -> "does it actually work?"
- *   Proof         - track record + evidence        -> "what do you build?"
- *   Capabilities  - the four delivery domains      -> "how do you work?"
- *   EmberBand     - research-first process         -> "why you?"
- *   Why AxxonTek  - the differentiators            -> "are you real?"
- *   Stats         - credibility numbers            -> "ok, how do I start?"
- *   CtaBanner     - the ask
- *
- * CTAs are deliberately sparse - hero, proof, ember band, closing. The
- * catalogue rows link to their own pages and do not compete with them.
+ *   Hero      - what we sell, for whom, one CTA        -> "what exactly?"
+ *   Stats     - honest snapshot strip                   -> "are you real?"
+ *   Services  - the catalogue, six cards                -> "how do you work?"
+ *   Process   - research first, built by scopers (CTA)  -> "why you?"
+ *   Why us    - three concrete reasons                  -> "any catches?"
+ *   FAQ       - objections answered                     -> "ok, how do I start?"
+ *   Contact   - the form, right here
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Marquee />
-      <ParticleStatement />
+      <Stats />
       <ServicesGrid />
-      <Proof />
-      <Capabilities />
-      <EmberBand />
+      <ProcessBand />
       <FeatureGrid
         id="why"
         eyebrow="Why AxxonTek"
-        heading={"Built on judgment, not guesswork."}
-        accent={["guesswork."]}
-        lede="We are a small, senior team. That means the people who scope your project are the people who build it — and the standard never changes between the two."
+        heading={"Small on purpose. Senior by default."}
+        accent={["purpose."]}
+        lede="Four engineers, no account managers. That is not a limitation we apologise for — it is the reason the work fits."
         features={whyUs}
       />
-      <Stats />
-      <div className="pt-[clamp(6rem,13vw,11rem)] pb-[clamp(6rem,13vw,11rem)]">
-        <CtaBanner
-          heading={"Your success is our mission. Let's build it together."}
-          accent={["together."]}
-          body="Tell us what you are trying to solve. We will tell you honestly whether we are the right team for it."
-          action={{ label: "Start a conversation", href: "/contact" }}
-          secondary={{ label: "About us", href: "/about" }}
-        />
-      </div>
+      <Faq />
+      <ContactSection />
     </>
   );
 }

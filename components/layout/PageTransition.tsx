@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { MotionConfig, motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { easeOutExpo } from "@/lib/motion";
@@ -27,25 +27,28 @@ export function PageTransition({ children }: { children: ReactNode }) {
     if (pathname !== initialPath.current) setNavigated(true);
   }, [pathname]);
 
-  if (reduced || !navigated) return <>{children}</>;
+  if (reduced || !navigated)
+    return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 
   return (
-    <div key={pathname} className="relative">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-[70] bg-ink"
-        initial={{ scaleY: 1 }}
-        animate={{ scaleY: 0 }}
-        transition={{ duration: 0.75, ease: easeOutExpo }}
-        style={{ transformOrigin: "top" }}
-      />
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: easeOutExpo, delay: 0.12 }}
-      >
-        {children}
-      </motion.div>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div key={pathname} className="relative">
+        <motion.div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[70] bg-ember"
+          initial={{ scaleY: 1 }}
+          animate={{ scaleY: 0 }}
+          transition={{ duration: 0.6, ease: easeOutExpo }}
+          style={{ transformOrigin: "top" }}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: easeOutExpo, delay: 0.12 }}
+        >
+          {children}
+        </motion.div>
+      </div>
+    </MotionConfig>
   );
 }

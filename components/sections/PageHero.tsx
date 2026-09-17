@@ -22,15 +22,15 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative isolate overflow-hidden pt-[clamp(9rem,18vh,13rem)] pb-[clamp(3.5rem,7vw,6rem)]">
+    <section className="relative isolate overflow-hidden pt-[clamp(7.5rem,16vh,10.5rem)] pb-[clamp(3rem,6vw,5rem)]">
       {/* Ambient top-glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 -top-1/3 -z-10 h-[70vh] bg-[radial-gradient(50%_50%_at_50%_50%,rgba(228,98,1,0.16),transparent_70%)]"
+        className="pointer-events-none absolute -top-40 right-[-10%] -z-10 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(closest-side,var(--color-ember-tint),transparent)] blur-2xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.15] [background-image:linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:88px_100%] [mask-image:linear-gradient(to_bottom,#000,transparent)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-50 [background-image:radial-gradient(var(--color-hairline)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:linear-gradient(to_bottom,#000_10%,transparent_80%)]"
       />
 
       <div className="container-x">
@@ -55,7 +55,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
 
         {eyebrow && (
           <motion.p
-            className="eyebrow mb-7"
+            className="eyebrow mb-6"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: easeOutExpo, delay: 0.05 }}
@@ -76,7 +76,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
 
         {lede && (
           <motion.p
-            className="text-lede mt-8 max-w-2xl"
+            className="text-lede mt-7 max-w-2xl"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: easeOutExpo, delay: reduced ? 0 : 0.45 }}
@@ -87,7 +87,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
 
         {action && (
           <motion.div
-            className="mt-11"
+            className="mt-9"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: easeOutExpo, delay: reduced ? 0 : 0.6 }}

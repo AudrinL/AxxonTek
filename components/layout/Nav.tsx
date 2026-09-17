@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -13,7 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import { easeOutExpo } from "@/lib/motion";
 import { primaryNav, services, site } from "@/lib/site";
+import { Logo } from "@/components/layout/Logo";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { MagneticButton } from "@/components/motion/MagneticButton";
+import { Icon } from "@/components/Icon";
 
 export function Nav() {
   const pathname = usePathname();
@@ -21,15 +23,9 @@ export function Nav() {
   const { scrollY } = useScroll();
 
   const [condensed, setCondensed] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    setCondensed(latest > 40);
-    // Hide on scroll down, reveal on scroll up - but never while the menu is open.
-    setHidden(!menuOpen && latest > previous && latest > 320);
-  });
+  useMotionValueEvent(scrollY, "change", (latest) => setCondensed(latest > 24));
 
   // Close the drawer on navigation.
   useEffect(() => {
@@ -59,103 +55,47 @@ export function Nav() {
     <>
       <motion.header
         className="fixed inset-x-0 top-0 z-50"
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: hidden ? -110 : 0, opacity: 1 }}
-        transition={{ duration: reduced ? 0 : 0.7, ease: easeOutExpo }}
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: reduced ? 0 : 0.6, ease: easeOutExpo }}
       >
-        {/* Utility bar: one line, one offer, collapses the moment you scroll so
-            it never competes with the nav. */}
-        <motion.div
-          aria-hidden={condensed}
-          initial={false}
-          animate={{ height: condensed ? 0 : 38, opacity: condensed ? 0 : 1 }}
-          transition={{ duration: reduced ? 0 : 0.45, ease: easeOutExpo }}
-          className="overflow-hidden border-b border-hairline bg-surface-2"
-        >
-          <div className="container-x flex h-[38px] items-center justify-center gap-3 text-[0.8125rem]">
-            <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-ember sm:block" />
-            <span className="truncate text-mute">
-              Taking on new projects for {new Date().getFullYear()}.
-            </span>
-            <Link
-              href="/contact"
-              tabIndex={condensed ? -1 : 0}
-              className="group inline-flex shrink-0 items-center gap-1.5 font-medium text-bone transition-colors hover:text-ember"
-            >
-              Book a call
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden
-                className="transition-transform duration-400 group-hover:translate-x-0.5"
-              >
-                <path
-                  d="M5 12h14m-6-6l6 6-6 6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-          </div>
-        </motion.div>
-
+        {/* The bar is always readable: solid ground once you scroll, and even
+            at the top it sits on the page colour so it never fights a hero. */}
         <div
-          className={`transition-all duration-500 ${
+          className={`transition-[background-color,box-shadow,border-color] duration-400 ${
             condensed
-              ? "border-b border-hairline bg-ink/72 backdrop-blur-xl backdrop-saturate-150"
-              : "border-b border-transparent bg-transparent"
+              ? "border-b border-hairline bg-ink/85 shadow-nav backdrop-blur-xl backdrop-saturate-150"
+              : "border-b border-transparent bg-ink/0"
           }`}
         >
           <nav
-            className={`container-x flex items-center justify-between transition-all duration-500 ${
-              condensed ? "h-16" : "h-20 md:h-24"
+            className={`container-x flex items-center justify-between gap-4 transition-[height] duration-400 ${
+              condensed ? "h-16" : "h-20"
             }`}
             aria-label="Primary"
           >
-            <Link
-              href="/"
-              className="relative z-10 flex items-center gap-3"
-              aria-label={`${site.name} home`}
-            >
-              <Image
-                src="/assets/logo.webp"
-                alt=""
-                width={132}
-                height={30}
-                priority
-                className={`w-auto transition-all duration-500 ${condensed ? "h-6" : "h-7"}`}
-              />
-            </Link>
+            <Logo compact={condensed} className="relative z-10" />
 
             <ul className="hidden items-center gap-1 lg:flex">
               {primaryNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="group relative flex h-9 items-center px-4 text-sm text-mute transition-colors duration-300 hover:text-bone"
+                    className={`group relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-300 hover:bg-ink-panel hover:text-bone ${
+                      isActive(item.href) ? "text-bone" : "text-mute"
+                    }`}
                   >
                     {item.label}
-                    <span
-                      className={`absolute inset-x-4 bottom-1 h-px origin-left bg-ember transition-transform duration-400 ${
-                        isActive(item.href)
-                          ? "scale-x-100"
-                          : "scale-x-0 group-hover:scale-x-100"
-                      }`}
-                      style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
-                    />
                   </Link>
                 </li>
               ))}
             </ul>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
+              <ThemeToggle />
               <div className="hidden lg:block">
-                <MagneticButton href="/contact" variant="primary" size="md">
-                  Get a Proposal
+                <MagneticButton href="/contact" variant="primary" size="md" strength={8}>
+                  Book a call
                 </MagneticButton>
               </div>
 
@@ -165,24 +105,23 @@ export function Nav() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
-                className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border border-hairline text-bone transition-colors hover:border-hairline-strong lg:hidden"
+                className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-hairline text-bone transition-colors hover:border-hairline-strong lg:hidden"
               >
-                <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
                 <span className="flex h-3 w-4 flex-col justify-between">
                   <motion.span
-                    className="block h-px w-full bg-current"
+                    className="block h-[1.5px] w-full rounded bg-current"
                     animate={menuOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.35, ease: easeOutExpo }}
+                    transition={{ duration: 0.3, ease: easeOutExpo }}
                   />
                   <motion.span
-                    className="block h-px w-full bg-current"
+                    className="block h-[1.5px] w-full rounded bg-current"
                     animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
                     transition={{ duration: 0.2 }}
                   />
                   <motion.span
-                    className="block h-px w-full bg-current"
+                    className="block h-[1.5px] w-full rounded bg-current"
                     animate={menuOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.35, ease: easeOutExpo }}
+                    transition={{ duration: 0.3, ease: easeOutExpo }}
                   />
                 </span>
               </button>
@@ -195,43 +134,43 @@ export function Nav() {
         {menuOpen && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-40 flex flex-col bg-ink/97 backdrop-blur-2xl lg:hidden"
-            initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-            exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: reduced ? 0.15 : 0.6, ease: easeOutExpo }}
+            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-ink lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduced ? 0.1 : 0.3, ease: easeOutExpo }}
           >
             <motion.nav
-              className="container-x flex flex-1 flex-col justify-center gap-10 pt-24 pb-16"
+              className="container-x flex flex-1 flex-col gap-9 pt-28 pb-12"
               initial="hidden"
               animate="show"
-              variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.15 } } }}
+              variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.08 } } }}
               aria-label="Mobile"
             >
-              <ul className="flex flex-col gap-1">
+              <ul className="flex flex-col">
                 {primaryNav.map((item) => (
                   <motion.li
                     key={item.href}
                     variants={{
-                      hidden: { opacity: 0, y: 24 },
-                      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeOutExpo } },
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
                     }}
                   >
                     <Link
                       href={item.href}
-                      className="block py-3 text-[2rem] leading-none tracking-tight text-bone transition-colors hover:text-ember"
+                      className="flex items-center justify-between border-b border-hairline py-4 text-[1.5rem] font-medium tracking-tight text-bone"
                     >
                       {item.label}
+                      <Icon name="arrow" className="text-faint" />
                     </Link>
                   </motion.li>
                 ))}
               </ul>
 
               <motion.div
-                className="hairline-t pt-8"
                 variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeOutExpo } },
+                  hidden: { opacity: 0, y: 16 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
                 }}
               >
                 <p className="eyebrow mb-4">Services</p>
@@ -240,7 +179,7 @@ export function Nav() {
                     <li key={s.slug}>
                       <Link
                         href={`/services/${s.slug}`}
-                        className="text-sm text-mute transition-colors hover:text-bone"
+                        className="text-[0.9375rem] text-mute transition-colors hover:text-bone"
                       >
                         {s.title}
                       </Link>
@@ -250,14 +189,21 @@ export function Nav() {
               </motion.div>
 
               <motion.div
+                className="mt-auto flex flex-col gap-3"
                 variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeOutExpo } },
+                  hidden: { opacity: 0, y: 16 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
                 }}
               >
-                <MagneticButton href="/contact" size="lg" className="w-full">
-                  Get a Proposal
+                <MagneticButton href="/contact" size="lg" className="w-full" strength={0}>
+                  Book a call
                 </MagneticButton>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="text-center text-sm text-mute transition-colors hover:text-ember"
+                >
+                  {site.email}
+                </a>
               </motion.div>
             </motion.nav>
           </motion.div>

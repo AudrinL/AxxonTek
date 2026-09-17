@@ -3,11 +3,11 @@
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { MagneticButton } from "@/components/motion/MagneticButton";
-import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
 
 type CtaBannerProps = {
   heading: string;
+  /** Kept for call-site compatibility; the orange band renders plain white type. */
   accent?: string[];
   body?: string;
   action?: { label: string; href: string };
@@ -16,7 +16,6 @@ type CtaBannerProps = {
 
 export function CtaBanner({
   heading,
-  accent = [],
   body,
   action = { label: "Contact Us", href: "/contact" },
   secondary,
@@ -31,42 +30,31 @@ export function CtaBanner({
   return (
     <section ref={ref} className="relative isolate overflow-hidden">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-[28px] border border-hairline bg-ink-raised px-8 py-[clamp(4rem,9vw,7.5rem)] text-center sm:px-14">
-          {/* Warm bloom drifting behind the copy */}
+        <div className="band-ember relative overflow-hidden rounded-[1.75rem] px-8 py-[clamp(3.5rem,8vw,6.5rem)] text-center sm:px-14">
+          {/* Soft highlight drifting behind the copy */}
           <motion.div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[130%] -translate-y-1/2"
-            style={
-              reduced
-                ? { opacity: 0.4 }
-                : { y: glowY, opacity: glowOpacity }
-            }
+            style={reduced ? { opacity: 0.4 } : { y: glowY, opacity: glowOpacity }}
           >
-            <div className="mx-auto h-full w-[70%] rounded-full bg-[radial-gradient(closest-side,rgba(228,98,1,0.3),transparent)] blur-2xl" />
+            <div className="mx-auto h-full w-[70%] rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.22),transparent)] blur-2xl" />
           </motion.div>
 
-          {/* Fine grid texture */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18] [background-image:linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(closest-side,#000,transparent)]"
-          />
-
-          <MaskedWords
-            as="h2"
-            text={heading}
-            accent={accent}
-            className="text-heading mx-auto max-w-[20ch]"
-          />
+          <Reveal>
+            <h2 className="text-heading mx-auto max-w-[20ch] text-white">{heading}</h2>
+          </Reveal>
 
           {body && (
             <Reveal delay={0.12}>
-              <p className="text-lede mx-auto mt-7 max-w-xl">{body}</p>
+              <p className="mx-auto mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-white/80">
+                {body}
+              </p>
             </Reveal>
           )}
 
           <Reveal delay={0.2}>
-            <div className="mt-11 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <MagneticButton href={action.href} size="lg">
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <MagneticButton href={action.href} variant="inverse" size="lg">
                 {action.label}
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path
@@ -79,7 +67,12 @@ export function CtaBanner({
                 </svg>
               </MagneticButton>
               {secondary && (
-                <MagneticButton href={secondary.href} variant="outline" size="lg">
+                <MagneticButton
+                  href={secondary.href}
+                  variant="ghost"
+                  size="lg"
+                  className="text-white hover:bg-white/10"
+                >
                   {secondary.label}
                 </MagneticButton>
               )}

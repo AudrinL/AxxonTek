@@ -1,12 +1,7 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { easeOutExpo, viewportOnce } from "@/lib/motion";
 import { services, site } from "@/lib/site";
+import { Logo } from "@/components/layout/Logo";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { LazyParticleField } from "@/components/three/LazyParticleField";
 
 const company = [
   { label: "About Us", href: "/about" },
@@ -16,34 +11,20 @@ const company = [
 ];
 
 export function Footer() {
-  return (
-    <footer className="relative isolate overflow-hidden border-t border-hairline">
-      {/* Ambient field - dimmer, fewer particles, no ring formation. */}
-      <LazyParticleField
-        className="pointer-events-none absolute inset-0 -z-10 opacity-70"
-        count={900}
-        spread={55}
-        size={1.6}
-        opacity={0.4}
-        includeRing={false}
-        interactive={false}
-        cameraY={10}
-        cameraZ={22}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-ink via-ink/70 to-ink"
-      />
+  const year = new Date().getFullYear();
 
-      <div className="container-x relative pt-[clamp(4rem,9vw,7rem)] pb-10">
-        <div className="grid gap-14 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
-          <div className="max-w-md">
-            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.05]">
-              Complete technology.
-            </h2>
-            <p className="text-lede mt-4 mb-8 text-[0.9375rem]">
-              Insights on enterprise tech, cloud architecture, and security — occasionally, and only
-              when we have something worth saying.
+  return (
+    <footer className="border-t border-hairline bg-ink">
+      <div className="container-x pt-[clamp(3.5rem,7vw,5.5rem)] pb-8">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
+          <div className="max-w-sm">
+            <Logo />
+            <p className="mt-5 text-[0.9375rem] leading-relaxed text-mute">
+              A senior engineering team in Kigali building software, security and cloud systems for
+              businesses across East Africa.
+            </p>
+            <p className="mt-7 mb-3 text-[0.8125rem] font-medium text-bone">
+              Occasional notes on engineering — no spam.
             </p>
             <NewsletterForm />
           </div>
@@ -64,7 +45,7 @@ export function Footer() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Headquarters">
+          <FooterColumn title="Get in touch">
             <address className="text-sm leading-relaxed text-mute not-italic">
               {site.address.line1}
               <br />
@@ -74,18 +55,20 @@ export function Footer() {
             </address>
             <a
               href={`mailto:${site.email}`}
-              className="mt-4 inline-block text-sm text-mute transition-colors hover:text-ember"
+              className="mt-3 inline-block text-sm font-medium text-bone transition-colors hover:text-ember"
             >
               {site.email}
             </a>
-            <a
-              href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-              className="text-sm text-mute transition-colors hover:text-ember"
-            >
-              {site.phone}
-            </a>
+            {site.phone && (
+              <a
+                href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
+                className="text-sm text-mute transition-colors hover:text-ember"
+              >
+                {site.phone}
+              </a>
+            )}
 
-            <div className="mt-6 flex gap-2.5">
+            <div className="mt-5 flex gap-2">
               {site.socials.map((social) => (
                 <a
                   key={social.label}
@@ -93,7 +76,7 @@ export function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-[0.6875rem] font-medium tracking-wide text-mute transition-all duration-300 hover:-translate-y-0.5 hover:border-ember/60 hover:text-ember"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-ink-raised text-[0.6875rem] font-semibold tracking-wide text-mute transition-all duration-300 hover:-translate-y-0.5 hover:border-ember hover:text-ember"
                 >
                   {social.short}
                 </a>
@@ -102,39 +85,11 @@ export function Footer() {
           </FooterColumn>
         </div>
 
-        {/* Oversized wordmark - the "signature" moment at the end of the page. */}
-        <motion.div
-          className="mt-[clamp(4rem,8vw,7rem)] overflow-hidden"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={viewportOnce}
-          transition={{ duration: 1 }}
-        >
-          <motion.span
-            className="block bg-gradient-to-b from-bone/[0.14] to-bone/[0.02] bg-clip-text text-center text-[clamp(4rem,17vw,15rem)] leading-[0.8] font-medium tracking-[-0.05em] text-transparent select-none"
-            initial={{ y: "22%" }}
-            whileInView={{ y: "0%" }}
-            viewport={viewportOnce}
-            transition={{ duration: 1.4, ease: easeOutExpo }}
-          >
-            {site.name}
-          </motion.span>
-        </motion.div>
-
-        <div className="hairline-t mt-12 flex flex-col-reverse items-center justify-between gap-6 pt-8 sm:flex-row">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/assets/logo.webp"
-              alt={site.name}
-              width={104}
-              height={24}
-              className="h-5 w-auto opacity-60"
-            />
-            <p className="text-[0.8125rem] text-faint">
-              &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
-            </p>
-          </div>
-          <nav className="flex items-center gap-7" aria-label="Legal">
+        <div className="hairline-t mt-12 flex flex-col-reverse items-center justify-between gap-5 pt-7 sm:flex-row">
+          <p className="text-[0.8125rem] text-faint">
+            &copy; {year} {site.name}. All rights reserved.
+          </p>
+          <nav className="flex items-center gap-6" aria-label="Legal">
             <FooterLink href="/privacy" small>
               Privacy Policy
             </FooterLink>
@@ -154,7 +109,9 @@ export function Footer() {
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <h3 className="eyebrow mb-5">{title}</h3>
+      <h3 className="mb-4 text-[0.75rem] font-semibold tracking-[0.14em] text-faint uppercase">
+        {title}
+      </h3>
       <div className="flex flex-col gap-2.5">{children}</div>
     </div>
   );
@@ -172,14 +129,11 @@ function FooterLink({
   return (
     <Link
       href={href}
-      className={`group inline-flex w-fit items-center text-mute transition-colors duration-300 hover:text-bone ${
+      className={`w-fit text-mute transition-colors duration-300 hover:text-ember ${
         small ? "text-[0.8125rem]" : "text-sm"
       }`}
     >
-      <span className="relative">
-        {children}
-        <span className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ember transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:origin-left group-hover:scale-x-100" />
-      </span>
+      {children}
     </Link>
   );
 }

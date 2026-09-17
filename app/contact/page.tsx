@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Ready to elevate your digital infrastructure? Talk to the AxxonTek team in Kigali about your project.",
+    "Talk to the AxxonTek engineering team in Kigali about your project. We reply within one business day.",
   alternates: { canonical: "/contact" },
 };
 
@@ -24,7 +24,7 @@ export default async function ContactPage({
         eyebrow="Contact"
         title={"Let's talk."}
         accent={["talk."]}
-        lede="Ready to elevate your digital infrastructure? Tell us what you are building and we will come back to you within one business day."
+        lede="Tell us what you are trying to solve. An engineer — not a salesperson — will come back to you within one business day."
         crumbs={[
           { label: "Home", href: "/" },
           { label: "Contact", href: "/contact" },
@@ -35,7 +35,9 @@ export default async function ContactPage({
         <div className="container-x">
           <div className="grid gap-x-20 gap-y-16 lg:grid-cols-[1fr_0.72fr]">
             <div className="order-2 lg:order-1">
-              <ContactForm defaultEmail={email} />
+              <div className="card p-6 sm:p-8">
+                <ContactForm defaultEmail={email} />
+              </div>
             </div>
 
             <div className="order-1 flex flex-col gap-10 lg:order-2">
@@ -76,12 +78,14 @@ export default async function ContactPage({
                   >
                     {site.email}
                   </a>
-                  <a
-                    href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                    className="block text-[0.9375rem] text-mute transition-colors hover:text-ember"
-                  >
-                    {site.phone}
-                  </a>
+                  {site.phone && (
+                    <a
+                      href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
+                      className="block text-[0.9375rem] text-mute transition-colors hover:text-ember"
+                    >
+                      {site.phone}
+                    </a>
+                  )}
                 </InfoBlock>
               </Reveal>
 
@@ -104,7 +108,7 @@ export default async function ContactPage({
               </Reveal>
 
               <Reveal delay={0.24}>
-                <div className="rounded-2xl border border-hairline bg-ink-raised p-7">
+                <div className="card p-6">
                   <p className="text-[0.9375rem] leading-relaxed text-mute">
                     Prefer to skip the form? Email us directly — the same four people read it.
                   </p>

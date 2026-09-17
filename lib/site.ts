@@ -1,11 +1,12 @@
 export const site = {
   name: "AxxonTek",
-  tagline: "Complete Technology Solutions",
+  tagline: "Software, security & cloud for growing businesses",
   description:
-    "AxxonTek is a Kigali-based technology partner delivering researched, engineered solutions across software, intelligent systems, security, and cloud.",
+    "AxxonTek is a Kigali-based engineering team that builds software, security systems, and cloud infrastructure for businesses across East Africa — researched first, built by the people who scoped it.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://axxontek.com",
   email: "hello@axxontek.com",
-  phone: "+250 (0) 700 000 000",
+  /** Leave empty until there is a real line — the UI hides it when blank. */
+  phone: "" as string,
   address: {
     line1: "Norrsken Kigali",
     line2: "1 KN 78 St",
@@ -20,10 +21,9 @@ export const site = {
 
 export const primaryNav = [
   { label: "Services", href: "/#services" },
-  { label: "Expertise", href: "/#expertise" },
-  { label: "Why Us", href: "/#why" },
+  { label: "How we work", href: "/#process" },
   { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "FAQ", href: "/#faq" },
 ] as const;
 
 export type Pillar = { icon: string; title: string; body: string };
@@ -32,6 +32,10 @@ export type Service = {
   slug: string;
   title: string;
   eyebrow: string;
+  /** Icon name from components/Icon.tsx */
+  icon: string;
+  /** One line for cards and lists. */
+  short: string;
   lede: string;
   cta: string;
   introLabel: string;
@@ -46,8 +50,10 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "sourcing",
-    title: "Sourcing",
+    title: "Talent Sourcing",
     eyebrow: "Talent",
+    icon: "users",
+    short: "Vetted engineers matched to your project — not whoever is available.",
     lede: "We help you find technical talent that is actually right for the role — sourced, screened, and matched to what your project really needs.",
     cta: "Find Top Talent",
     introLabel: "Talent, matched properly",
@@ -77,8 +83,10 @@ export const services: Service[] = [
   },
   {
     slug: "interviews",
-    title: "Interviews",
+    title: "Technical Interviews",
     eyebrow: "Vetting",
+    icon: "clipboard",
+    short: "We run the technical rounds and give you an honest read on every candidate.",
     lede: "Technical interviews built to actually test whether someone can do the job — not just recite the right buzzwords.",
     cta: "Partner with Us",
     introLabel: "Vetting that means something",
@@ -108,8 +116,10 @@ export const services: Service[] = [
   },
   {
     slug: "analytics",
-    title: "Analytics",
+    title: "Data & Analytics",
     eyebrow: "Data",
+    icon: "chart",
+    short: "Dashboards and reporting built around the decisions you actually make.",
     lede: "We turn scattered data into decisions you can act on — dashboards and reporting built around how your team actually works, not a generic template.",
     cta: "Talk to Us",
     introLabel: "What this looks like",
@@ -139,8 +149,10 @@ export const services: Service[] = [
   },
   {
     slug: "security",
-    title: "Security",
+    title: "Security Systems",
     eyebrow: "Protection",
+    icon: "lock",
+    short: "CCTV, access control and alarms — designed, installed and monitored properly.",
     lede: "CCTV, access control, and alarm systems built to protect what you have built — installed properly, monitored reliably, and easy for your team to manage.",
     cta: "Secure Your Business",
     introLabel: "Security, done properly",
@@ -170,8 +182,10 @@ export const services: Service[] = [
   },
   {
     slug: "infrastructure",
-    title: "Infrastructure",
+    title: "IT Infrastructure",
     eyebrow: "Foundations",
+    icon: "server",
+    short: "Networks and servers engineered to stay online under real load.",
     lede: "Networks, servers, and IT systems engineered to stay online, scale with you, and hold up under real pressure — not just in a demo.",
     cta: "Talk to Us",
     introLabel: "The foundation",
@@ -201,8 +215,10 @@ export const services: Service[] = [
   },
   {
     slug: "cloud",
-    title: "Cloud Services",
+    title: "Cloud & SaaS",
     eyebrow: "Scale",
+    icon: "cloud",
+    short: "Migrations and custom platforms that scale in steps you can afford.",
     lede: "Cloud platforms and SaaS solutions that scale with your business — built for the size you are now, and the size you are growing into.",
     cta: "Talk to Us",
     introLabel: "Cloud, without the overhead",
@@ -236,38 +252,57 @@ export function getService(slug: string) {
   return services.find((s) => s.slug === slug);
 }
 
-/** The four capability pillars shown on the homepage split-scroll. */
-export const capabilities = [
+
+/** Short trust signals shown under the hero CTA. Keep these verifiable. */
+export const trustPoints = [
+  "Reply within one business day",
+  "Senior engineers, no handoffs",
+  "Based at Norrsken Kigali",
+] as const;
+
+/** The three-step engagement model. Shown on the homepage process band. */
+export const processSteps = [
   {
-    id: "websites",
-    index: "01",
-    title: "Custom Websites & Apps",
-    body: "Turn ideas into digital experiences people love to use. We create fast, modern websites and applications that help businesses connect with customers, build trust, and grow with confidence.",
-    image: "/assets/custom-websites.webp",
-    href: "/contact",
+    n: "01",
+    title: "We study the problem",
+    body: "Before scoping or quoting, we spend real time understanding what you are actually trying to fix — and whether you need what you think you need.",
   },
   {
-    id: "smart-buildings",
-    index: "02",
-    title: "Smart Building Systems",
-    body: "Create smarter, more efficient spaces with intelligent systems that automate lighting, energy management, access control, and daily operations — reducing costs and giving you real control over your facilities.",
-    image: "/assets/smart-buildings.jpg",
-    href: "/services/infrastructure",
+    n: "02",
+    title: "We tell you the truth",
+    body: "You get a clear recommendation, including when the answer is a smaller project, a different approach, or not us at all.",
   },
   {
-    id: "security",
-    index: "03",
-    title: "Security Systems",
-    body: "Protect what matters most with modern security solutions. From CCTV surveillance and access control to alarm systems and monitoring, we build safer environments with reliable, easy-to-manage infrastructure.",
-    image: "/assets/security-systems.webp",
-    href: "/services/security",
+    n: "03",
+    title: "We build it ourselves",
+    body: "The people who scoped it write the code and install the systems. Nothing is handed to a junior bench you never meet.",
+  },
+] as const;
+
+/** Objections a serious buyer has before they contact us. Answer them here. */
+export const faqs = [
+  {
+    q: "What happens after I book a call?",
+    a: "A 30-minute conversation with an engineer — not a salesperson — about what you are trying to solve. If it looks like a fit, we follow up with a short written summary of the problem as we understand it and a proposed next step. No obligation either way.",
   },
   {
-    id: "saas",
-    index: "04",
-    title: "SaaS & Hardware",
-    body: "Technology should make work easier. We provide scalable software platforms and innovative hardware solutions that help organizations streamline operations, improve productivity, and support long-term growth.",
-    image: "/assets/saas.avif",
-    href: "/services/cloud",
+    q: "How do you price work?",
+    a: "Fixed-scope projects get a fixed price after the research phase, so you are never quoted on a guess. Ongoing work (infrastructure support, sourcing, monitoring) is a monthly retainer. We will tell you which applies on the first call.",
+  },
+  {
+    q: "Do you only work in Rwanda?",
+    a: "We are based in Kigali and install physical systems — security, networks, smart buildings — across Rwanda. Software, cloud, analytics, and hiring work is delivered remotely for clients anywhere in East Africa and beyond.",
+  },
+  {
+    q: "We are a small business. Is this for us?",
+    a: "Yes, as long as the problem is real. We are a small team ourselves and size our engagements accordingly. What matters is that there is a clear business reason for the work — and we will say so if there is not.",
+  },
+  {
+    q: "Who actually does the work?",
+    a: "A small senior team. The engineer who scopes your project is the engineer who builds it, and you have their direct contact for the life of the engagement.",
+  },
+  {
+    q: "What if we already have an IT provider?",
+    a: "That is common. We regularly take a single well-defined piece — a security install, a cloud migration, a hiring push — and work alongside an existing provider without disrupting them.",
   },
 ] as const;

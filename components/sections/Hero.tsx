@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { easeOutExpo } from "@/lib/motion";
-import { hasPhoto, photos, services, trustPoints } from "@/lib/site";
+import { hasPhoto, photos, trustPoints } from "@/lib/site";
 import { Icon } from "@/components/Icon";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { MaskedWords } from "@/components/motion/MaskedWords";
+import { LazyAfricaField } from "@/components/three/LazyAfricaField";
 
 const rise = (delay: number) => ({
   initial: { opacity: 0, y: 18 },
@@ -17,26 +17,26 @@ const rise = (delay: number) => ({
 
 /**
  * The hero has one job: tell a stranger what we sell and give them one clear
- * next step. Copy on the left, a preview of the engagement on the right so
- * the page shows the product instead of a stock photo.
+ * next step. Copy on the left; on the right, the continent as a living
+ * network with Kigali at its centre — or a real photo of us, once we have one.
  */
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-[clamp(7.5rem,16vh,10rem)] pb-[clamp(3.5rem,7vw,6rem)]">
-      {/* Warm bloom top-right, and a faint dot grid that fades out downwards. */}
+    <section className="relative isolate flex min-h-[min(92svh,58rem)] items-center overflow-hidden pt-28 pb-[clamp(4rem,8vw,7rem)]">
+      {/* Warm bloom + a dot grid that fades out downwards. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-40 right-[-10%] -z-10 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(closest-side,var(--color-ember-tint),transparent)] opacity-90 blur-2xl"
+        className="pointer-events-none absolute -top-48 right-[-12%] -z-10 h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(closest-side,var(--color-ember-tint),transparent)] blur-2xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5] [background-image:radial-gradient(var(--color-hairline)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:linear-gradient(to_bottom,#000_20%,transparent_85%)]"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-50 [background-image:radial-gradient(var(--color-hairline)_1px,transparent_1px)] [background-size:28px_28px] [mask-image:linear-gradient(to_bottom,#000_20%,transparent_85%)]"
       />
 
-      <div className="container-x">
-        <div className="grid items-center gap-x-16 gap-y-14 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="container-x w-full">
+        <div className="grid items-center gap-x-12 gap-y-16 lg:grid-cols-[1fr_1fr]">
           {/* Copy */}
-          <div>
+          <div className="max-w-[36rem]">
             <motion.p className="eyebrow mb-7" {...rise(0.05)}>
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-ember" />
               Kigali, Rwanda · Taking on projects for {new Date().getFullYear()}
@@ -44,22 +44,21 @@ export function Hero() {
 
             <MaskedWords
               as="h1"
-              text="Apps, websites and smart systems — built after we understand your problem."
-              accent={["understand"]}
-              className="text-display max-w-[17ch]"
+              text="Software built for how Africa actually works."
+              accent={["actually"]}
+              className="text-display max-w-[14ch]"
               immediate
               delay={0.15}
             />
 
-            <motion.p className="text-lede mt-7 max-w-[34rem]" {...rise(0.55)}>
-              AxxonTek is an engineering team in Kigali. We build apps and websites for African
-              SMEs and individuals, advise on IT, run a lab that ships products like TalentLens and
-              Floow, and install smart-home and camera systems — and we research the problem before
-              we quote on it.
+            <motion.p className="text-lede mt-7 max-w-[32rem]" {...rise(0.55)}>
+              Apps, websites and smart systems for SMEs and individuals — designed for the phones,
+              connections and budgets people here really have. Researched first, built by the people
+              who scoped it.
             </motion.p>
 
             <motion.div
-              className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+              className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
               {...rise(0.7)}
             >
               <MagneticButton href="/contact" size="lg" strength={8}>
@@ -72,7 +71,7 @@ export function Hero() {
             </motion.div>
 
             <motion.ul
-              className="mt-9 flex flex-wrap gap-x-6 gap-y-2.5 text-[0.875rem] text-mute"
+              className="mt-10 flex flex-wrap gap-x-6 gap-y-2.5 text-[0.875rem] text-mute"
               {...rise(0.85)}
             >
               {trustPoints.map((point) => (
@@ -86,15 +85,14 @@ export function Hero() {
             </motion.ul>
           </div>
 
-          {/* Visual: a real photo of the team when we have one, otherwise the
-              engagement preview card. */}
+          {/* Visual */}
           <motion.div
-            className="relative w-full lg:w-auto lg:justify-self-end"
-            initial={{ opacity: 0, y: 28, rotate: -1 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 1, ease: easeOutExpo, delay: 0.35 }}
+            className="relative w-full"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: easeOutExpo, delay: 0.35 }}
           >
-            {hasPhoto(photos.hero) ? <HeroPhoto src={photos.hero} /> : <EngagementCard />}
+            {hasPhoto(photos.hero) ? <HeroPhoto src={photos.hero} /> : <HeroMap />}
           </motion.div>
         </div>
       </div>
@@ -103,13 +101,35 @@ export function Hero() {
 }
 
 /**
+ * Africa as a network, Kigali at the centre. Says "built here, for the
+ * continent" without a word of copy.
+ */
+function HeroMap() {
+  return (
+    <div className="relative mx-auto aspect-[5/4] w-full max-w-[38rem] lg:mr-0">
+      <LazyAfricaField className="absolute inset-0" />
+
+      <div className="pointer-events-none absolute bottom-0 left-0 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised/90 py-2 pr-5 pl-2 shadow-card backdrop-blur">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">
+          <Icon name="pin" size={15} />
+        </span>
+        <span className="text-[0.8125rem] leading-tight">
+          <span className="block font-semibold text-bone">Built in Kigali</span>
+          <span className="text-mute">for the whole continent</span>
+        </span>
+      </div>
+      <ReplyBadge className="top-2 right-0" />
+    </div>
+  );
+}
+
+/**
  * The photo variant: a portrait of one of us, with the reply-time badge and
- * a compact "after your first call" card overlaid. People convert; cards
- * decorate.
+ * a compact "after your first call" card overlaid.
  */
 function HeroPhoto({ src }: { src: string }) {
   return (
-    <div className="relative w-full max-w-[30rem] lg:w-[30rem]">
+    <div className="relative mx-auto w-full max-w-[30rem] lg:mr-0">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-card">
         <Image
           src={src}
@@ -119,7 +139,6 @@ function HeroPhoto({ src }: { src: string }) {
           sizes="(max-width: 1024px) 100vw, 40vw"
           className="object-cover"
         />
-        {/* Soft floor gradient so the overlay card always reads */}
         <div
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/55 to-transparent"
@@ -133,16 +152,15 @@ function HeroPhoto({ src }: { src: string }) {
           </p>
         </div>
       </div>
-
-      <ReplyBadge />
+      <ReplyBadge className="-top-4 -right-3 sm:-right-6" />
     </div>
   );
 }
 
-function ReplyBadge() {
+function ReplyBadge({ className = "" }: { className?: string }) {
   return (
     <motion.div
-      className="absolute -top-4 -right-3 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised py-2 pr-5 pl-2 shadow-card sm:-right-6"
+      className={`pointer-events-none absolute flex items-center gap-3 rounded-full border border-hairline bg-ink-raised/90 py-2 pr-5 pl-2 shadow-card backdrop-blur ${className}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: easeOutExpo, delay: 1 }}
@@ -155,88 +173,5 @@ function ReplyBadge() {
         <span className="text-mute">from an engineer, not a bot</span>
       </span>
     </motion.div>
-  );
-}
-
-/**
- * A stylised "what you get" panel — a first-call summary, a checklist of the
- * six services, and a reply-time badge. It stands in for a screenshot
- * because the product is an engagement, not an app.
- */
-function EngagementCard() {
-  return (
-    <div className="relative w-full max-w-[34rem] lg:w-[34rem]">
-      {/* Backing card, slightly offset, for depth */}
-      <div
-        aria-hidden
-        className="absolute inset-0 translate-x-4 translate-y-4 rounded-[1.5rem] border border-hairline bg-surface-1"
-      />
-
-      <div className="card relative overflow-hidden rounded-[1.5rem] p-6 sm:p-7">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-faint uppercase">
-              After your first call
-            </p>
-            <h2 className="mt-2 text-[1.375rem] leading-tight font-semibold tracking-tight">
-              A written read on your problem
-            </h2>
-          </div>
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
-            <Icon name="clipboard" />
-          </span>
-        </div>
-
-        <ul className="mt-6 flex flex-col gap-3 text-[0.9375rem]">
-          {[
-            "What you are actually trying to fix",
-            "Which of our services fits — or none",
-            "A proposed first step, with a price",
-          ].map((line, i) => (
-            <li key={line} className="flex items-start gap-3">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ember text-[0.6875rem] font-semibold text-white">
-                {i + 1}
-              </span>
-              <span className="text-bone">{line}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-7 border-t border-hairline pt-6">
-          <p className="mb-3 text-[0.6875rem] font-semibold tracking-[0.16em] text-faint uppercase">
-            What we can take on
-          </p>
-          <ul className="grid gap-2 min-[440px]:grid-cols-2">
-            {services.map((s) => (
-              <li key={s.slug}>
-                <Link
-                  href={`/services/${s.slug}`}
-                  className="flex items-center gap-2.5 rounded-lg border border-hairline bg-ink px-3 py-2 text-[0.8125rem] text-mute transition-colors duration-300 hover:border-ember/50 hover:text-bone"
-                >
-                  <Icon name={s.icon} size={15} className="shrink-0 text-ember" />
-                  <span>{s.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Floating badge */}
-      <motion.div
-        className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised py-2 pr-5 pl-2 shadow-card sm:-left-8"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: easeOutExpo, delay: 1 }}
-      >
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">
-          <Icon name="clock" size={15} />
-        </span>
-        <span className="text-[0.8125rem] leading-tight">
-          <span className="block font-semibold text-bone">Reply in 1 business day</span>
-          <span className="text-mute">from an engineer, not a bot</span>
-        </span>
-      </motion.div>
-    </div>
   );
 }

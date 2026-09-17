@@ -103,8 +103,8 @@
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 
   /* Vertical rhythm */
-  --spacing-section: clamp(5rem, 10vw, 8.5rem);
-  --spacing-gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --spacing-section: clamp(6rem, 12vw, 10.5rem);
+  --spacing-gutter: clamp(1.25rem, 5vw, 4rem);
 }
 
 /* ------------------------------------------------------------------ *

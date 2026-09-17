@@ -57,7 +57,7 @@ export const services: Service[] = [
     title: "Software Development",
     eyebrow: "Build",
     icon: "code",
-    short: "Apps and websites for African SMEs and individuals — fast, modern, and built to last.",
+    short: "Apps and websites for SMEs and individuals — fast, modern, built to last.",
     lede: "Custom apps and websites for SMEs and individuals across Africa — designed around how your customers actually behave, built to work on the phones and connections they really have.",
     cta: "Start a project",
     introLabel: "Built for where you operate",
@@ -91,7 +91,7 @@ export const services: Service[] = [
     title: "IT Consultation",
     eyebrow: "Advise",
     icon: "bulb",
-    short: "Straight answers on what to build, buy, or fix — before you spend money on it.",
+    short: "Straight answers on what to build, buy or fix — before you spend.",
     lede: "Independent technical advice for businesses that need to make a decision — what to build, what to buy, what to fix first — from engineers who will tell you the truth.",
     cta: "Book a consultation",
     introLabel: "Advice, not a sales pitch",
@@ -125,7 +125,7 @@ export const services: Service[] = [
     title: "Innovation Lab",
     eyebrow: "Invent",
     icon: "microscope",
-    short: "Where we build our own products for Africa — TalentLens and Floow both started here.",
+    short: "Our own products for African problems. TalentLens and Floow started here.",
     lede: "Our lab exists to build solutions for problems that are specific to Africa — products we own, and products we build with partners who understand a market we do not.",
     cta: "Partner with the lab",
     introLabel: "Research, then product",
@@ -159,7 +159,7 @@ export const services: Service[] = [
     title: "Smart Homes & Cameras",
     eyebrow: "Protect",
     icon: "camera",
-    short: "Home automation and camera systems, installed properly and easy to manage from your phone.",
+    short: "Cameras, smart locks and automation — installed properly, run from your phone.",
     lede: "Smart lighting, access, and camera systems for homes and small premises — designed around how you use the space, installed properly, and controllable from your phone.",
     cta: "Secure your home",
     introLabel: "Installed properly",
@@ -210,7 +210,7 @@ export const products: Product[] = [
   {
     name: "TalentLens",
     tagline: "Advanced recruitment software",
-    body: "Built for teams that want to hire well: structure the process, see candidates clearly, and decide with evidence instead of gut feel.",
+    body: "Structure the process, see every candidate clearly, and hire on evidence instead of gut feel.",
     icon: "users",
     href: "",
     status: "",
@@ -218,7 +218,7 @@ export const products: Product[] = [
   {
     name: "Floow",
     tagline: "A national parcel system for Rwanda",
-    body: "Infrastructure for moving parcels across the country — so businesses and individuals can send, track, and receive with confidence.",
+    body: "Send, track and receive parcels anywhere in Rwanda — one system for businesses and individuals.",
     icon: "pin",
     href: "",
     status: "",
@@ -229,7 +229,7 @@ export const products: Product[] = [
 /** Short trust signals shown under the hero CTA. Keep these verifiable. */
 export const trustPoints = [
   "Reply within one business day",
-  "Senior engineers, no handoffs",
+  "No handoffs — the engineer you meet builds it",
   "Based at Norrsken Kigali",
 ] as const;
 

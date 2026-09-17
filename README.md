@@ -67,8 +67,9 @@ app/
 
 components/
 ├── layout/                 # Nav, Footer, Logo, ThemeToggle, PageTransition, ScrollProgress
-├── sections/               # Hero, Stats, ServicesGrid, Products, ProcessBand, WhyUs, Faq,
-│                           # ContactSection, FeatureGrid, CtaBanner, PageHero, Statement, LegalBody
+├── sections/               # Hero, Stats, ServicesGrid, Products (+ProductVisual), ProcessBand,
+│                           # WhyUs, Faq, ContactSection, FeatureGrid, CtaBanner, PageHero, ...
+├── three/                  # AfricaField (+ lazy wrapper)
 ├── motion/                 # Reveal, MaskedWords, MagneticButton
 ├── forms/                  # ContactForm, NewsletterForm
 └── Icon.tsx                # Line-icon set
@@ -141,9 +142,13 @@ touching components.
 
 - **Framer Motion** handles entrance reveals, masked headlines, page transitions, the FAQ accordion,
   and pointer interactions (magnetic buttons).
-- Native scrolling. The previous Lenis/GSAP smooth-scroll and Three.js particle fields were removed:
-  they cost ~200kB of JavaScript and several seconds of first paint on mobile data for no
-  conversion benefit.
+- **Three.js** draws one thing: the hero's Africa network (`components/three/AfricaField.tsx`) — a
+  point cloud of the continent, orange hub cities, arcs travelling out from Kigali. It is lazy-loaded
+  after hydration, pauses offscreen / in hidden tabs, renders one static frame under
+  `prefers-reduced-motion`, and re-colours itself when the theme changes. It is replaced by a real
+  photo as soon as `photos.hero` is set.
+- Native scrolling. The previous Lenis/GSAP smooth-scroll and the decorative particle fields were
+  removed: they cost several seconds of first paint on mobile data for no conversion benefit.
 - The root `MotionConfig reducedMotion="user"` neutralises transform animations for visitors who
   prefer reduced motion. Components must **not** branch their markup on `useReducedMotion` — it is
   `false` during SSR, so doing that causes a hydration mismatch.

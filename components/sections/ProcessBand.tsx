@@ -31,13 +31,13 @@ export function ProcessBand() {
             </Reveal>
             <Reveal delay={0.05}>
               <h2 className="text-heading max-w-[14ch] text-white">
-                Research first. Then the people who scoped it build it.
+                We study the problem first. Then the people who scoped it build it.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-md text-[1.0625rem] leading-relaxed text-white/80">
-                Most agencies start building on day one because that is what gets billed. We start
-                by understanding the problem, because that is what makes the build worth paying for.
+                Most agencies start building on day one, because that is what gets billed. We start
+                by understanding the problem — that is what makes the build worth paying for.
               </p>
             </Reveal>
             <Reveal delay={0.2}>

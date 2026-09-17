@@ -7,6 +7,7 @@ import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
 import { products } from "@/lib/site";
+import { ProductVisual } from "@/components/sections/ProductVisual";
 
 /**
  * Proof we ship. Two products built in the lab, each a large card. This is
@@ -24,15 +25,15 @@ export function Products() {
             </Reveal>
             <MaskedWords
               as="h2"
-              text="Products we built, because the problem was real."
-              accent={["real."]}
+              text="Built in the lab. Used in the real world."
+              accent={["real"]}
               className="text-heading"
             />
           </div>
           <Reveal delay={0.1}>
             <p className="max-w-sm text-[0.9375rem] leading-relaxed text-mute">
-              We do not only build for clients. When we find a problem specific to Africa that
-              nobody is solving, the lab builds the product.
+              When we find a problem specific to Africa that nobody is solving, we build the product
+              ourselves.
             </p>
           </Reveal>
         </div>
@@ -86,11 +87,15 @@ export function Products() {
                   <p className="relative mt-2 text-[0.9375rem] font-medium text-ember">
                     {product.tagline}
                   </p>
-                  <p className="relative mt-4 flex-1 text-[1rem] leading-relaxed text-mute">
+                  <p className="relative mt-4 text-[1rem] leading-relaxed text-mute">
                     {product.body}
                   </p>
 
-                  <span className="relative mt-8 inline-flex items-center gap-2 text-[0.9375rem] font-medium text-bone">
+                  <div className="relative mt-7 flex-1">
+                    <ProductVisual name={product.name} />
+                  </div>
+
+                  <span className="relative mt-7 inline-flex items-center gap-2 text-[0.9375rem] font-medium text-bone">
                     {linkLabel}
                     <Icon
                       name={external ? "arrow-up-right" : "arrow"}

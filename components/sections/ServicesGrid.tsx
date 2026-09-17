@@ -11,28 +11,28 @@ import { easeOutExpo, viewportOnce } from "@/lib/motion";
 
 /**
  * The catalogue — the one place on the site that lists what you can buy.
- * Six cards, one line each, every card a link to its own page.
+ * Four cards, one line each, every card a link to its own page.
  */
 export function ServicesGrid() {
   return (
     <section id="services" className="section-y band scroll-mt-20">
       <div className="container-x">
-        <div className="mb-[clamp(2.5rem,5vw,4rem)] flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mb-[clamp(3rem,6vw,5rem)] flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <Reveal>
               <p className="eyebrow mb-5">What we do</p>
             </Reveal>
             <MaskedWords
               as="h2"
-              text="Four things we do. One team that researches before it builds."
-              accent={["researches"]}
+              text="Four things we do well."
+              accent={["well."]}
               className="text-heading max-w-[18ch]"
             />
           </div>
           <Reveal delay={0.1}>
             <p className="max-w-sm text-[0.9375rem] leading-relaxed text-mute">
-              Not sure which one you need? Describe the problem on a call and we
-              will tell you — including when the honest answer is none of them.
+              Not sure which you need? Describe the problem on a call. We will
+              tell you — even when the honest answer is none of them.
             </p>
           </Reveal>
         </div>

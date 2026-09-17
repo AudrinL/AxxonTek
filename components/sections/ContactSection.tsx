@@ -27,8 +27,7 @@ export function ContactSection() {
             />
             <Reveal delay={0.1}>
               <p className="text-lede mt-6 max-w-md">
-                We will tell you honestly whether we are the right team for it — and if we are not,
-                who might be.
+                We will tell you honestly whether we are the right team — and if not, who might be.
               </p>
             </Reveal>
 

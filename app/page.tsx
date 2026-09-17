@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { Products } from "@/components/sections/Products";
 import { ProcessBand } from "@/components/sections/ProcessBand";
 import { WhyUs } from "@/components/sections/WhyUs";
 import { Faq } from "@/components/sections/Faq";
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
  *
  *   Hero      - what we sell, for whom, one CTA        -> "what exactly?"
  *   Stats     - honest snapshot strip                   -> "are you real?"
- *   Services  - the catalogue, six cards                -> "how do you work?"
+ *   Services  - the catalogue, four cards               -> "have you shipped anything?"
+ *   Products  - TalentLens + Floow, built in the lab     -> "how do you work?"
  *   Process   - research first, built by scopers (CTA)  -> "why you?"
  *   Why us    - three concrete reasons                  -> "any catches?"
  *   FAQ       - objections answered                     -> "ok, how do I start?"
@@ -31,6 +33,7 @@ export default function HomePage() {
       <Hero />
       <Stats />
       <ServicesGrid />
+      <Products />
       <ProcessBand />
       <WhyUs />
       <Faq />

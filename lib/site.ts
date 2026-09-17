@@ -1,10 +1,10 @@
 export const site = {
   name: "AxxonTek",
-  tagline: "Software, security & cloud for growing businesses",
+  tagline: "Software, apps & smart systems for Africa",
   description:
-    "AxxonTek is a Kigali-based engineering team that builds software, security systems, and cloud infrastructure for businesses across East Africa — researched first, built by the people who scoped it.",
+    "AxxonTek is a Kigali-based engineering team. We build apps and websites for African SMEs and individuals, advise on IT, run an innovation lab behind products like TalentLens and Floow, and install smart-home and camera systems.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://axxontek.com",
-  email: "hello@axxontek.com",
+  email: "info@axxontek.com",
   /** Leave empty until there is a real line — the UI hides it when blank. */
   phone: "" as string,
   address: {
@@ -21,6 +21,7 @@ export const site = {
 
 export const primaryNav = [
   { label: "Services", href: "/#services" },
+  { label: "Products", href: "/#products" },
   { label: "How we work", href: "/#process" },
   { label: "About", href: "/about" },
   { label: "FAQ", href: "/#faq" },
@@ -51,214 +52,178 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "sourcing",
+    slug: "software",
     photo: "",
-    title: "Talent Sourcing",
-    eyebrow: "Talent",
-    icon: "users",
-    short: "Vetted engineers matched to your project — not whoever is available.",
-    lede: "We help you find technical talent that is actually right for the role — sourced, screened, and matched to what your project really needs.",
-    cta: "Find Top Talent",
-    introLabel: "Talent, matched properly",
-    introHeading: "The right person, not just an available one.",
+    title: "Software Development",
+    eyebrow: "Build",
+    icon: "code",
+    short: "Apps and websites for African SMEs and individuals — fast, modern, and built to last.",
+    lede: "Custom apps and websites for SMEs and individuals across Africa — designed around how your customers actually behave, built to work on the phones and connections they really have.",
+    cta: "Start a project",
+    introLabel: "Built for where you operate",
+    introHeading: "Software that works on the phone in your customer's hand.",
     introBody:
-      "Sourcing technical talent is easy. Sourcing the right technical talent for your specific project is the hard part. We take the time to understand what you are building before we go looking for who should build it.",
-    pillarsTitle: "How we source",
-    pillars: [
-      {
-        icon: "target",
-        title: "Targeted search",
-        body: "We source for the specific skills your project needs, not a generic job description.",
-      },
-      {
-        icon: "check",
-        title: "Pre-vetted",
-        body: "Every candidate is technically reviewed before you ever see a profile.",
-      },
-      {
-        icon: "handshake",
-        title: "Long-term fit",
-        body: "We look for people who will actually work well with your team, not just fill a seat.",
-      },
-    ],
-    closing: "Tell us who you are looking for.",
-    image: "/assets/custom-websites.webp",
-  },
-  {
-    slug: "interviews",
-    photo: "",
-    title: "Technical Interviews",
-    eyebrow: "Vetting",
-    icon: "clipboard",
-    short: "We run the technical rounds and give you an honest read on every candidate.",
-    lede: "Technical interviews built to actually test whether someone can do the job — not just recite the right buzzwords.",
-    cta: "Partner with Us",
-    introLabel: "Vetting that means something",
-    introHeading: "We test for the work, not the resume.",
-    introBody:
-      "A polished resume and real skill are not always the same thing. Our technical interview process is built to find out which one you are actually getting — through real problems, not scripted trivia.",
-    pillarsTitle: "How we vet",
-    pillars: [
-      {
-        icon: "brain",
-        title: "Real problem-solving",
-        body: "Interviews built around actual work, not whiteboard trivia.",
-      },
-      {
-        icon: "clipboard",
-        title: "Honest reporting",
-        body: "You get a clear, honest read on strengths and gaps — not a passing grade for everyone.",
-      },
-      {
-        icon: "loop",
-        title: "Pairs with sourcing",
-        body: "Works directly with our sourcing service for a complete hiring pipeline.",
-      },
-    ],
-    closing: "Need candidates properly vetted?",
-    image: "/assets/custom-development.webp",
-  },
-  {
-    slug: "analytics",
-    photo: "",
-    title: "Data & Analytics",
-    eyebrow: "Data",
-    icon: "chart",
-    short: "Dashboards and reporting built around the decisions you actually make.",
-    lede: "We turn scattered data into decisions you can act on — dashboards and reporting built around how your team actually works, not a generic template.",
-    cta: "Talk to Us",
-    introLabel: "What this looks like",
-    introHeading: "Data that answers real questions.",
-    introBody:
-      "Most analytics tools show you everything and tell you nothing. We start with the decisions you are actually trying to make, then build the tracking, dashboards, and reporting to support them.",
-    pillarsTitle: "How we approach analytics",
-    pillars: [
-      {
-        icon: "chart",
-        title: "Custom dashboards",
-        body: "Built around your metrics, not a vendor's idea of what matters.",
-      },
-      {
-        icon: "search",
-        title: "Clear reporting",
-        body: "Reports people actually read, because they are built for the people reading them.",
-      },
-      {
-        icon: "gear",
-        title: "Integrated, not bolted-on",
-        body: "Analytics wired into the systems you already use, not a separate tool to check.",
-      },
-    ],
-    closing: "Want to see your data differently?",
-    image: "/assets/saas.avif",
-  },
-  {
-    slug: "security",
-    photo: "",
-    title: "Security Systems",
-    eyebrow: "Protection",
-    icon: "lock",
-    short: "CCTV, access control and alarms — designed, installed and monitored properly.",
-    lede: "CCTV, access control, and alarm systems built to protect what you have built — installed properly, monitored reliably, and easy for your team to manage.",
-    cta: "Secure Your Business",
-    introLabel: "Security, done properly",
-    introHeading: "Protection you do not have to think about.",
-    introBody:
-      "Security systems fail most often not from bad hardware, but from bad setup — blind spots, unmonitored alerts, access nobody remembers granting. We design and install systems that close those gaps from day one.",
-    pillarsTitle: "What we cover",
-    pillars: [
-      {
-        icon: "camera",
-        title: "Surveillance",
-        body: "CCTV coverage designed around how your space is actually used.",
-      },
-      {
-        icon: "lock",
-        title: "Access control",
-        body: "Know who is where, without paperwork.",
-      },
-      {
-        icon: "alert",
-        title: "Monitoring & alerts",
-        body: "Real alerts you can act on, not noise you learn to ignore.",
-      },
-    ],
-    closing: "Protect what matters.",
-    image: "/assets/security-systems.webp",
-  },
-  {
-    slug: "infrastructure",
-    photo: "",
-    title: "IT Infrastructure",
-    eyebrow: "Foundations",
-    icon: "server",
-    short: "Networks and servers engineered to stay online under real load.",
-    lede: "Networks, servers, and IT systems engineered to stay online, scale with you, and hold up under real pressure — not just in a demo.",
-    cta: "Talk to Us",
-    introLabel: "The foundation",
-    introHeading: "Infrastructure you do not have to worry about.",
-    introBody:
-      "Most infrastructure problems only show up under pressure — during a launch, a migration, or your busiest day. We build networks and systems that are tested before they matter, not after.",
+      "Most software is designed for fast laptops on fast Wi-Fi. Your customers are on mid-range Android phones on mobile data. We design and build for that reality from the first screen: light pages, clear flows, and payment and messaging integrations that people here already use.",
     pillarsTitle: "What we build",
     pillars: [
       {
-        icon: "network",
-        title: "Networking",
-        body: "Reliable connectivity designed for how your team and systems actually communicate.",
-      },
-      {
-        icon: "server",
-        title: "Servers & systems",
-        body: "Right-sized infrastructure — built for your real load, not a sales pitch.",
-      },
-      {
-        icon: "tools",
-        title: "Ongoing support",
-        body: "We stay involved after launch. Infrastructure is not a one-time project.",
-      },
-    ],
-    closing: "Let us build a foundation that holds.",
-    image: "/assets/infrastructure.webp",
-  },
-  {
-    slug: "cloud",
-    photo: "",
-    title: "Cloud & SaaS",
-    eyebrow: "Scale",
-    icon: "cloud",
-    short: "Migrations and custom platforms that scale in steps you can afford.",
-    lede: "Cloud platforms and SaaS solutions that scale with your business — built for the size you are now, and the size you are growing into.",
-    cta: "Talk to Us",
-    introLabel: "Cloud, without the overhead",
-    introHeading: "Grow without re-architecting everything.",
-    introBody:
-      "We design cloud systems that scale in steps you can afford, not all-or-nothing migrations. Whether it is moving existing systems to the cloud or building a new SaaS product from scratch, we plan for the growth you actually expect.",
-    pillarsTitle: "What we deliver",
-    pillars: [
-      {
-        icon: "cloud",
-        title: "Cloud migration",
-        body: "Move existing systems to the cloud without downtime surprises.",
+        icon: "globe",
+        title: "Websites that convert",
+        body: "Fast, clear sites for businesses and professionals — built to turn a visit into a call, an order, or a booking.",
       },
       {
         icon: "puzzle",
-        title: "SaaS platforms",
-        body: "Custom software platforms built to scale with your users.",
+        title: "Web & mobile apps",
+        body: "Custom applications for the way your business runs — from internal tools to customer-facing products.",
+      },
+      {
+        icon: "loop",
+        title: "Integrations that fit",
+        body: "Mobile money, SMS, WhatsApp, and the systems you already use — wired in, not bolted on.",
+      },
+    ],
+    closing: "Have an app or website in mind?",
+    image: "/assets/custom-websites.webp",
+  },
+  {
+    slug: "consulting",
+    photo: "",
+    title: "IT Consultation",
+    eyebrow: "Advise",
+    icon: "bulb",
+    short: "Straight answers on what to build, buy, or fix — before you spend money on it.",
+    lede: "Independent technical advice for businesses that need to make a decision — what to build, what to buy, what to fix first — from engineers who will tell you the truth.",
+    cta: "Book a consultation",
+    introLabel: "Advice, not a sales pitch",
+    introHeading: "Know what you need before you pay for it.",
+    introBody:
+      "Most technology mistakes are made before anything is built: the wrong vendor, the wrong scope, the wrong thing fixed first. We review what you have, understand what you are trying to achieve, and give you a written recommendation you can act on — with us or without us.",
+    pillarsTitle: "How we help",
+    pillars: [
+      {
+        icon: "search",
+        title: "Technology review",
+        body: "An honest audit of your current systems, tools, and costs — what works, what does not, and why.",
+      },
+      {
+        icon: "clipboard",
+        title: "Build-or-buy decisions",
+        body: "A clear recommendation on whether to build custom, buy off the shelf, or do nothing yet.",
+      },
+      {
+        icon: "target",
+        title: "Roadmap you can afford",
+        body: "A step-by-step plan sized to your budget, with the highest-value work first.",
+      },
+    ],
+    closing: "Need a second opinion before you commit?",
+    image: "/assets/rwanda.jpg",
+  },
+  {
+    slug: "lab",
+    photo: "",
+    title: "Innovation Lab",
+    eyebrow: "Invent",
+    icon: "microscope",
+    short: "Where we build our own products for Africa — TalentLens and Floow both started here.",
+    lede: "Our lab exists to build solutions for problems that are specific to Africa — products we own, and products we build with partners who understand a market we do not.",
+    cta: "Partner with the lab",
+    introLabel: "Research, then product",
+    introHeading: "Solutions built for African problems, not imported for them.",
+    introBody:
+      "Imported software assumes infrastructure, habits, and budgets that do not match how people here actually live and work. The lab is where we study those gaps properly and build for them. TalentLens, our recruitment platform, and Floow, a national parcel system for Rwanda, both came out of this process.",
+    pillarsTitle: "How the lab works",
+    pillars: [
+      {
+        icon: "microscope",
+        title: "Problem research",
+        body: "We spend time with the people who have the problem before we write a line of code.",
       },
       {
         icon: "growth",
-        title: "Built to grow",
-        body: "Architecture that scales with demand, not a rebuild every time you grow.",
+        title: "Products we ship",
+        body: "Ideas that survive research become real products — built, launched, and supported by us.",
+      },
+      {
+        icon: "handshake",
+        title: "Partnerships",
+        body: "Bring us a problem in a market you know, and we will build the solution with you.",
       },
     ],
-    closing: "Ready to scale properly?",
-    image: "/assets/saas.avif",
+    closing: "Have a problem worth solving?",
+    image: "/assets/smart-buildings.jpg",
+  },
+  {
+    slug: "smart-homes",
+    photo: "",
+    title: "Smart Homes & Cameras",
+    eyebrow: "Protect",
+    icon: "camera",
+    short: "Home automation and camera systems, installed properly and easy to manage from your phone.",
+    lede: "Smart lighting, access, and camera systems for homes and small premises — designed around how you use the space, installed properly, and controllable from your phone.",
+    cta: "Secure your home",
+    introLabel: "Installed properly",
+    introHeading: "A home that watches itself, and tells you when it matters.",
+    introBody:
+      "Camera and smart-home systems fail from bad setup more than bad hardware: blind spots, alerts nobody sees, apps that stop working. We design the system around your actual space, install it cleanly, and make sure you can manage it yourself afterwards.",
+    pillarsTitle: "What we install",
+    pillars: [
+      {
+        icon: "camera",
+        title: "Cameras & monitoring",
+        body: "Coverage designed around your space, viewable from your phone, with alerts you can act on.",
+      },
+      {
+        icon: "lock",
+        title: "Smart access",
+        body: "Gates, doors, and locks you control remotely — and know who used, and when.",
+      },
+      {
+        icon: "bulb",
+        title: "Automation",
+        body: "Lighting, power, and appliances on schedules and rules, so the house runs itself.",
+      },
+    ],
+    closing: "Want your home to look after itself?",
+    image: "/assets/security-systems.webp",
   },
 ];
 
 export function getService(slug: string) {
   return services.find((s) => s.slug === slug);
 }
+
+export type Product = {
+  name: string;
+  /** What it is, in five words. */
+  tagline: string;
+  body: string;
+  icon: string;
+  /** Leave empty to send visitors to the contact page for a demo. */
+  href: string;
+  /** e.g. "Live" / "In pilot" — shown as a small badge. Empty hides it. */
+  status: string;
+};
+
+/** Products built in the lab. Proof that we ship, not just advise. */
+export const products: Product[] = [
+  {
+    name: "TalentLens",
+    tagline: "Advanced recruitment software",
+    body: "Built for teams that want to hire well: structure the process, see candidates clearly, and decide with evidence instead of gut feel.",
+    icon: "users",
+    href: "",
+    status: "",
+  },
+  {
+    name: "Floow",
+    tagline: "A national parcel system for Rwanda",
+    body: "Infrastructure for moving parcels across the country — so businesses and individuals can send, track, and receive with confidence.",
+    icon: "pin",
+    href: "",
+    status: "",
+  },
+];
 
 
 /** Short trust signals shown under the hero CTA. Keep these verifiable. */
@@ -295,15 +260,15 @@ export const faqs = [
   },
   {
     q: "How do you price work?",
-    a: "Fixed-scope projects get a fixed price after the research phase, so you are never quoted on a guess. Ongoing work (infrastructure support, sourcing, monitoring) is a monthly retainer. We will tell you which applies on the first call.",
+    a: "Fixed-scope projects — an app, a website, an installation — get a fixed price after the research phase, so you are never quoted on a guess. Ongoing work such as consulting, support, and monitoring is a monthly retainer. We will tell you which applies on the first call.",
   },
   {
     q: "Do you only work in Rwanda?",
-    a: "We are based in Kigali and install physical systems — security, networks, smart buildings — across Rwanda. Software, cloud, analytics, and hiring work is delivered remotely for clients anywhere in East Africa and beyond.",
+    a: "We are based in Kigali and install smart-home and camera systems across Rwanda. Software, apps, and consulting are delivered remotely for clients anywhere in Africa and beyond.",
   },
   {
     q: "We are a small business. Is this for us?",
-    a: "Yes, as long as the problem is real. We are a small team ourselves and size our engagements accordingly. What matters is that there is a clear business reason for the work — and we will say so if there is not.",
+    a: "Yes — SMEs and individuals are who we build for. We are a small team ourselves and size our engagements accordingly. What matters is that there is a clear reason for the work, and we will say so if there is not.",
   },
   {
     q: "Who actually does the work?",
@@ -311,7 +276,7 @@ export const faqs = [
   },
   {
     q: "What if we already have an IT provider?",
-    a: "That is common. We regularly take a single well-defined piece — a security install, a cloud migration, a hiring push — and work alongside an existing provider without disrupting them.",
+    a: "That is common. We regularly take a single well-defined piece — an app, a website, a camera install, an IT review — and work alongside an existing provider without disrupting them.",
   },
 ] as const;
 

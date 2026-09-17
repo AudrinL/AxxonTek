@@ -24,9 +24,9 @@ export function ServicesGrid() {
             </Reveal>
             <MaskedWords
               as="h2"
-              text={"Six services. One team that\nresearches before it builds."}
+              text="Four things we do. One team that researches before it builds."
               accent={["researches"]}
-              className="text-heading"
+              className="text-heading max-w-[18ch]"
             />
           </div>
           <Reveal delay={0.1}>
@@ -38,7 +38,7 @@ export function ServicesGrid() {
         </div>
 
         <motion.ul
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
@@ -68,7 +68,7 @@ export function ServicesGrid() {
                       src={service.photo}
                       alt=""
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                     />
                     <span className="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white/90 text-ember shadow-sm backdrop-blur">

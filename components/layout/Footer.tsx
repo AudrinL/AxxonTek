@@ -20,8 +20,8 @@ export function Footer() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-5 text-[0.9375rem] leading-relaxed text-mute">
-              A senior engineering team in Kigali building software, security and cloud systems for
-              businesses across East Africa.
+              An engineering team in Kigali building apps, websites and smart systems for African
+              SMEs and individuals — and our own products, TalentLens and Floow.
             </p>
             <p className="mt-7 mb-3 text-[0.8125rem] font-medium text-bone">
               Occasional notes on engineering — no spam.

@@ -1,6 +1,8 @@
 # AxxonTek — Company Website
 
-Marketing site for **AxxonTek**, a technology company based at Norrsken Kigali, Rwanda.
+Marketing site for **AxxonTek**, an engineering company based at Norrsken Kigali, Rwanda — apps and
+websites for African SMEs and individuals, IT consultation, an innovation lab (TalentLens, Floow), and
+smart-home and camera installation.
 
 Built with **Next.js 15** (App Router), **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**.
 Light theme by default with orange as the brand accent; visitors can switch to dark mode.
@@ -65,14 +67,14 @@ app/
 
 components/
 ├── layout/                 # Nav, Footer, Logo, ThemeToggle, PageTransition, ScrollProgress
-├── sections/               # Hero, Stats, ServicesGrid, ProcessBand, FeatureGrid, Faq,
-│                           # ContactSection, CtaBanner, PageHero, Statement, LegalBody
+├── sections/               # Hero, Stats, ServicesGrid, Products, ProcessBand, WhyUs, Faq,
+│                           # ContactSection, FeatureGrid, CtaBanner, PageHero, Statement, LegalBody
 ├── motion/                 # Reveal, MaskedWords, MagneticButton
 ├── forms/                  # ContactForm, NewsletterForm
 └── Icon.tsx                # Line-icon set
 
 lib/
-├── site.ts                 # All copy + navigation data — services, process, FAQ, trust points
+├── site.ts                 # All copy + navigation data — services, products, process, FAQ, photos
 ├── motion.ts               # Shared easings and variants
 ├── validation.ts           # Form validation shared by the API routes
 └── supabase.ts             # Server-side Supabase client
@@ -92,7 +94,8 @@ and the ask ("Book a call") is never more than one screen away:
 | --- | --- | --- |
 | Hero | What we sell, for whom, one primary CTA, three trust points | "What exactly?" |
 | Stats strip | Honest snapshot (founded, team size, projects, reply time) | "Are you real?" |
-| Services | The catalogue — six cards, one line each, all linking to their page | "How do you work?" |
+| Services | The catalogue — four cards, one line each, all linking to their page | "Have you shipped anything?" |
+| Products | TalentLens and Floow, built in the lab — the proof until a client case study exists | "How do you work?" |
 | Process band | Research first, built by the people who scoped it (orange break + CTA) | "Why you?" |
 | Why AxxonTek | Three concrete reasons | "Any catches?" |
 | FAQ | The objections a buyer has before contacting us | "How do I start?" |
@@ -101,7 +104,10 @@ and the ask ("Book a call") is never more than one screen away:
 Rules this order follows:
 
 - **One service taxonomy.** `services` in `lib/site.ts` is the only list of what we sell. Nav,
-  hero chips, the grid, the footer, and the sitemap all read from it.
+  hero chips, the grid, the footer, and the sitemap all read from it. `products` is the lab's output.
+- **Photos are slots.** `photos` and each service's `photo` in `lib/site.ts` are optional paths; every
+  section has a photo-less fallback. See `public/assets/photos/README.md` for the shot list and
+  `npm run photos` to optimise originals.
 - **The primary CTA is always "Book a call".** It appears in the nav, the hero, the process band
   and the contact section. Nothing else competes with it.
 - **Numbers are static.** The stats strip is plain text so search engines and no-JS visitors see

@@ -44,7 +44,7 @@ export function Hero() {
 
             <MaskedWords
               as="h1"
-              text="Software, security and cloud — built after we understand your problem."
+              text="Apps, websites and smart systems — built after we understand your problem."
               accent={["understand"]}
               className="text-display max-w-[17ch]"
               immediate
@@ -52,9 +52,10 @@ export function Hero() {
             />
 
             <motion.p className="text-lede mt-7 max-w-[34rem]" {...rise(0.55)}>
-              AxxonTek is a senior engineering team in Kigali. We build custom software, security
-              and IT systems, and cloud platforms for businesses across East Africa — and we research
-              the problem before we quote on it.
+              AxxonTek is an engineering team in Kigali. We build apps and websites for African
+              SMEs and individuals, advise on IT, run a lab that ships products like TalentLens and
+              Floow, and install smart-home and camera systems — and we research the problem before
+              we quote on it.
             </motion.p>
 
             <motion.div

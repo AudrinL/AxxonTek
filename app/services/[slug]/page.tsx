@@ -66,7 +66,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <Reveal>
             <p className="eyebrow hairline-t mb-8 w-full pt-8">Other services</p>
           </Reveal>
-          <ul className="grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-5">
+          <ul className="grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-3">
             {others.map((other) => (
               <li key={other.slug}>
                 <Link

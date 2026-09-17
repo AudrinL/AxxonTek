@@ -19,7 +19,7 @@ export const photos = {
   workspace: "/assets/photos/workspace.webp",
 };
 // and per service:
-{ slug: "security", photo: "/assets/photos/security.webp", ... }
+{ slug: "smart-homes", photo: "/assets/photos/smart-homes.webp", ... }
 ```
 
 Every slot is optional. An empty slot falls back to the photo-less layout, so you can add them one at a
@@ -32,12 +32,10 @@ time.
 | `hero` | Homepage hero, right side | **4:5 portrait** | One engineer at their desk at Norrsken. Looking at the camera or mid-conversation with someone off-frame. Laptop open, window light. This is the face of the company — pick the person you'd want on the first call. |
 | `team` | Homepage "Why AxxonTek" + About | **16:9 landscape** | All four of you around a whiteboard or a table, actually working — not posed in a row. Someone drawing, someone pointing. Warm daylight. |
 | `workspace` | About page | **3:2** | Norrsken Kigali — the building, the workspace floor, or the view. Establishes that the address is real. |
-| `sourcing` | Services card + page | 3:2 | Two people in conversation across a table — an interview or a candidate call. |
-| `interviews` | Services card + page | 3:2 | Someone explaining code on a screen or whiteboard to a colleague. |
-| `analytics` | Services card + page | 3:2 | Over-the-shoulder of someone reviewing a dashboard or chart on a monitor. |
-| `security` | Services card + page | 3:2 | An actual install: a camera going onto a wall, an access-control panel, a technician on a ladder. |
-| `infrastructure` | Services card + page | 3:2 | A network rack or server cabinet with someone working on it. Tidy cables help. |
-| `cloud` | Services card + page | 3:2 | An engineer at a desk with an architecture diagram or terminal on screen. |
+| `software` | Services card + page | 3:2 | An engineer building an app or site — laptop with a real screen, or a phone in hand testing it. |
+| `consulting` | Services card + page | 3:2 | Two people across a table with a notebook or a diagram — a real advisory conversation. |
+| `lab` | Services card + page | 3:2 | Whiteboard, sticky notes, a prototype on a screen — the lab actually working on something. |
+| `smart-homes` | Services card + page | 3:2 | An actual install: a camera going onto a wall, a smart lock or panel, a technician on a ladder. |
 
 ## Tips that make phone photos look professional
 

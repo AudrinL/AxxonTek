@@ -118,3 +118,70 @@
   to = "/services/cloud"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/sourcing.html"
+  to = "/services/lab"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/interviews.html"
+  to = "/services/lab"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/analytics.html"
+  to = "/services/consulting"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/security.html"
+  to = "/services/smart-homes"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/infrastructure.html"
+  to = "/services/consulting"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cloud.html"
+  to = "/services/software"
+  status = 301
+  force = true
+
+# Service slugs from the first Next.js version of the site.
+[[redirects]]
+  from = "/services/sourcing"
+  to = "/services/lab"
+  status = 301
+
+[[redirects]]
+  from = "/services/interviews"
+  to = "/services/lab"
+  status = 301
+
+[[redirects]]
+  from = "/services/analytics"
+  to = "/services/consulting"
+  status = 301
+
+[[redirects]]
+  from = "/services/security"
+  to = "/services/smart-homes"
+  status = 301
+
+[[redirects]]
+  from = "/services/infrastructure"
+  to = "/services/consulting"
+  status = 301
+
+[[redirects]]
+  from = "/services/cloud"
+  to = "/services/software"
+  status = 301

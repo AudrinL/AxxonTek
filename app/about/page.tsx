@@ -3,6 +3,7 @@ import { PageHero } from "@/components/sections/PageHero";
 import { Statement } from "@/components/sections/Statement";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
 import { CtaBanner } from "@/components/sections/CtaBanner";
+import { hasPhoto, photos } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -48,8 +49,8 @@ export default function AboutPage() {
         heading={"Most innovation is just repackaging."}
         accent={["repackaging."]}
         body="Too much of what gets called innovation in tech is the same product with a new logo. We started AxxonTek to do the harder thing: study a problem properly, then build the software, systems, or hardware it actually needs."
-        image="/assets/rwanda.jpg"
-        imageAlt="The Virunga mountains, Rwanda"
+        image={hasPhoto(photos.team) ? photos.team : "/assets/rwanda.jpg"}
+        imageAlt={hasPhoto(photos.team) ? "The AxxonTek team at Norrsken Kigali" : "The Virunga mountains, Rwanda"}
       />
 
       <Statement
@@ -57,6 +58,8 @@ export default function AboutPage() {
         heading={"No layers between you and the build."}
         accent={["build."]}
         body="Four of us, with no management tier standing between you and the people writing the code. In our first year that has already meant four real projects delivered — each one researched properly before a single line was written."
+        image={hasPhoto(photos.workspace) ? photos.workspace : undefined}
+        imageAlt="Norrsken Kigali"
       />
 
       <FeatureGrid
@@ -67,7 +70,7 @@ export default function AboutPage() {
         surface="band"
       />
 
-      <div className="pb-[clamp(6rem,13vw,11rem)]">
+      <div className="section-y">
         <CtaBanner
           heading={"We're early. We're serious. Let's build something worth building."}
           accent={["building."]}

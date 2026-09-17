@@ -13,7 +13,7 @@ import { useRef, type MouseEvent, type ReactNode } from "react";
 type Variant = "primary" | "ghost" | "outline" | "inverse";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full text-[0.9375rem] font-medium tracking-tight transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-55";
+  "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full text-[0.9375rem] font-medium tracking-tight whitespace-nowrap transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-55";
 
 const sizes = {
   md: "h-12 px-7",

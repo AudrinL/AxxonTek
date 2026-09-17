@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { easeOutExpo } from "@/lib/motion";
 import { MagneticButton } from "@/components/motion/MagneticButton";
@@ -19,8 +19,6 @@ type PageHeroProps = {
 
 /** Shared inner-page opener: generous top space, masked headline, thin rule. */
 export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: PageHeroProps) {
-  const reduced = useReducedMotion();
-
   return (
     <section className="relative isolate overflow-hidden pt-[clamp(7.5rem,16vh,10.5rem)] pb-[clamp(3rem,6vw,5rem)]">
       {/* Ambient top-glow */}
@@ -79,7 +77,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
             className="text-lede mt-7 max-w-2xl"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: easeOutExpo, delay: reduced ? 0 : 0.45 }}
+            transition={{ duration: 0.9, ease: easeOutExpo, delay: 0.45 }}
           >
             {lede}
           </motion.p>
@@ -90,7 +88,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
             className="mt-9"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: easeOutExpo, delay: reduced ? 0 : 0.6 }}
+            transition={{ duration: 0.9, ease: easeOutExpo, delay: 0.6 }}
           >
             <MagneticButton href={action.href} size="lg">
               {action.label}

@@ -58,7 +58,7 @@ export default function BlogPage() {
         surface="band"
       />
 
-      <div className="pb-[clamp(6rem,13vw,11rem)]">
+      <div className="section-y">
         <CtaBanner
           heading={"Get new posts by email."}
           accent={["email."]}

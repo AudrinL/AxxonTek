@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Reveal } from "@/components/motion/Reveal";
@@ -21,7 +21,6 @@ export function CtaBanner({
   secondary,
 }: CtaBannerProps) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const glowY = useTransform(scrollYProgress, [0, 1], ["30%", "-30%"]);
@@ -35,7 +34,7 @@ export function CtaBanner({
           <motion.div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[130%] -translate-y-1/2"
-            style={reduced ? { opacity: 0.4 } : { y: glowY, opacity: glowOpacity }}
+            style={{ y: glowY, opacity: glowOpacity }}
           >
             <div className="mx-auto h-full w-[70%] rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.22),transparent)] blur-2xl" />
           </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { faqs } from "@/lib/site";
 import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
@@ -14,7 +14,6 @@ import { easeOutExpo } from "@/lib/motion";
  */
 export function Faq() {
   const [open, setOpen] = useState<number>(0);
-  const reduced = useReducedMotion();
 
   return (
     <section id="faq" className="section-y scroll-mt-20">
@@ -80,9 +79,9 @@ export function Faq() {
                           id={panelId}
                           role="region"
                           aria-labelledby={buttonId}
-                          initial={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
-                          animate={reduced ? { opacity: 1 } : { height: "auto", opacity: 1 }}
-                          exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.45, ease: easeOutExpo }}
                           className="overflow-hidden"
                         >

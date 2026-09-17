@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { easeOutExpo } from "@/lib/motion";
-import { services, trustPoints } from "@/lib/site";
+import { hasPhoto, photos, services, trustPoints } from "@/lib/site";
 import { Icon } from "@/components/Icon";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { MaskedWords } from "@/components/motion/MaskedWords";
@@ -20,8 +21,6 @@ const rise = (delay: number) => ({
  * the page shows the product instead of a stock photo.
  */
 export function Hero() {
-  const reduced = useReducedMotion();
-
   return (
     <section className="relative isolate overflow-hidden pt-[clamp(7.5rem,16vh,10rem)] pb-[clamp(3.5rem,7vw,6rem)]">
       {/* Warm bloom top-right, and a faint dot grid that fades out downwards. */}
@@ -86,18 +85,75 @@ export function Hero() {
             </motion.ul>
           </div>
 
-          {/* Engagement preview */}
+          {/* Visual: a real photo of the team when we have one, otherwise the
+              engagement preview card. */}
           <motion.div
-            className="relative lg:justify-self-end"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 28, rotate: -1 }}
+            className="relative w-full lg:w-auto lg:justify-self-end"
+            initial={{ opacity: 0, y: 28, rotate: -1 }}
             animate={{ opacity: 1, y: 0, rotate: 0 }}
             transition={{ duration: 1, ease: easeOutExpo, delay: 0.35 }}
           >
-            <EngagementCard />
+            {hasPhoto(photos.hero) ? <HeroPhoto src={photos.hero} /> : <EngagementCard />}
           </motion.div>
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * The photo variant: a portrait of one of us, with the reply-time badge and
+ * a compact "after your first call" card overlaid. People convert; cards
+ * decorate.
+ */
+function HeroPhoto({ src }: { src: string }) {
+  return (
+    <div className="relative w-full max-w-[30rem] lg:w-[30rem]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-card">
+        <Image
+          src={src}
+          alt="An AxxonTek engineer at work at Norrsken Kigali"
+          fill
+          priority
+          sizes="(max-width: 1024px) 100vw, 40vw"
+          className="object-cover"
+        />
+        {/* Soft floor gradient so the overlay card always reads */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/55 to-transparent"
+        />
+        <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/15 bg-white/10 p-4 text-white backdrop-blur-md sm:inset-x-5 sm:bottom-5 sm:p-5">
+          <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-white/70 uppercase">
+            After your first call
+          </p>
+          <p className="mt-1.5 text-[1.0625rem] leading-snug font-semibold">
+            A written read on your problem, which service fits, and a first step with a price.
+          </p>
+        </div>
+      </div>
+
+      <ReplyBadge />
+    </div>
+  );
+}
+
+function ReplyBadge() {
+  return (
+    <motion.div
+      className="absolute -top-4 -right-3 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised py-2 pr-5 pl-2 shadow-card sm:-right-6"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: easeOutExpo, delay: 1 }}
+    >
+      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">
+        <Icon name="clock" size={15} />
+      </span>
+      <span className="text-[0.8125rem] leading-tight">
+        <span className="block font-semibold text-bone">Reply in 1 business day</span>
+        <span className="text-mute">from an engineer, not a bot</span>
+      </span>
+    </motion.div>
   );
 }
 
@@ -108,7 +164,7 @@ export function Hero() {
  */
 function EngagementCard() {
   return (
-    <div className="relative w-full max-w-[34rem]">
+    <div className="relative w-full max-w-[34rem] lg:w-[34rem]">
       {/* Backing card, slightly offset, for depth */}
       <div
         aria-hidden
@@ -149,7 +205,7 @@ function EngagementCard() {
           <p className="mb-3 text-[0.6875rem] font-semibold tracking-[0.16em] text-faint uppercase">
             What we can take on
           </p>
-          <ul className="grid grid-cols-2 gap-2">
+          <ul className="grid gap-2 min-[440px]:grid-cols-2">
             {services.map((s) => (
               <li key={s.slug}>
                 <Link
@@ -157,7 +213,7 @@ function EngagementCard() {
                   className="flex items-center gap-2.5 rounded-lg border border-hairline bg-ink px-3 py-2 text-[0.8125rem] text-mute transition-colors duration-300 hover:border-ember/50 hover:text-bone"
                 >
                   <Icon name={s.icon} size={15} className="shrink-0 text-ember" />
-                  <span className="truncate">{s.title}</span>
+                  <span>{s.title}</span>
                 </Link>
               </li>
             ))}

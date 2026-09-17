@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { easeOutExpo, viewportOnce, wordMask } from "@/lib/motion";
 
@@ -19,6 +19,11 @@ type MaskedWordsProps = {
  * Headline reveal: each word sits in its own overflow-hidden mask and rises
  * into place on a staggered expo curve. Line breaks are preserved by wrapping
  * on real spaces, so long headlines still reflow responsively.
+ *
+ * Markup is identical on the server and the client on purpose: branching on
+ * `useReducedMotion` here caused a hydration mismatch for reduced-motion
+ * visitors. The root `MotionConfig reducedMotion="user"` neutralises the
+ * transform animation for them instead.
  */
 export function MaskedWords({
   text,
@@ -28,7 +33,6 @@ export function MaskedWords({
   immediate = false,
   as = "h2",
 }: MaskedWordsProps) {
-  const reduced = useReducedMotion();
   const Tag = motion[as];
   const accentSet = new Set(accent.map((w) => w.toLowerCase()));
 
@@ -39,23 +43,6 @@ export function MaskedWords({
     ? { animate: "show" as const }
     : { whileInView: "show" as const, viewport: viewportOnce };
 
-  if (reduced) {
-    return (
-      <Tag
-        className={className}
-        initial={{ opacity: 0 }}
-        {...(immediate ? { animate: { opacity: 1 } } : { whileInView: { opacity: 1 }, viewport: viewportOnce })}
-        transition={{ duration: 0.5, delay }}
-      >
-        {lines.map((line, i) => (
-          <Fragment key={i}>
-            {i > 0 && <br />}
-            {line}
-          </Fragment>
-        ))}
-      </Tag>
-    );
-  }
 
   return (
     <Tag

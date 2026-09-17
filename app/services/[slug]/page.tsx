@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getService, services } from "@/lib/site";
+import { getService, hasPhoto, services } from "@/lib/site";
 import { PageHero } from "@/components/sections/PageHero";
 import { Statement } from "@/components/sections/Statement";
 import { FeatureGrid } from "@/components/sections/FeatureGrid";
@@ -54,7 +54,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         label={service.introLabel}
         heading={service.introHeading}
         body={service.introBody}
-        image={service.image}
+        image={hasPhoto(service.photo) ? service.photo : service.image}
         imageAlt={service.title}
       />
 
@@ -104,7 +104,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <div className="pb-[clamp(6rem,13vw,11rem)]">
+      <div className="pb-[var(--spacing-section)]">
         <CtaBanner
           heading={service.closing}
           action={{ label: "Talk to us", href: "/contact" }}

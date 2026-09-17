@@ -2,8 +2,8 @@
 
 Marketing site for **AxxonTek**, a technology company based at Norrsken Kigali, Rwanda.
 
-Built with **Next.js 15** (App Router), **TypeScript**, **Tailwind CSS v4**, **Framer Motion**,
-**GSAP + ScrollTrigger**, **Lenis**, and **Three.js** via React Three Fiber.
+Built with **Next.js 15** (App Router), **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**.
+Light theme by default with orange as the brand accent; visitors can switch to dark mode.
 
 ---
 
@@ -51,9 +51,9 @@ and a `503`. They never report a false success.
 
 ```
 app/
-├── layout.tsx              # Root shell: fonts, metadata, nav, footer, scroll behaviour
+├── layout.tsx              # Root shell: fonts, metadata, theme bootstrap, nav, footer
 ├── page.tsx                # Homepage
-├── globals.css             # Design tokens + base styles (Tailwind v4 @theme)
+├── globals.css             # Light + dark tokens, base styles, utilities (Tailwind v4)
 ├── about|blog|careers/     # Content pages
 ├── contact/                # Contact page (accepts ?email= prefill from the hero)
 ├── privacy|terms/          # Legal pages
@@ -64,15 +64,15 @@ app/
 └── not-found.tsx           # 404
 
 components/
-├── layout/                 # Nav, Footer, SmoothScroll, PageTransition, ScrollProgress
-├── sections/               # Hero, Expertise, Capabilities, FeatureGrid, CtaBanner, ...
+├── layout/                 # Nav, Footer, Logo, ThemeToggle, PageTransition, ScrollProgress
+├── sections/               # Hero, Stats, ServicesGrid, ProcessBand, FeatureGrid, Faq,
+│                           # ContactSection, CtaBanner, PageHero, Statement, LegalBody
 ├── motion/                 # Reveal, MaskedWords, MagneticButton
 ├── forms/                  # ContactForm, NewsletterForm
-├── three/                  # ParticleField (+ lazy wrapper)
 └── Icon.tsx                # Line-icon set
 
 lib/
-├── site.ts                 # All copy + navigation data — edit content here
+├── site.ts                 # All copy + navigation data — services, process, FAQ, trust points
 ├── motion.ts               # Shared easings and variants
 ├── validation.ts           # Form validation shared by the API routes
 └── supabase.ts             # Server-side Supabase client
@@ -85,63 +85,71 @@ sitemap all read from it.
 
 ## Homepage narrative
 
-The section order is the design. Each block answers the question the previous one raises, so the
-value proposition sharpens on the way down rather than being restated:
+The homepage is ordered for conversion. Each section answers the question the previous one raises,
+and the ask ("Book a call") is never more than one screen away:
 
-| Position | Section | Job | Leaves the reader asking |
+| Section | Job | Leaves the reader asking |
+| --- | --- | --- |
+| Hero | What we sell, for whom, one primary CTA, three trust points | "What exactly?" |
+| Stats strip | Honest snapshot (founded, team size, projects, reply time) | "Are you real?" |
+| Services | The catalogue — six cards, one line each, all linking to their page | "How do you work?" |
+| Process band | Research first, built by the people who scoped it (orange break + CTA) | "Why you?" |
+| Why AxxonTek | Three concrete reasons | "Any catches?" |
+| FAQ | The objections a buyer has before contacting us | "How do I start?" |
+| Contact | The form, embedded — no extra page load | — |
+
+Rules this order follows:
+
+- **One service taxonomy.** `services` in `lib/site.ts` is the only list of what we sell. Nav,
+  hero chips, the grid, the footer, and the sitemap all read from it.
+- **The primary CTA is always "Book a call".** It appears in the nav, the hero, the process band
+  and the contact section. Nothing else competes with it.
+- **Numbers are static.** The stats strip is plain text so search engines and no-JS visitors see
+  the real values, not a count-up starting at zero.
+- **Copy is honest.** The company is young; the page says so and sells the process instead of
+  inventing social proof. Replace the "Why us" cards with a named case study as soon as one exists.
+
+### Theme
+
+Light is the default. `[data-theme="dark"]` on `<html>` flips every token; the choice is stored in
+`localStorage` under `axxontek-theme` and applied by an inline script in `app/layout.tsx` before
+first paint, so there is no flash. The system preference is deliberately not consulted.
+
+Every colour in the codebase is a semantic token (`bg-ink`, `text-bone`, `text-mute`,
+`border-hairline`, `bg-ember`, `bg-ember-tint`, …) defined once per theme in `app/globals.css`.
+Components never hard-code light or dark values, so adding a surface means adding a token, not
+touching components.
+
+| Token | Light | Dark | Use |
 | --- | --- | --- | --- |
-| 0% | Hero | The promise, one CTA | "Like what?" |
-| 9% | Statement | The thesis in one sentence | "So what can I buy?" |
-| 17% | **Services** | The catalogue — six engagements, one row each | "Does it actually work?" |
-| 30% | **Proof** | Track record and evidence | "What do you build?" |
-| 38% | Capabilities | The four delivery domains | "How do you work?" |
-| 66% | **Ember band** | Research-first process | "Why you?" |
-| 72% | Why AxxonTek | Differentiators | "Are you real?" |
-| 81% | **Stats** | Credibility numbers | "How do I start?" |
-| 86% | Closing CTA | The ask | — |
+| `ink` | warm white | near black | Page ground |
+| `ink-raised` | white | raised charcoal | Cards, inputs |
+| `surface-1` / `band` | warm sand | warm charcoal | Alternating sections |
+| `bone` / `mute` / `faint` | ink → grey | bone → grey | Text hierarchy |
+| `ember` / `ember-deep` / `ember-tint` | orange | orange (brighter) | Brand accent, buttons, icon wells |
+| `band-ember` | solid orange gradient | deep ember | The one high-contrast break per page |
 
-Two rules this order follows:
-
-- **CTAs are sparse and placed at peak intent** — hero, after proof, after the process band, and the
-  close. The catalogue rows link to their own pages and deliberately do not compete.
-- **Credibility numbers sit late**, as closing reassurance before the ask, not as an early boast.
-
-### Surfaces
-
-Sections alternate across a surface ladder so the page has vertical rhythm instead of reading as one
-continuous black scroll:
-
-| Token | Use |
-| --- | --- |
-| `--color-surface-0` (`#030303`) | Default page ground |
-| `--color-surface-1` (`#0a0a0c`) | `band` utility — raised sections (Services, Stats) |
-| `--color-surface-2` (`#101014`) | Cards sitting on a band |
-| `band-ember` | The one high-contrast break per page |
+---
 
 ## Motion architecture
 
-- **Lenis** provides inertial scrolling, wired into GSAP's ticker so **ScrollTrigger** stays in sync.
-- **GSAP ScrollTrigger** drives the scroll-spy and the pinned split-scroll sections.
-- **Framer Motion** handles entrance reveals, masked headlines, page transitions, and pointer
-  interactions (magnetic buttons, spotlight cards).
-- **React Three Fiber** renders the particle fields.
+- **Framer Motion** handles entrance reveals, masked headlines, page transitions, the FAQ accordion,
+  and pointer interactions (magnetic buttons).
+- Native scrolling. The previous Lenis/GSAP smooth-scroll and Three.js particle fields were removed:
+  they cost ~200kB of JavaScript and several seconds of first paint on mobile data for no
+  conversion benefit.
+- The root `MotionConfig reducedMotion="user"` neutralises transform animations for visitors who
+  prefer reduced motion. Components must **not** branch their markup on `useReducedMotion` — it is
+  `false` during SSR, so doing that causes a hydration mismatch.
 
 ### Performance rules the code follows
 
 - **Nothing contentful waits on JavaScript.** The page-transition curtain runs only on client-side
   navigations, never the first load. Covering server-rendered HTML and starting content at
   `opacity: 0` pushed First Contentful Paint from ~0.35s to ~2.4s.
-- Source images are pre-optimised (WebP, sensibly sized). `public/assets` is ~1.4MB total; it was
-  9.8MB, including a 6.1MB PNG screenshot.
+- Source images are pre-optimised (WebP, sensibly sized).
 - Components that render the same image at two breakpoints share one `sizes` value, so the browser
   downloads one derivative instead of two.
-
-- The particle field does all per-particle work — wave displacement, pointer falloff, ring
-  formation, glow — **in a GLSL shader on the GPU**, not in a JS loop.
-- Three.js is **lazy-loaded** (`components/three/LazyParticleField.tsx`), so it is not in the
-  initial bundle.
-- Canvases **suspend their frameloop** when scrolled offscreen or when the tab is hidden.
-- Frame deltas are clamped so a backgrounded tab cannot jump the animation forward.
 - Every decorative animation is **disabled under `prefers-reduced-motion`**, in both CSS and JS.
 
 ---
@@ -150,11 +158,12 @@ continuous black scroll:
 
 - Skip-to-content link, visible focus rings, and a real keyboard-operable mobile menu
   (`aria-expanded`, Escape to close, scroll lock).
-- The scroll-spy entries are `<button>`s — the section is usable without scrolling.
+- The theme toggle is a labelled `<button>`; the FAQ is a proper disclosure pattern
+  (`aria-expanded`, `aria-controls`, `role="region"`).
 - Masked headline animations keep real spaces and text in the DOM, so the copy stays selectable and
   readable by assistive tech.
-- Form fields have persistent labels, `aria-invalid`, `aria-describedby`, and live regions for
-  status messages.
+- Form fields have visible, persistent labels, `aria-invalid`, `aria-describedby`, and live regions
+  for status messages.
 
 ---
 

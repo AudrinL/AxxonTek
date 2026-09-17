@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { imageWipe, viewportOnce } from "@/lib/motion";
 import { MaskedWords } from "@/components/motion/MaskedWords";
@@ -22,7 +22,6 @@ type StatementProps = {
  */
 export function Statement({ label, heading, accent = [], body, image, imageAlt }: StatementProps) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
@@ -62,7 +61,7 @@ export function Statement({ label, heading, accent = [], body, image, imageAlt }
             >
               <motion.div
                 className="absolute inset-[-8%]"
-                style={reduced ? undefined : { y: imageY }}
+                style={{ y: imageY }}
               >
                 <Image
                   src={image}

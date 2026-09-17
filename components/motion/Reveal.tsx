@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import type { ElementType, ReactNode } from "react";
 import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
 
@@ -13,8 +13,10 @@ type RevealProps = {
 };
 
 /**
- * Scroll-triggered entrance. Collapses to a plain fade (no movement) when the
- * visitor prefers reduced motion.
+ * Scroll-triggered entrance. The root `MotionConfig reducedMotion="user"`
+ * collapses it to a plain fade for visitors who prefer reduced motion — the
+ * markup itself must not depend on that preference, or SSR and the client
+ * disagree and React reports a hydration mismatch.
  */
 export function Reveal({
   children,
@@ -23,17 +25,12 @@ export function Reveal({
   delay = 0,
   variants = fadeUp,
 }: RevealProps) {
-  const reduced = useReducedMotion();
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
-
-  const resolved: Variants = reduced
-    ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.4 } } }
-    : variants;
 
   return (
     <MotionTag
       className={className}
-      variants={resolved}
+      variants={variants}
       initial="hidden"
       whileInView="show"
       viewport={viewportOnce}

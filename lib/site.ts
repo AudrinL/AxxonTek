@@ -36,6 +36,8 @@ export type Service = {
   icon: string;
   /** One line for cards and lists. */
   short: string;
+  /** Real photo for the card + page (see public/assets/photos/README.md). Empty = icon-only card. */
+  photo: string;
   lede: string;
   cta: string;
   introLabel: string;
@@ -50,6 +52,7 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "sourcing",
+    photo: "",
     title: "Talent Sourcing",
     eyebrow: "Talent",
     icon: "users",
@@ -83,6 +86,7 @@ export const services: Service[] = [
   },
   {
     slug: "interviews",
+    photo: "",
     title: "Technical Interviews",
     eyebrow: "Vetting",
     icon: "clipboard",
@@ -116,6 +120,7 @@ export const services: Service[] = [
   },
   {
     slug: "analytics",
+    photo: "",
     title: "Data & Analytics",
     eyebrow: "Data",
     icon: "chart",
@@ -149,6 +154,7 @@ export const services: Service[] = [
   },
   {
     slug: "security",
+    photo: "",
     title: "Security Systems",
     eyebrow: "Protection",
     icon: "lock",
@@ -182,6 +188,7 @@ export const services: Service[] = [
   },
   {
     slug: "infrastructure",
+    photo: "",
     title: "IT Infrastructure",
     eyebrow: "Foundations",
     icon: "server",
@@ -215,6 +222,7 @@ export const services: Service[] = [
   },
   {
     slug: "cloud",
+    photo: "",
     title: "Cloud & SaaS",
     eyebrow: "Scale",
     icon: "cloud",
@@ -306,3 +314,20 @@ export const faqs = [
     a: "That is common. We regularly take a single well-defined piece — a security install, a cloud migration, a hiring push — and work alongside an existing provider without disrupting them.",
   },
 ] as const;
+
+/**
+ * Real photographs of the team and workspace. Paths under /public. Leave a
+ * slot empty and the section falls back to its photo-less layout, so the
+ * site never shows a broken image. Shot list: public/assets/photos/README.md
+ */
+export const photos = {
+  /** 4:5 portrait. One engineer at their desk at Norrsken, looking at the camera or mid-conversation. */
+  hero: "",
+  /** 16:9. The team around a whiteboard or table — the "are you real?" photo. */
+  team: "",
+  /** 3:2. Norrsken Kigali — the building, the workspace, or the view from it. */
+  workspace: "",
+} as const;
+
+/** True when a photo slot has been filled. */
+export const hasPhoto = (path: string): path is string => path.length > 0;

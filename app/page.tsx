@@ -3,7 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { ProcessBand } from "@/components/sections/ProcessBand";
-import { FeatureGrid } from "@/components/sections/FeatureGrid";
+import { WhyUs } from "@/components/sections/WhyUs";
 import { Faq } from "@/components/sections/Faq";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { site } from "@/lib/site";
@@ -12,24 +12,6 @@ export const metadata: Metadata = {
   description: site.description,
   alternates: { canonical: "/" },
 };
-
-const whyUs = [
-  {
-    icon: "microscope",
-    title: "Researched before quoted",
-    body: "You are never priced on a guess. We study the problem first, then put a number on a scope we understand.",
-  },
-  {
-    icon: "users",
-    title: "No handoffs",
-    body: "The engineer on your first call is the engineer who builds it, and you keep their direct contact throughout.",
-  },
-  {
-    icon: "shield",
-    title: "Supported past launch",
-    body: "We stay involved after delivery, because the version that ships is rarely the version that lasts.",
-  },
-] as const;
 
 /**
  * Homepage, ordered for conversion. Each section answers the question the
@@ -50,14 +32,7 @@ export default function HomePage() {
       <Stats />
       <ServicesGrid />
       <ProcessBand />
-      <FeatureGrid
-        id="why"
-        eyebrow="Why AxxonTek"
-        heading={"Small on purpose. Senior by default."}
-        accent={["purpose."]}
-        lede="Four engineers, no account managers. That is not a limitation we apologise for — it is the reason the work fits."
-        features={whyUs}
-      />
+      <WhyUs />
       <Faq />
       <ContactSection />
     </>

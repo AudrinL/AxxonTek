@@ -61,7 +61,7 @@ export default function CareersPage() {
         surface="band"
       />
 
-      <div className="pb-[clamp(6rem,13vw,11rem)]">
+      <div className="section-y">
         <CtaBanner
           heading={"Don't see a listed role? Reach out anyway."}
           accent={["anyway."]}

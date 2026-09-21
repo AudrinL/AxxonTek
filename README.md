@@ -53,7 +53,7 @@ and a `503`. They never report a false success.
 
 ```
 app/
-├── layout.tsx              # Root shell: fonts, metadata, theme bootstrap, nav, footer
+├── layout.tsx              # Root shell: metadata, theme bootstrap, nav, footer
 ├── page.tsx                # Homepage
 ├── globals.css             # Light + dark tokens, base styles, utilities (Tailwind v4)
 ├── about|blog|careers/     # Content pages

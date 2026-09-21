@@ -96,8 +96,11 @@
 }
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), Georgia, serif;
+  /* Apple system font (San Francisco). Resolves to SF Pro on macOS / iOS /
+     iPadOS and falls back to the platform UI font elsewhere. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
@@ -238,7 +241,7 @@
   color: var(--color-mute);
 }
 
-/* Accent words in headlines: serif italic, orange. */
+/* Accent words in headlines: italic, orange. */
 @utility text-ember-gradient {
   background: linear-gradient(100deg, var(--color-ember-deep) 0%, var(--color-ember) 60%, var(--color-ember-soft) 100%);
   -webkit-background-clip: text;

@@ -7,6 +7,7 @@ import { Icon } from "@/components/Icon";
 import { hasPhoto, services } from "@/lib/site";
 import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
+import { VelocitySkew } from "@/components/motion/VelocitySkew";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
 
 /**
@@ -37,6 +38,7 @@ export function ServicesGrid() {
           </Reveal>
         </div>
 
+        <VelocitySkew>
         <motion.ul
           className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
           initial="hidden"
@@ -110,6 +112,7 @@ export function ServicesGrid() {
             </motion.li>
           ))}
         </motion.ul>
+        </VelocitySkew>
       </div>
     </section>
   );

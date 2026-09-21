@@ -11,6 +11,7 @@ import {
 } from "react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { useMotionTier } from "@/components/motion/MotionTier";
+import { BOOT_SESSION_KEY } from "@/lib/boot";
 
 /* ------------------------------------------------------------------ *
  * Signals — things the preloader waits for. Anything heavy that lands
@@ -34,8 +35,6 @@ const BootContext = createContext(false);
 export function useBootReady() {
   return useContext(BootContext);
 }
-
-export const BOOT_SESSION_KEY = "axxontek-boot";
 
 /** Timing, in ms. The floor stops a fast connection from flashing the overlay. */
 const MIN_DURATION = 1000;
@@ -74,6 +73,9 @@ export function BootProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const html = document.documentElement;
     if (html.dataset.boot !== "loading") {
+      // Missing entirely means React regenerated <html> (a hydration failure
+      // somewhere) and dropped the attribute; make sure the overlay hides.
+      if (!html.dataset.boot) html.dataset.boot = "skip";
       setReady(true);
       return;
     }
@@ -144,7 +146,16 @@ export function BootProvider({ children }: { children: ReactNode }) {
     };
 
     raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
+    // Browsers pause rAF in background tabs; never leave a visitor who opened
+    // the site behind another tab staring at the counter when they come back.
+    const cap = window.setTimeout(() => {
+      if (!finished) finish();
+    }, MAX_DURATION + 400);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(cap);
+    };
   }, [tier]);
 
   return (

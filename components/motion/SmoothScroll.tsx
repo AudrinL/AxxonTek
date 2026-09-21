@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactLenis, type LenisRef } from "lenis/react";
-import { useEffect, useRef, type ReactNode } from "react";
+import { ReactLenis, useLenis } from "lenis/react";
+import { useEffect, type ReactNode } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useMotionTier } from "@/components/motion/MotionTier";
 
@@ -9,22 +9,15 @@ import { useMotionTier } from "@/components/motion/MotionTier";
 const ANCHOR_OFFSET = -88;
 
 /**
- * Lenis smooth scroll on the window, driven by GSAP's ticker so the scroll
- * position, every ScrollTrigger and every scrubbed timeline advance in the
- * same frame. Lenis scrolls the *real* window, so framer-motion's
- * `useScroll`, IntersectionObserver and `getBoundingClientRect` all keep
- * working unchanged.
- *
- * Touch devices keep native scrolling (`syncTouch: false`) — it is cheaper
- * and what the platform's scrollbars and overscroll expect. Reduced-motion
- * visitors get native wheel scrolling too.
+ * Drives Lenis from GSAP's ticker so the scroll position, every
+ * ScrollTrigger and every scrubbed timeline advance in the same frame.
+ * Reads the instance through context: ReactLenis creates it in an effect
+ * and publishes it via state, so a parent's mount effect would see nothing.
  */
-export function SmoothScroll({ children }: { children: ReactNode }) {
-  const ref = useRef<LenisRef>(null);
-  const tier = useMotionTier();
+function TickerSync() {
+  const lenis = useLenis();
 
   useEffect(() => {
-    const lenis = ref.current?.lenis;
     if (!lenis) return;
 
     const update = () => ScrollTrigger.update();
@@ -38,12 +31,26 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       lenis.off("scroll", update);
       gsap.ticker.remove(tick);
     };
-  }, []);
+  }, [lenis]);
+
+  return null;
+}
+
+/**
+ * Lenis smooth scroll on the window. Lenis scrolls the *real* window, so
+ * framer-motion's `useScroll`, IntersectionObserver and
+ * `getBoundingClientRect` all keep working unchanged.
+ *
+ * Touch devices keep native scrolling (`syncTouch: false`) — it is cheaper
+ * and what the platform's scrollbars and overscroll expect. Reduced-motion
+ * visitors get native wheel scrolling too.
+ */
+export function SmoothScroll({ children }: { children: ReactNode }) {
+  const tier = useMotionTier();
 
   return (
     <ReactLenis
       root
-      ref={ref}
       options={{
         autoRaf: false,
         lerp: 0.1,
@@ -52,6 +59,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         anchors: { offset: ANCHOR_OFFSET },
       }}
     >
+      <TickerSync />
       {children}
     </ReactLenis>
   );

@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Fragment } from "react";
-import { easeOutExpo, viewportOnce, wordMask } from "@/lib/motion";
+import { Fragment, useLayoutEffect, useRef, useState } from "react";
+import { easeOutExpo, lineMask, viewportOnce, wordMask } from "@/lib/motion";
+import { useBootReady } from "@/components/motion/Boot";
 
 type MaskedWordsProps = {
   text: string;
@@ -10,20 +11,26 @@ type MaskedWordsProps = {
   /** Words matching these (case-insensitive) get the ember gradient treatment. */
   accent?: string[];
   delay?: number;
-  /** Render immediately rather than waiting for the element to scroll into view. */
+  /** Render immediately (once the preloader has lifted) rather than waiting for the element to scroll into view. */
   immediate?: boolean;
   as?: "h1" | "h2" | "h3" | "p" | "span";
+  /**
+   * "words" staggers every word; "lines" measures where the text wraps and
+   * lifts each line as one piece — calmer, and what big display type wants.
+   */
+  mode?: "words" | "lines";
 };
 
 /**
  * Headline reveal: each word sits in its own overflow-hidden mask and rises
- * into place on a staggered expo curve. Line breaks are preserved by wrapping
- * on real spaces, so long headlines still reflow responsively.
+ * into place on an expo curve. Line breaks are preserved by wrapping on real
+ * spaces, so long headlines still reflow responsively.
  *
  * Markup is identical on the server and the client on purpose: branching on
  * `useReducedMotion` here caused a hydration mismatch for reduced-motion
  * visitors. The root `MotionConfig reducedMotion="user"` neutralises the
- * transform animation for them instead.
+ * transform animation for them instead. Line indices only affect timing,
+ * never markup, so measuring them after hydration is safe.
  */
 export function MaskedWords({
   text,
@@ -32,27 +39,67 @@ export function MaskedWords({
   delay = 0,
   immediate = false,
   as = "h2",
+  mode = "words",
 }: MaskedWordsProps) {
-  const Tag = motion[as];
+  // Every allowed tag has the same props here; the cast keeps the ref typed.
+  const Tag = motion[as] as typeof motion.h2;
   const accentSet = new Set(accent.map((w) => w.toLowerCase()));
+  const ready = useBootReady();
 
   // Preserve author-provided hard breaks written as "\n".
   const lines = text.split("\n");
 
+  /* ---------- line measurement (mode="lines") ---------- */
+  const ref = useRef<HTMLHeadingElement>(null);
+  const [lineOf, setLineOf] = useState<number[]>([]);
+
+  useLayoutEffect(() => {
+    if (mode !== "lines") return;
+    const el = ref.current;
+    if (!el) return;
+
+    const measure = () => {
+      const masks = el.querySelectorAll<HTMLElement>("[data-mask]");
+      const tops: number[] = [];
+      const next: number[] = [];
+      masks.forEach((m) => {
+        const top = m.offsetTop;
+        let idx = tops.findIndex((t) => Math.abs(t - top) < 4);
+        if (idx === -1) {
+          tops.push(top);
+          idx = tops.length - 1;
+        }
+        next.push(idx);
+      });
+      setLineOf((prev) =>
+        prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next,
+      );
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [mode, text]);
+
   const animateProps = immediate
-    ? { animate: "show" as const }
+    ? { animate: ready ? ("show" as const) : ("hidden" as const) }
     : { whileInView: "show" as const, viewport: viewportOnce };
 
+  const parentVariants =
+    mode === "lines"
+      ? { hidden: {}, show: {} }
+      : { hidden: {}, show: { transition: { staggerChildren: 0.055, delayChildren: delay } } };
+
+  let wordIndexGlobal = 0;
 
   return (
     <Tag
+      ref={ref}
       className={className}
       initial="hidden"
       {...animateProps}
-      variants={{
-        hidden: {},
-        show: { transition: { staggerChildren: 0.055, delayChildren: delay } },
-      }}
+      variants={parentVariants}
       aria-label={text.replace(/\n/g, " ")}
     >
       {lines.map((line, lineIndex) => (
@@ -60,13 +107,15 @@ export function MaskedWords({
           {line.split(" ").map((word, wordIndex, allWords) => {
             const clean = word.replace(/[.,—:;!?]/g, "").toLowerCase();
             const isAccent = accentSet.has(clean);
+            const i = wordIndexGlobal++;
             return (
               <Fragment key={`${lineIndex}-${wordIndex}`}>
-                <span className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+                <span data-mask className="inline-block overflow-hidden pb-[0.12em] align-bottom">
                   <motion.span
                     className={`inline-block ${isAccent ? "font-display text-ember italic font-normal" : ""}`}
-                    variants={wordMask}
-                    transition={{ duration: 1, ease: easeOutExpo }}
+                    variants={mode === "lines" ? lineMask : wordMask}
+                    custom={mode === "lines" ? { line: lineOf[i] ?? 0, base: delay } : undefined}
+                    transition={mode === "lines" ? undefined : { duration: 1, ease: easeOutExpo }}
                   >
                     {word}
                   </motion.span>

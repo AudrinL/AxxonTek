@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
+import { VelocitySkew } from "@/components/motion/VelocitySkew";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
 import { products } from "@/lib/site";
 import { ProductVisual } from "@/components/sections/ProductVisual";
@@ -38,6 +39,7 @@ export function Products() {
           </Reveal>
         </div>
 
+        <VelocitySkew>
         <motion.ul
           className="grid gap-4 md:grid-cols-2"
           initial="hidden"
@@ -108,6 +110,7 @@ export function Products() {
             );
           })}
         </motion.ul>
+        </VelocitySkew>
       </div>
     </section>
   );

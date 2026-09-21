@@ -23,7 +23,7 @@ type VelocitySkewProps = {
  * Always renders the same element so the markup matches on the server; the
  * subscription is simply skipped for tiers without flourishes.
  */
-export function VelocitySkew({ children, className, max = 3, threshold = 70 }: VelocitySkewProps) {
+export function VelocitySkew({ children, className, max = 2.5, threshold = 90 }: VelocitySkewProps) {
   const { flourishes } = useMotionBudget();
   const velocity = useMotionValue(0);
 

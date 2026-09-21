@@ -2,27 +2,68 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRef } from "react";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { easeOutExpo } from "@/lib/motion";
 import { hasPhoto, photos, trustPoints } from "@/lib/site";
 import { Icon } from "@/components/Icon";
+import { useBootReady } from "@/components/motion/Boot";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { MaskedWords } from "@/components/motion/MaskedWords";
-import { LazyAfricaField } from "@/components/three/LazyAfricaField";
+import { Scramble } from "@/components/motion/Scramble";
+import { HeroField } from "@/components/three/HeroField";
 
-const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, ease: easeOutExpo, delay },
-});
+const hidden = { opacity: 0, y: 18 };
+const shown = { opacity: 1, y: 0 };
 
 /**
  * The hero has one job: tell a stranger what we sell and give them one clear
  * next step. Copy on the left; on the right, the continent as a living
  * network with Kigali at its centre — or a real photo of us, once we have one.
+ *
+ * Entrances wait for the preloader (`useBootReady`) so they play in front of
+ * the visitor rather than behind the overlay. Scrolling scrubs a timeline:
+ * the copy drifts up and dims while the 3D field (HeroField) tilts, pulls
+ * back and scatters.
+ *
+ * Not `isolate`: the ambient layers sit at `-z-10` in the root stacking
+ * context so the shared WebGL canvas (z-0) draws above them and below the
+ * positioned badges.
  */
 export function Hero() {
+  const ready = useBootReady();
+  const section = useRef<HTMLElement>(null);
+  const copy = useRef<HTMLDivElement>(null);
+
+  const rise = (delay: number) => ({
+    initial: hidden,
+    animate: ready ? shown : hidden,
+    transition: { duration: 0.8, ease: easeOutExpo, delay },
+  });
+
+  useGSAP(
+    () => {
+      if (!copy.current) return;
+      gsap.to(copy.current, {
+        y: -72,
+        opacity: 0.25,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    },
+    { scope: section },
+  );
+
   return (
-    <section className="relative isolate flex min-h-[min(92svh,58rem)] items-center overflow-hidden pt-28 pb-[clamp(4rem,8vw,7rem)]">
+    <section
+      ref={section}
+      className="relative flex min-h-[min(92svh,58rem)] items-center overflow-hidden pt-28 pb-[clamp(4rem,8vw,7rem)]"
+    >
       {/* Warm bloom + a dot grid that fades out downwards. */}
       <div
         aria-hidden
@@ -36,14 +77,20 @@ export function Hero() {
       <div className="container-x w-full">
         <div className="grid items-center gap-x-12 gap-y-16 lg:grid-cols-[1fr_1fr]">
           {/* Copy */}
-          <div className="max-w-[36rem]">
+          <div ref={copy} className="max-w-[36rem]">
             <motion.p className="eyebrow mb-7" {...rise(0.05)}>
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-ember" />
-              Kigali, Rwanda · Taking on projects for {new Date().getFullYear()}
+              <Scramble
+                text={`Kigali, Rwanda · Taking on projects for ${new Date().getFullYear()}`}
+                immediate
+                delay={0.2}
+                duration={1100}
+              />
             </motion.p>
 
             <MaskedWords
               as="h1"
+              mode="lines"
               text="Software built for how Africa actually works."
               accent={["actually"]}
               className="text-display max-w-[14ch]"
@@ -89,7 +136,7 @@ export function Hero() {
           <motion.div
             className="relative w-full"
             initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 1.1, ease: easeOutExpo, delay: 0.35 }}
           >
             {hasPhoto(photos.hero) ? <HeroPhoto src={photos.hero} /> : <HeroMap />}
@@ -107,7 +154,7 @@ export function Hero() {
 function HeroMap() {
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-[38rem] lg:mr-0">
-      <LazyAfricaField className="absolute inset-0" />
+      <HeroField className="absolute inset-0" />
 
       <div className="pointer-events-none absolute bottom-0 left-0 flex items-center gap-3 rounded-full border border-hairline bg-ink-raised/90 py-2 pr-5 pl-2 shadow-card backdrop-blur">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">
@@ -158,11 +205,12 @@ function HeroPhoto({ src }: { src: string }) {
 }
 
 function ReplyBadge({ className = "" }: { className?: string }) {
+  const ready = useBootReady();
   return (
     <motion.div
       className={`pointer-events-none absolute flex items-center gap-3 rounded-full border border-hairline bg-ink-raised/90 py-2 pr-5 pl-2 shadow-card backdrop-blur ${className}`}
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
       transition={{ duration: 0.8, ease: easeOutExpo, delay: 1 }}
     >
       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ember text-white">

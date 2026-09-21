@@ -43,6 +43,21 @@ export const wordMask: Variants = {
   },
 };
 
+/**
+ * Per-line headline reveal. Every word still sits in its own mask, but words
+ * on the same measured line share a delay, so each line rises as one piece.
+ * `custom` is `{ line, base }` — the word's line index and the headline's
+ * own delay — supplied by MaskedWords in `mode="lines"`.
+ */
+export const LINE_STAGGER = 0.09;
+export const lineMask: Variants = {
+  hidden: { y: "110%" },
+  show: ({ line = 0, base = 0 }: { line?: number; base?: number } = {}) => ({
+    y: "0%",
+    transition: { duration: 1.1, ease: easeOutExpo, delay: base + line * LINE_STAGGER },
+  }),
+};
+
 /** Clip-path wipe used for imagery. */
 export const imageWipe: Variants = {
   hidden: { clipPath: "inset(0 0 100% 0)", scale: 1.08 },

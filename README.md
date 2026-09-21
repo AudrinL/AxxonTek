@@ -69,14 +69,20 @@ components/
 ├── layout/                 # Nav, Footer, Logo, ThemeToggle, PageTransition, ScrollProgress
 ├── sections/               # Hero, Stats, ServicesGrid, Products (+ProductVisual), ProcessBand,
 │                           # WhyUs, Faq, ContactSection, FeatureGrid, CtaBanner, PageHero, ...
-├── three/                  # AfricaField (+ lazy wrapper)
-├── motion/                 # Reveal, MaskedWords, MagneticButton
+├── three/                  # GlobalCanvas (+loader): the one WebGL context
+│                           # HeroField -> HeroScene -> AfricaScene: the hero's 3D field
+│                           # AfricaStatic (SVG fallback), africa-geo (shared geometry)
+├── motion/                 # MotionTier, SmoothScroll, Boot (preloader), VelocitySkew,
+│                           # Reveal, MaskedWords, Scramble, MagneticButton, useHydrated
 ├── forms/                  # ContactForm, NewsletterForm
 └── Icon.tsx                # Line-icon set
 
 lib/
 ├── site.ts                 # All copy + navigation data — services, products, process, FAQ, photos
 ├── motion.ts               # Shared easings and variants
+├── capabilities.ts         # Motion tier detection (full / lite / off) and per-tier budgets
+├── gsap.ts                 # GSAP + ScrollTrigger registration (import from here)
+├── boot.ts                 # Preloader session key shared by layout and Boot
 ├── validation.ts           # Form validation shared by the API routes
 └── supabase.ts             # Server-side Supabase client
 ```
@@ -140,28 +146,72 @@ touching components.
 
 ## Motion architecture
 
-- **Framer Motion** handles entrance reveals, masked headlines, page transitions, the FAQ accordion,
-  and pointer interactions (magnetic buttons).
-- **Three.js** draws one thing: the hero's Africa network (`components/three/AfricaField.tsx`) — a
-  point cloud of the continent, orange hub cities, arcs travelling out from Kigali. It is lazy-loaded
-  after hydration, pauses offscreen / in hidden tabs, renders one static frame under
-  `prefers-reduced-motion`, and re-colours itself when the theme changes. It is replaced by a real
-  photo as soon as `photos.hero` is set.
-- Native scrolling. The previous Lenis/GSAP smooth-scroll and the decorative particle fields were
-  removed: they cost several seconds of first paint on mobile data for no conversion benefit.
-- The root `MotionConfig reducedMotion="user"` neutralises transform animations for visitors who
-  prefer reduced motion. Components must **not** branch their markup on `useReducedMotion` — it is
-  `false` during SSR, so doing that causes a hydration mismatch.
+The site has one rule for motion: **the visitor's device decides how much it gets.**
+`lib/capabilities.ts` sorts every visitor into a tier during the first client render, and every
+expensive effect asks for that tier before it mounts:
+
+| Tier | Who | What runs |
+| --- | --- | --- |
+| `full` | Desktop-class device, fine pointer, decent connection | Everything: smooth scroll, 3D at up to DPR 2, pointer effects, flourishes |
+| `lite` | Phones, ≤4 GB memory, 3G | Smooth wheel scroll, 3D at DPR 1 with fewer points, no pointer effects |
+| `off` | `prefers-reduced-motion`, Data Saver, 2G, no WebGL2 | Native scrolling, static SVG hero, no three.js download, no preloader |
+
+Override it from devtools for testing: `localStorage.setItem("axxontek-motion", "off")` (or
+`lite` / `full`), then reload.
+
+### The layers
+
+- **Smooth scroll** — [Lenis](https://lenis.darkroom.engineering/) on the window
+  (`components/motion/SmoothScroll.tsx`), driven by GSAP's ticker so scroll, ScrollTrigger and
+  scrubbed timelines advance in the same frame. Lenis scrolls the real window, so framer-motion's
+  `useScroll`, IntersectionObserver and `getBoundingClientRect` keep working. Touch devices keep
+  native scrolling. Lock scrolling with `lenis.stop()` / `start()` (the nav drawer does), never with
+  `overflow` on `<body>`.
+- **Scroll timelines** — GSAP ScrollTrigger, registered once in `lib/gsap.ts`. The hero scrubs a
+  timeline (copy drifts up and dims; the 3D field tilts, pulls back and scatters) by writing scroll
+  progress into a ref that the scene reads every frame — no React re-renders on scroll.
+- **One WebGL context** — `components/three/GlobalCanvas.tsx` is a fixed, transparent canvas behind
+  the page that never unmounts. Scenes live where they appear in the DOM: render a drei `<View>`
+  with a positioned `className`, put R3F children inside, and the canvas draws them into that
+  element's rectangle (only while it is on screen). The hero (`HeroField`) is the first; project
+  cards are next. three.js (~230 kB gzipped across three chunks) loads after hydration, and never
+  for the `off` tier.
+- **Hero field** — `AfricaScene.tsx`: a point cloud of the continent, orange hubs, arcs from Kigali.
+  The vertex shader scatters the points as the hero scrolls out and parts them around the pointer.
+  `AfricaStatic.tsx` is the same geometry as a dotted SVG, in the server HTML, so the hero is never
+  empty: it is the visual for the `off` tier and fades out under the 3D everywhere else.
+- **Preloader** — `components/motion/Boot.tsx`. A wordmark, a bar and a rolling counter that track
+  real work (system fonts settling, the WebGL bundle arriving), floored at 1 s and capped at 2.4 s.
+  It is in the server HTML so it paints instantly; an inline script in `app/layout.tsx` sets
+  `html[data-boot]` before first paint so it never shows twice in a session, nor for reduced-motion
+  or Data Saver visitors. Hero entrances wait for `useBootReady()` so they play in front of the
+  visitor rather than behind the overlay. **Trade-off:** on a first visit the hero's largest text
+  appears ~1 s later than it would without the overlay; that is a brand decision, and the two knobs
+  are `MIN_DURATION` / `MAX_DURATION`.
+- **Text** — `MaskedWords` gained `mode="lines"`: it measures where the headline wraps and lifts
+  each line as one piece (the hero uses it). `Scramble` decodes labels character by character; the
+  final text is what the server renders and what assistive tech reads.
+- **Velocity skew** — `VelocitySkew` leans a block by scroll velocity and springs back. Opt-in per
+  grid (services, products); a skew on a layout would break every `position: fixed` descendant.
+- **Framer Motion** still handles entrance reveals, page transitions, the FAQ accordion and
+  magnetic buttons. The root `MotionConfig reducedMotion="user"` neutralises transform animations
+  for reduced-motion visitors. Components must **not** branch their markup on `useReducedMotion` or
+  on the motion tier — both differ between server and client, and that is a hydration mismatch.
+  Gate *presence* with `useHydrated()` instead (see `GlobalCanvasLoader`).
 
 ### Performance rules the code follows
 
-- **Nothing contentful waits on JavaScript.** The page-transition curtain runs only on client-side
-  navigations, never the first load. Covering server-rendered HTML and starting content at
-  `opacity: 0` pushed First Contentful Paint from ~0.35s to ~2.4s.
+- **Nothing heavy is in the initial bundle.** three.js, React Three Fiber and the scene arrive
+  after hydration; the `off` tier never requests them. An earlier Lenis/GSAP build was removed
+  because it cost seconds of first paint on mobile data — this one keeps that lesson by tiering:
+  phones get native touch scrolling and DPR 1, slow connections get a static page.
+- The page-transition curtain runs only on client-side navigations, never the first load. The
+  preloader is the one deliberate exception, and it is skipped for repeat visits in a session.
 - Source images are pre-optimised (WebP, sensibly sized).
 - Components that render the same image at two breakpoints share one `sizes` value, so the browser
   downloads one derivative instead of two.
-- Every decorative animation is **disabled under `prefers-reduced-motion`**, in both CSS and JS.
+- Every decorative animation is **disabled under `prefers-reduced-motion`**, in CSS, in JS, and by
+  the tier system.
 
 ---
 

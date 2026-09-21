@@ -9,6 +9,7 @@ import {
   useScroll,
   useReducedMotion,
 } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { useEffect, useState } from "react";
 import { easeOutExpo } from "@/lib/motion";
 import { primaryNav, services, site } from "@/lib/site";
@@ -21,6 +22,7 @@ export function Nav() {
   const pathname = usePathname();
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
+  const lenis = useLenis();
 
   const [condensed, setCondensed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,13 +34,13 @@ export function Nav() {
     setMenuOpen(false);
   }, [pathname]);
 
-  // Lock body scroll behind the drawer.
+  // Lock scroll behind the drawer. Lenis owns scrolling, so ask it rather
+  // than setting overflow on <body> (which it would fight).
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
+    if (!menuOpen) return;
+    lenis?.stop();
+    return () => lenis?.start();
+  }, [menuOpen, lenis]);
 
   // Escape closes the drawer.
   useEffect(() => {

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useMotionBudget, useMotionTier } from "@/components/motion/MotionTier";
 import { useHydrated } from "@/components/motion/useHydrated";
+import { useRegisterScene } from "@/lib/scenes";
 import { AfricaStatic } from "./AfricaStatic";
 
 const HeroScene = dynamic(() => import("./HeroScene"), { ssr: false, loading: () => null });
@@ -25,6 +26,7 @@ export function HeroField({ className = "" }: { className?: string }) {
   const hydrated = useHydrated();
   const { pointStep, pointerEffects } = useMotionBudget();
   const [live, setLive] = useState(false);
+  useRegisterScene(tier !== "off");
 
   useGSAP(
     () => {

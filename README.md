@@ -5,7 +5,7 @@ websites for African SMEs and individuals, IT consultation, an innovation lab (T
 smart-home and camera installation.
 
 Built with **Next.js 15** (App Router), **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**.
-Light theme by default with orange as the brand accent; visitors can switch to dark mode.
+One light theme with orange as the brand accent.
 
 ---
 
@@ -55,7 +55,7 @@ and a `503`. They never report a false success.
 app/
 ├── layout.tsx              # Root shell: metadata, theme bootstrap, nav, footer
 ├── page.tsx                # Homepage
-├── globals.css             # Light + dark tokens, base styles, utilities (Tailwind v4)
+├── globals.css             # Design tokens, base styles, utilities (Tailwind v4)
 ├── about|blog|careers/     # Content pages
 ├── contact/                # Contact page (accepts ?email= prefill from the hero)
 ├── privacy|terms/          # Legal pages
@@ -66,11 +66,11 @@ app/
 └── not-found.tsx           # 404
 
 components/
-├── layout/                 # Nav, Footer, Logo, ThemeToggle, PageTransition, ScrollProgress
-├── sections/               # Hero, Stats, ServicesGrid, Products (+ProductVisual), ProcessBand,
+├── layout/                 # Nav, Footer, Logo, PageTransition, ScrollProgress
+├── sections/               # Hero (+HeroIllustration), Stats, ServicesGrid, Products (+ProductVisual), ProcessBand,
 │                           # WhyUs, Faq, ContactSection, FeatureGrid, CtaBanner, PageHero, ...
 ├── three/                  # GlobalCanvas (+loader): the one WebGL context
-│                           # HeroField -> HeroScene -> AfricaScene: the hero's 3D field
+│                           # HeroField -> HeroScene -> AfricaScene: the Africa point field (parked)
 │                           # AfricaStatic (SVG fallback), africa-geo (shared geometry)
 ├── motion/                 # MotionTier, SmoothScroll, Boot (preloader), VelocitySkew,
 │                           # Reveal, MaskedWords, Scramble, MagneticButton, useHydrated
@@ -124,23 +124,38 @@ Rules this order follows:
 
 ### Theme
 
-Light is the default. `[data-theme="dark"]` on `<html>` flips every token; the choice is stored in
-`localStorage` under `axxontek-theme` and applied by an inline script in `app/layout.tsx` before
-first paint, so there is no flash. The system preference is deliberately not consulted.
+One light palette, no dark mode. Every colour in the codebase is a semantic token (`bg-ink`,
+`text-bone`, `text-mute`, `border-hairline`, `bg-ember`, `bg-ember-tint`, …) defined once in
+`app/globals.css`. Components never hard-code colour values, so adding a surface means adding a
+token, not touching components.
 
-Every colour in the codebase is a semantic token (`bg-ink`, `text-bone`, `text-mute`,
-`border-hairline`, `bg-ember`, `bg-ember-tint`, …) defined once per theme in `app/globals.css`.
-Components never hard-code light or dark values, so adding a surface means adding a token, not
-touching components.
+| Token | Value | Use |
+| --- | --- | --- |
+| `ink` | warm white | Page ground |
+| `ink-raised` | white | Cards, inputs |
+| `surface-1` / `band` | warm sand | Alternating sections |
+| `bone` / `mute` / `faint` | ink → grey | Text hierarchy |
+| `ember` / `ember-deep` / `ember-soft` / `ember-tint` | orange scale | Brand accent, buttons, icon wells |
+| `band-ember` | orange gradient | The one high-contrast break per page |
 
-| Token | Light | Dark | Use |
-| --- | --- | --- | --- |
-| `ink` | warm white | near black | Page ground |
-| `ink-raised` | white | raised charcoal | Cards, inputs |
-| `surface-1` / `band` | warm sand | warm charcoal | Alternating sections |
-| `bone` / `mute` / `faint` | ink → grey | bone → grey | Text hierarchy |
-| `ember` / `ember-deep` / `ember-tint` | orange | orange (brighter) | Brand accent, buttons, icon wells |
-| `band-ember` | solid orange gradient | deep ember | The one high-contrast break per page |
+### Hero
+
+The hero asks for one thing — a call — so it carries a headline, one sentence, one button and one
+line of reassurance, nothing else (`components/sections/Hero.tsx`). It is full-viewport and edge to
+edge: `photos.hero` from `lib/site.ts` is desaturated and multiplied with an orange gradient across
+the whole section, a white slice cuts in from the right on a diagonal, and the illustration sits
+across the edge, anchored to the bottom-right corner of the screen so it fills wide displays and
+bleeds off like a real object. On phones the slice becomes a bottom band with a diagonal top.
+
+The illustration (`HeroIllustration.tsx`) is drawn entirely in code — a browser window showing a
+miniature AxxonTek page, a phone, and two live smart-installation cards — in the brand's own
+tokens, with a light perspective and a slow float. It weighs nothing and needs no assets. Sizes
+inside it are in `em` scaled by container width (`cqw`), so it keeps its proportions at every size.
+
+The header starts white on orange there and returns to its normal colours as it condenses
+(`inverted` in `Nav.tsx`). Replace the photo by dropping a 16:9 image in `public/assets/` and
+pointing `photos.hero` at it — keep the subject on the left third so the copy sits over the darker
+side.
 
 ---
 
@@ -168,18 +183,18 @@ Override it from devtools for testing: `localStorage.setItem("axxontek-motion", 
   native scrolling. Lock scrolling with `lenis.stop()` / `start()` (the nav drawer does), never with
   `overflow` on `<body>`.
 - **Scroll timelines** — GSAP ScrollTrigger, registered once in `lib/gsap.ts`. The hero scrubs a
-  timeline (copy drifts up and dims; the 3D field tilts, pulls back and scatters) by writing scroll
-  progress into a ref that the scene reads every frame — no React re-renders on scroll.
+  timeline (the photo drifts, the copy lifts and dims, the illustration lags behind for depth).
 - **One WebGL context** — `components/three/GlobalCanvas.tsx` is a fixed, transparent canvas behind
-  the page that never unmounts. Scenes live where they appear in the DOM: render a drei `<View>`
-  with a positioned `className`, put R3F children inside, and the canvas draws them into that
-  element's rectangle (only while it is on screen). The hero (`HeroField`) is the first; project
-  cards are next. three.js (~230 kB gzipped across three chunks) loads after hydration, and never
-  for the `off` tier.
-- **Hero field** — `AfricaScene.tsx`: a point cloud of the continent, orange hubs, arcs from Kigali.
-  The vertex shader scatters the points as the hero scrolls out and parts them around the pointer.
-  `AfricaStatic.tsx` is the same geometry as a dotted SVG, in the server HTML, so the hero is never
-  empty: it is the visual for the `off` tier and fades out under the 3D everywhere else.
+  the page. Scenes live where they appear in the DOM: render a drei `<View>` with a positioned
+  `className`, put R3F children inside, call `useRegisterScene()`, and the canvas draws them into
+  that element's rectangle (only while it is on screen). The canvas — and three.js with it, ~230 kB
+  gzipped — is only loaded while a scene is registered (`lib/scenes.ts`), after hydration, and
+  never for the `off` tier. No page uses one at the moment.
+- **Africa field (parked)** — `HeroField` → `AfricaScene.tsx`: a point cloud of the continent,
+  orange hubs, arcs from Kigali; the vertex shader scatters the points on scroll and parts them
+  around the pointer, with `AfricaStatic.tsx` as its no-JS fallback. It was the first hero visual
+  and is kept for a section that wants it; drop `<HeroField className="absolute inset-0" />` in a
+  positioned box. The dotted SVG also appears inside the hero illustration's mini page.
 - **Preloader** — `components/motion/Boot.tsx`. A wordmark, a bar and a rolling counter that track
   real work (system fonts settling, the WebGL bundle arriving), floored at 1 s and capped at 2.4 s.
   It is in the server HTML so it paints instantly; an inline script in `app/layout.tsx` sets

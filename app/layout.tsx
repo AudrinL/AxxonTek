@@ -55,19 +55,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbfaf7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0b0a" },
-  ],
+  themeColor: "#fbfaf7",
 };
-
-/**
- * Applies the stored theme before first paint so a dark-mode visitor never
- * sees a light flash. Light is the default when nothing is stored — the
- * system preference is deliberately not consulted, the site is light-first.
- * Must match STORAGE_KEY in components/layout/ThemeToggle.tsx.
- */
-const themeBootstrap = `(function(){try{var t=localStorage.getItem("axxontek-theme");if(t==="dark"){document.documentElement.dataset.theme="dark"}}catch(e){}})();`;
 
 /**
  * Decides before first paint whether the preloader shows. It runs once per
@@ -82,7 +71,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
         <script dangerouslySetInnerHTML={{ __html: bootBootstrap }} />
         <noscript>
           <style>{`.boot{display:none!important}`}</style>

@@ -286,8 +286,8 @@ export const faqs = [
  * site never shows a broken image. Shot list: public/assets/photos/README.md
  */
 export const photos = {
-  /** 4:5 portrait. One engineer at their desk at Norrsken, looking at the camera or mid-conversation. */
-  hero: "",
+  /** 16:9 landscape. Full-bleed backdrop of the homepage hero, shown under an orange duotone. */
+  hero: "/assets/hero.webp",
   /** 16:9. The team around a whiteboard or table — the "are you real?" photo. */
   team: "",
   /** 3:2. Norrsken Kigali — the building, the workspace, or the view from it. */

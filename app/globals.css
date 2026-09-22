@@ -3,9 +3,9 @@
 /* ------------------------------------------------------------------ *
  * Theme values
  *
- * Light is the default. `[data-theme="dark"]` on <html> flips every
- * semantic token; the inline script in app/layout.tsx sets it before
- * first paint from localStorage so there is no flash.
+ * One light palette. Every colour in the codebase is a semantic token
+ * defined here, so a surface change is a token change, not a component
+ * change.
  * ------------------------------------------------------------------ */
 :root {
   color-scheme: light;
@@ -33,37 +33,10 @@
   --t-hairline: rgba(23, 20, 15, 0.09);
   --t-hairline-strong: rgba(23, 20, 15, 0.18);
 
-  /* Shadows (light only reads them; dark zeroes them out) */
+  /* Shadows */
   --shadow-card: 0 1px 2px rgba(23, 20, 15, 0.04), 0 8px 24px -12px rgba(23, 20, 15, 0.12);
   --shadow-card-hover: 0 2px 4px rgba(23, 20, 15, 0.05), 0 20px 40px -16px rgba(232, 93, 4, 0.22);
   --shadow-nav: 0 1px 0 rgba(23, 20, 15, 0.06), 0 8px 24px -16px rgba(23, 20, 15, 0.18);
-}
-
-[data-theme="dark"] {
-  color-scheme: dark;
-
-  --t-ink: #0c0b0a;
-  --t-ink-raised: #14120f;
-  --t-ink-panel: #1a1714;
-  --t-surface-0: #0c0b0a;
-  --t-surface-1: #121009;
-  --t-surface-2: #1a1714;
-
-  --t-bone: #f5f2ed;
-  --t-mute: #a49d94;
-  --t-faint: #6f6861;
-
-  --t-ember: #f26a1b;
-  --t-ember-soft: #ff8a45;
-  --t-ember-deep: #b84700;
-  --t-ember-tint: rgba(242, 106, 27, 0.12);
-
-  --t-hairline: rgba(255, 255, 255, 0.09);
-  --t-hairline-strong: rgba(255, 255, 255, 0.18);
-
-  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.02);
-  --shadow-card-hover: 0 0 0 1px rgba(242, 106, 27, 0.35), 0 24px 48px -24px rgba(242, 106, 27, 0.35);
-  --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* ------------------------------------------------------------------ *
@@ -214,21 +187,14 @@
   border-bottom: 1px solid var(--color-hairline);
 }
 
-/* The page's one high-contrast break: solid orange in light, deep ember in
-   dark. Text inside is always white, so children use `text-white`. */
+/* The page's one high-contrast break: solid orange. Text inside is always
+   white, so children use `text-white`. */
 @utility band-ember {
   color: #fff;
   background:
     radial-gradient(90% 120% at 100% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
     radial-gradient(70% 90% at 0% 100%, rgba(0, 0, 0, 0.14), transparent 60%),
     linear-gradient(135deg, var(--color-ember) 0%, var(--color-ember-deep) 100%);
-}
-[data-theme="dark"] .band-ember {
-  background:
-    radial-gradient(90% 120% at 100% 0%, rgba(255, 138, 69, 0.22), transparent 55%),
-    linear-gradient(135deg, #2a1204 0%, #170a02 100%);
-  border-top: 1px solid rgba(242, 106, 27, 0.28);
-  border-bottom: 1px solid rgba(242, 106, 27, 0.28);
 }
 
 /* Eyebrow label above section headings */
@@ -274,7 +240,7 @@
   border-top: 1px solid var(--color-hairline);
 }
 
-/* Card: raised surface with a soft shadow in light, a hairline in dark. */
+/* Card: raised surface with a soft shadow. */
 @utility card {
   background: var(--color-ink-raised);
   border: 1px solid var(--color-hairline);

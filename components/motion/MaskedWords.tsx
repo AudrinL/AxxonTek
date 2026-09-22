@@ -8,8 +8,10 @@ import { useBootReady } from "@/components/motion/Boot";
 type MaskedWordsProps = {
   text: string;
   className?: string;
-  /** Words matching these (case-insensitive) get the ember gradient treatment. */
+  /** Words matching these (case-insensitive) get the italic accent treatment. */
   accent?: string[];
+  /** Colour class for accent words. Ember by default; pass a light one over the orange hero. */
+  accentClassName?: string;
   delay?: number;
   /** Render immediately (once the preloader has lifted) rather than waiting for the element to scroll into view. */
   immediate?: boolean;
@@ -36,6 +38,7 @@ export function MaskedWords({
   text,
   className,
   accent = [],
+  accentClassName = "text-ember",
   delay = 0,
   immediate = false,
   as = "h2",
@@ -112,7 +115,7 @@ export function MaskedWords({
               <Fragment key={`${lineIndex}-${wordIndex}`}>
                 <span data-mask className="inline-block overflow-hidden pb-[0.12em] align-bottom">
                   <motion.span
-                    className={`inline-block ${isAccent ? "font-display text-ember italic font-normal" : ""}`}
+                    className={`inline-block ${isAccent ? `font-display italic font-normal ${accentClassName}` : ""}`}
                     variants={mode === "lines" ? lineMask : wordMask}
                     custom={mode === "lines" ? { line: lineOf[i] ?? 0, base: delay } : undefined}
                     transition={mode === "lines" ? undefined : { duration: 1, ease: easeOutExpo }}

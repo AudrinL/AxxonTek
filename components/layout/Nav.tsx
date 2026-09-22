@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { easeOutExpo } from "@/lib/motion";
 import { primaryNav, services, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Icon } from "@/components/Icon";
 
@@ -53,6 +52,11 @@ export function Nav() {
   const isActive = (href: string) =>
     href.startsWith("/#") ? false : pathname === href || pathname.startsWith(`${href}/`);
 
+  // The homepage hero is orange edge to edge, so the bar starts white-on-
+  // orange there and returns to its normal colours once it condenses (or
+  // when the drawer, which is page-coloured, is open).
+  const inverted = pathname === "/" && !condensed && !menuOpen;
+
   return (
     <>
       <motion.header
@@ -76,15 +80,17 @@ export function Nav() {
             }`}
             aria-label="Primary"
           >
-            <Logo compact={condensed} className="relative z-10" />
+            <Logo compact={condensed} inverted={inverted} className="relative z-10" />
 
             <ul className="hidden items-center gap-1 lg:flex">
               {primaryNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`group relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-300 hover:bg-ink-panel hover:text-bone ${
-                      isActive(item.href) ? "text-bone" : "text-mute"
+                    className={`group relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-300 ${
+                      inverted
+                        ? `hover:bg-white/10 hover:text-white ${isActive(item.href) ? "text-white" : "text-white/80"}`
+                        : `hover:bg-ink-panel hover:text-bone ${isActive(item.href) ? "text-bone" : "text-mute"}`
                     }`}
                   >
                     {item.label}
@@ -94,9 +100,13 @@ export function Nav() {
             </ul>
 
             <div className="flex items-center gap-2.5">
-              <ThemeToggle />
               <div className="hidden lg:block">
-                <MagneticButton href="/contact" variant="primary" size="md" strength={8}>
+                <MagneticButton
+                  href="/contact"
+                  variant={inverted ? "inverse" : "primary"}
+                  size="md"
+                  strength={8}
+                >
                   Book a call
                 </MagneticButton>
               </div>
@@ -107,7 +117,11 @@ export function Nav() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
-                className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border border-hairline text-bone transition-colors hover:border-hairline-strong lg:hidden"
+                className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border transition-colors lg:hidden ${
+                  inverted
+                    ? "border-white/40 text-white hover:border-white"
+                    : "border-hairline text-bone hover:border-hairline-strong"
+                }`}
               >
                 <span className="flex h-3 w-4 flex-col justify-between">
                   <motion.span

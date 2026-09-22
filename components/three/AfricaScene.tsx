@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import { FIT_HEIGHT, FIT_WIDTH, HUBS, project, sampleLand } from "./africa-geo";
 
@@ -79,26 +79,13 @@ function makePointMaterial(pixelRatio: number) {
   });
 }
 
-/* ------------------------------------------------------------------ *
- * Theme — colours follow the `data-theme` attribute on <html>.
- * ------------------------------------------------------------------ */
-function useDarkTheme() {
-  const [dark, setDark] = useState(() => document.documentElement.dataset.theme === "dark");
-  useEffect(() => {
-    const read = () => setDark(document.documentElement.dataset.theme === "dark");
-    const mo = new MutationObserver(read);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-  return dark;
-}
-
-const palette = (dark: boolean) => ({
-  land: dark ? "#7a7268" : "#bdb2a5",
-  landOpacity: dark ? 0.8 : 0.7,
-  ember: dark ? "#f26a1b" : "#e85d04",
-  arc: dark ? "#ff8a45" : "#e85d04",
-});
+/* Brand palette — tan land, ember hubs and arcs. */
+const PALETTE = {
+  land: "#bdb2a5",
+  landOpacity: 0.7,
+  ember: "#e85d04",
+  arc: "#e85d04",
+} as const;
 
 export type AfricaSceneProps = {
   /** The element the View is drawing into — pointer maths is relative to it. */
@@ -132,7 +119,6 @@ export function AfricaScene({
   const group = useRef<THREE.Group>(null);
   const halo = useRef<THREE.Mesh>(null);
   const { gl, camera, size } = useThree();
-  const dark = useDarkTheme();
 
   /* ---------- geometry ---------- */
   const land = useMemo(() => {
@@ -211,17 +197,16 @@ export function AfricaScene({
     };
   }, [land, hubs, landMat, hubMat, haloMat, arcs]);
 
-  /* ---------- theme ---------- */
+  /* ---------- colours ---------- */
   useEffect(() => {
-    const p = palette(dark);
-    landMat.uniforms.uColor.value.set(p.land);
-    landMat.uniforms.uGlowColor.value.set(p.ember);
-    landMat.uniforms.uOpacity.value = p.landOpacity;
-    hubMat.uniforms.uColor.value.set(p.ember);
-    hubMat.uniforms.uGlowColor.value.set(p.ember);
-    haloMat.color.set(p.ember);
-    arcs.forEach(({ mat }) => mat.color.set(p.arc));
-  }, [dark, landMat, hubMat, haloMat, arcs]);
+    landMat.uniforms.uColor.value.set(PALETTE.land);
+    landMat.uniforms.uGlowColor.value.set(PALETTE.ember);
+    landMat.uniforms.uOpacity.value = PALETTE.landOpacity;
+    hubMat.uniforms.uColor.value.set(PALETTE.ember);
+    hubMat.uniforms.uGlowColor.value.set(PALETTE.ember);
+    haloMat.color.set(PALETTE.ember);
+    arcs.forEach(({ mat }) => mat.color.set(PALETTE.arc));
+  }, [landMat, hubMat, haloMat, arcs]);
 
   /* ---------- pointer ---------- */
   const pointer = useRef({ tx: 0, ty: 0, x: 0, y: 0, active: false, strength: 0 });

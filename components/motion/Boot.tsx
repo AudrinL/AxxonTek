@@ -12,6 +12,7 @@ import {
 import { ScrollTrigger } from "@/lib/gsap";
 import { useMotionTier } from "@/components/motion/MotionTier";
 import { BOOT_SESSION_KEY } from "@/lib/boot";
+import { sceneCount } from "@/lib/scenes";
 
 /* ------------------------------------------------------------------ *
  * Signals — things the preloader waits for. Anything heavy that lands
@@ -80,8 +81,9 @@ export function BootProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Tiers without a canvas have nothing to wait for on that front.
-    if (tier === "off") settled.add("canvas");
+    // No canvas is coming for the "off" tier, nor on pages without a scene
+    // (scenes register in their mount effects, which run before this one).
+    if (tier === "off" || sceneCount() === 0) settled.add("canvas");
 
     let fontsReady = false;
     document.fonts?.ready.then(() => {

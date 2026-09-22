@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PageHero } from "@/components/sections/PageHero";
-import { Reveal } from "@/components/motion/Reveal";
+import { Reveal } from "@/components/system/Reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -21,14 +21,9 @@ export default async function ContactPage({
   return (
     <>
       <PageHero
-        eyebrow="Contact"
+        label="Contact"
         title={"Let's talk."}
-        accent={["talk."]}
         lede="Tell us what you are trying to solve. An engineer — not a salesperson — will come back to you within one business day."
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Contact", href: "/contact" },
-        ]}
       />
 
       <section className="pb-[clamp(6rem,13vw,11rem)]">

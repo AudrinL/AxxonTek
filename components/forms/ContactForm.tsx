@@ -1,9 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { useState, type FormEvent } from "react";
-import { easeOutExpo } from "@/lib/motion";
-import { MagneticButton } from "@/components/motion/MagneticButton";
 
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Record<string, string>;
@@ -11,9 +8,9 @@ type Errors = Record<string, string>;
 /* Boxed fields with a visible label: the clearest affordance on a light page,
    and the label never disappears while you type. */
 const fieldBase =
-  "w-full rounded-xl border border-hairline bg-ink-raised px-4 py-3.5 text-[1rem] text-bone outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-faint hover:border-hairline-strong focus:border-ember focus:shadow-[0_0_0_3px_var(--color-ember-tint)] disabled:opacity-60";
+  "w-full rounded-[var(--r-inner)] border border-line-firm bg-[color-mix(in_srgb,var(--c-ink)_4%,transparent)] px-4 py-3.5 text-[1rem] text-tone outline-none transition-[border-color,box-shadow] duration-[var(--t-base)] placeholder:text-tone-faint hover:border-tone-faint focus:border-ember focus:shadow-[0_0_0_3px_var(--color-ember-wash)] disabled:opacity-60";
 
-const labelBase = "mb-2 block text-[0.875rem] font-medium text-bone";
+const labelBase = "mb-2 block text-[0.875rem] font-medium text-tone";
 
 export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
   const [status, setStatus] = useState<Status>("idle");
@@ -62,18 +59,12 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
 
   if (status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: easeOutExpo }}
-        className="card p-10 text-center sm:p-14"
-        role="status"
-      >
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-ember-tint">
+      <div className="card p-10 text-center sm:p-14" role="status">
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-ember-wash">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
               d="M4 12.5l5 5L20 6.5"
-              stroke="var(--color-ember)"
+              stroke="var(--ember)"
               strokeWidth="1.75"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -82,17 +73,17 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
         </div>
         <h3 className="mb-3 text-2xl font-semibold">Message received.</h3>
         <p className="text-lede mx-auto max-w-md">
-          Thank you for reaching out. We read every message ourselves — expect a reply within one
-          business day.
+          Thank you for reaching out. We read every message ourselves, and you can expect a reply
+          within one business day.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-8 text-sm text-mute underline decoration-hairline-strong underline-offset-4 transition-colors hover:text-bone"
+          className="mt-8 text-sm text-tone-mute underline decoration-line-firm underline-offset-4 transition-colors hover:text-tone"
         >
           Send another message
         </button>
-      </motion.div>
+      </div>
     );
   }
 
@@ -146,7 +137,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
           id="message"
           name="message"
           rows={5}
-          placeholder="A sentence or two is enough — we will ask the rest on the call."
+          placeholder="A sentence or two is enough. We will ask the rest on the call."
           disabled={busy}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
@@ -156,7 +147,7 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
       </div>
 
       <div className="flex flex-col gap-5 pt-2 sm:flex-row sm:items-center sm:justify-between">
-        <MagneticButton type="submit" size="lg" disabled={busy}>
+        <button type="submit" disabled={busy} className="pill pill-ember hover:bg-ember-deep disabled:opacity-60">
           {busy && (
             <span className="h-4 w-4 animate-spin rounded-full border border-white/40 border-t-white" />
           )}
@@ -172,26 +163,19 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
               />
             </svg>
           )}
-        </MagneticButton>
+        </button>
 
-        <p className="text-[0.8125rem] text-faint">
+        <p className="text-[0.8125rem] text-tone-faint">
           No newsletter, no sales sequence. One reply, within a business day.
         </p>
       </div>
 
       <div aria-live="assertive">
-        <AnimatePresence>
-          {formError && (
-            <motion.p
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500"
-            >
-              {formError}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {formError && (
+          <p className="rounded-[var(--r-inner)] border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500">
+            {formError}
+          </p>
+        )}
       </div>
     </form>
   );
@@ -239,20 +223,10 @@ function Field({
 }
 
 function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
   return (
-    <AnimatePresence>
-      {message && (
-        <motion.p
-          id={id}
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="mt-2 text-[0.8125rem] text-red-500"
-        >
-          {message}
-        </motion.p>
-      )}
-    </AnimatePresence>
+    <p id={id} className="mt-2 text-[0.8125rem] text-red-500">
+      {message}
+    </p>
   );
 }

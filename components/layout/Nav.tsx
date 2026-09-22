@@ -2,242 +2,152 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useReducedMotion,
-} from "framer-motion";
-import { useLenis } from "lenis/react";
 import { useEffect, useState } from "react";
-import { easeOutExpo } from "@/lib/motion";
-import { primaryNav, services, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
-import { MagneticButton } from "@/components/motion/MagneticButton";
-import { Icon } from "@/components/Icon";
+import { primaryNav, site } from "@/lib/site";
 
+/**
+ * The bar takes its colour from the ground rather than deciding for
+ * itself, which is the reason it never fights a chapter. Once scrolled
+ * it becomes a frosted veil of whatever the current ground is: the same
+ * surface, slightly opaque, blurred. rho does exactly this and it is why
+ * their header works over both light and dark without a second variant.
+ */
 export function Nav() {
   const pathname = usePathname();
-  const reduced = useReducedMotion();
-  const { scrollY } = useScroll();
-  const lenis = useLenis();
-
-  const [condensed, setCondensed] = useState(false);
-  const [overInk, setOverInk] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  // The homepage opens on an ink hero, so the bar has to invert while it is
-  // over it and change back once the canvas arrives. 0.85 of the viewport is
-  // where the hero's bottom fade has finished resolving.
-  const onInkHero = pathname === "/";
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setCondensed(latest > 24);
-    setOverInk(onInkHero && latest < window.innerHeight * 0.85);
-  });
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setOverInk(onInkHero && window.scrollY < window.innerHeight * 0.85);
-  }, [onInkHero]);
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  // Close the drawer on navigation.
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+  useEffect(() => setOpen(false), [pathname]);
 
-  // Lock scroll behind the drawer. Lenis owns scrolling, so ask it rather
-  // than setting overflow on <body> (which it would fight).
   useEffect(() => {
-    if (!menuOpen) return;
-    lenis?.stop();
-    return () => lenis?.start();
-  }, [menuOpen, lenis]);
-
-  // Escape closes the drawer.
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [menuOpen]);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   const isActive = (href: string) =>
-    href.startsWith("/#") ? false : pathname === href || pathname.startsWith(`${href}/`);
-
-  // Light-on-dark only while the bar is actually over the ink hero.
-  const inverted = overInk && !menuOpen;
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <>
-      <motion.header
-        className="fixed inset-x-0 top-0 z-50"
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: reduced ? 0 : 0.6, ease: easeOutExpo }}
-      >
-        {/* The bar is always readable: solid ground once you scroll, and even
-            at the top it sits on the page colour so it never fights a hero. */}
+      <header className="fixed inset-x-0 top-0 z-50">
         <div
-          className={`transition-[background-color,box-shadow,border-color] duration-400 ${
-            condensed
-              ? inverted
-                ? "border-b border-line-on-ink bg-ink/80 backdrop-blur-xl backdrop-saturate-150"
-                : "border-b border-hairline bg-canvas/85 shadow-nav backdrop-blur-xl backdrop-saturate-150"
-              : "border-b border-transparent bg-canvas/0"
-          }`}
+          className={
+            scrolled
+              ? "border-b border-line bg-[color-mix(in_srgb,var(--c-surface)_10%,transparent)] backdrop-blur-xl backdrop-saturate-150 transition-[background-color,border-color] duration-[var(--t-ground)] ease-[var(--ease-gravity)]"
+              : "border-b border-transparent transition-[background-color,border-color] duration-[var(--t-ground)] ease-[var(--ease-gravity)]"
+          }
+          style={
+            scrolled
+              ? {
+                  backgroundColor:
+                    "color-mix(in srgb, var(--ground-veil, var(--canvas)) 82%, transparent)",
+                }
+              : undefined
+          }
         >
           <nav
-            className={`container-x flex items-center justify-between gap-4 transition-[height] duration-400 ${
-              condensed ? "h-16" : "h-20"
+            className={`container-x flex items-center justify-between gap-4 transition-[height] duration-300 ${
+              scrolled ? "h-16" : "h-20"
             }`}
             aria-label="Primary"
           >
-            <Logo compact={condensed} inverted={inverted} className="relative z-10" />
+            <Logo compact={scrolled} />
 
             <ul className="hidden items-center gap-1 lg:flex">
               {primaryNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`group relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-300 ${
-                      inverted
-                        ? `hover:bg-white/10 hover:text-white ${isActive(item.href) ? "text-white" : "text-white/80"}`
-                        : `hover:bg-ink-panel hover:text-body ${isActive(item.href) ? "text-body" : "text-mute"}`
+                    className={`relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-[var(--t-hover)] hover:text-tone ${
+                      isActive(item.href) ? "text-tone" : "text-tone-mute"
                     }`}
                   >
                     {item.label}
+                    {isActive(item.href) && (
+                      <span
+                        aria-hidden
+                        className="absolute inset-x-4 bottom-1 h-px bg-ember"
+                      />
+                    )}
                   </Link>
                 </li>
               ))}
             </ul>
 
             <div className="flex items-center gap-2.5">
-              <div className="hidden lg:block">
-                <MagneticButton
-                  href="/contact"
-                  variant={inverted ? "inverse" : "primary"}
-                  size="md"
-                  strength={8}
-                >
-                  Book a call
-                </MagneticButton>
-              </div>
+              <Link href="/contact" className="pill pill-ember hidden h-11 px-6 text-sm hover:bg-ember-deep lg:inline-flex">
+                Start a project
+              </Link>
 
               <button
                 type="button"
-                onClick={() => setMenuOpen((v) => !v)}
-                aria-expanded={menuOpen}
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
                 aria-controls="mobile-menu"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border transition-colors lg:hidden ${
-                  inverted
-                    ? "border-white/40 text-white hover:border-white"
-                    : "border-hairline text-body hover:border-hairline-strong"
-                }`}
+                aria-label={open ? "Close menu" : "Open menu"}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-line-firm text-tone transition-colors duration-[var(--t-hover)] lg:hidden"
               >
-                <span className="flex h-3 w-4 flex-col justify-between">
-                  <motion.span
-                    className="block h-[1.5px] w-full rounded bg-current"
-                    animate={menuOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.3, ease: easeOutExpo }}
+                <span className="relative block h-3 w-4">
+                  <span
+                    className={`absolute left-0 block h-px w-4 bg-current transition-transform duration-300 ${
+                      open ? "top-1.5 rotate-45" : "top-0"
+                    }`}
                   />
-                  <motion.span
-                    className="block h-[1.5px] w-full rounded bg-current"
-                    animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                  <motion.span
-                    className="block h-[1.5px] w-full rounded bg-current"
-                    animate={menuOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.3, ease: easeOutExpo }}
+                  <span
+                    className={`absolute left-0 block h-px w-4 bg-current transition-transform duration-300 ${
+                      open ? "top-1.5 -rotate-45" : "top-3"
+                    }`}
                   />
                 </span>
               </button>
             </div>
           </nav>
         </div>
-      </motion.header>
+      </header>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            id="mobile-menu"
-            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-canvas lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0.1 : 0.3, ease: easeOutExpo }}
-          >
-            <motion.nav
-              className="container-x flex flex-1 flex-col gap-9 pt-28 pb-12"
-              initial="hidden"
-              animate="show"
-              variants={{ show: { transition: { staggerChildren: 0.05, delayChildren: 0.08 } } }}
-              aria-label="Mobile"
+      {/* Mobile drawer. Paints the ground colour solid so it is legible in
+          either chapter without a second set of classes. */}
+      <div
+        id="mobile-menu"
+        hidden={!open}
+        className="fixed inset-0 z-40 lg:hidden"
+      >
+        <div className="absolute inset-0 bg-canvas dotgrid" style={{ backgroundColor: "var(--ground-veil, var(--canvas))" }} />
+        <div className="container-x relative flex h-full flex-col justify-center gap-1 pt-20">
+          {primaryNav.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="border-b border-line py-5 font-display text-[2rem] font-semibold tracking-[-0.03em] text-tone"
+              style={{ transitionDelay: `${i * 30}ms` }}
             >
-              <ul className="flex flex-col">
-                {primaryNav.map((item) => (
-                  <motion.li
-                    key={item.href}
-                    variants={{
-                      hidden: { opacity: 0, y: 16 },
-                      show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
-                    }}
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center justify-between border-b border-hairline py-4 text-[1.5rem] font-medium tracking-tight text-body"
-                    >
-                      {item.label}
-                      <Icon name="arrow" className="text-faint" />
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
-                }}
-              >
-                <p className="eyebrow mb-4">Services</p>
-                <ul className="grid grid-cols-2 gap-x-6 gap-y-3">
-                  {services.map((s) => (
-                    <li key={s.slug}>
-                      <Link
-                        href={`/services/${s.slug}`}
-                        className="text-[0.9375rem] text-mute transition-colors hover:text-body"
-                      >
-                        {s.title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              <motion.div
-                className="mt-auto flex flex-col gap-3"
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOutExpo } },
-                }}
-              >
-                <MagneticButton href="/contact" size="lg" className="w-full" strength={0}>
-                  Book a call
-                </MagneticButton>
-                <a
-                  href={`mailto:${site.email}`}
-                  className="text-center text-sm text-mute transition-colors hover:text-ember-text-text"
-                >
-                  {site.email}
-                </a>
-              </motion.div>
-            </motion.nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {item.label}
+            </Link>
+          ))}
+          <Link href="/contact" className="pill pill-ember mt-8 self-start">
+            Start a project
+          </Link>
+          <p className="label mt-10">
+            <span className="label-dot" aria-hidden />
+            {site.address.city}
+          </p>
+        </div>
+      </div>
     </>
   );
 }

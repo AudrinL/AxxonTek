@@ -80,14 +80,9 @@ export default function PrivacyPage() {
   return (
     <>
       <PageHero
-        eyebrow="Legal"
+        label="Legal"
         title={"Privacy policy."}
-        accent={["policy."]}
         lede="A plain-language account of what we collect, why we collect it, and what you can ask us to do about it."
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Privacy", href: "/privacy" },
-        ]}
       />
       <LegalBody sections={sections} updated="August 2026" />
     </>

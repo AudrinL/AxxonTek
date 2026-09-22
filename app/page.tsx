@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { ServicesGrid } from "@/components/sections/ServicesGrid";
-import { Products } from "@/components/sections/Products";
-import { ProcessBand } from "@/components/sections/ProcessBand";
+import { Situations } from "@/components/sections/Situations";
+import { Capabilities } from "@/components/sections/Capabilities";
+import { Proof } from "@/components/sections/Proof";
+import { LabPreview } from "@/components/sections/LabPreview";
+import { PlaygroundTaste } from "@/components/sections/PlaygroundTaste";
+import { Method } from "@/components/sections/Method";
 import { Faq } from "@/components/sections/Faq";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { site } from "@/lib/site";
@@ -13,27 +16,32 @@ export const metadata: Metadata = {
 };
 
 /**
- * Homepage, ordered for conversion. Each section answers the question the
- * previous one raises, and the ask is never more than one screen away:
+ * The homepage, as an arc rather than a list.
  *
- *   Hero      - the thesis, the facts a buyer checks, one CTA
- *   Services  - the catalogue        -> "have you shipped anything?"
- *   Products  - TalentLens + Floow   -> "how do you work, and why you?"
- *   Process   - the sequence, with the promise on the step that earns it
- *   FAQ       - remaining objections -> "ok, how do I start?"
- *   Contact   - the form, right here
+ *   Hero        the thesis, and what is possible now
+ *   Situations  the visitor's own problem, in their words
+ *   Capabilities  ink. the full width of what is available
+ *   Proof       canvas. two products that already run
+ *   Lab         ink. what is being worked out next
+ *   Playground  canvas. the first thing they can touch
+ *   Method      how working together actually goes
+ *   FAQ         the remaining objections
+ *   Contact     ink. the ask
  *
- * Stats and Why-us were removed rather than rewritten: both restated the
- * process section's argument, and four sections making one point reads as
- * padding no matter how well each sentence is written.
+ * The ground changes four times across the whole page. Each change marks
+ * a genuine shift in what is being argued, which is the only thing that
+ * earns one.
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <ServicesGrid />
-      <Products />
-      <ProcessBand />
+      <Situations />
+      <Capabilities />
+      <Proof />
+      <LabPreview />
+      <PlaygroundTaste />
+      <Method />
       <Faq />
       <ContactSection />
     </>

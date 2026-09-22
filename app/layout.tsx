@@ -1,41 +1,41 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-
-/**
- * Geist carries everything. It is the closest open face to the Neue
- * Montreal that rho sets its whole site in — tall x-height, open
- * apertures, flat terminals, no mannerism to get tired of at 5rem — and
- * it is drawn on the same principles as SF, which is the register asked
- * for. Hierarchy comes from size, never from a second personality; the
- * display sizes stay at 400 and let scale do the work.
- *
- * Mono is the label face, which is the device Floow and TalentLens
- * already use for categories, codes and counts.
- */
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-geist-mono",
-  display: "swap",
-});
 
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { PageTransition } from "@/components/layout/PageTransition";
-import { MotionTierProvider } from "@/components/motion/MotionTier";
-import { SmoothScroll } from "@/components/motion/SmoothScroll";
-import { BootProvider } from "@/components/motion/Boot";
-import { BOOT_SESSION_KEY } from "@/lib/boot";
-import { GlobalCanvasLoader } from "@/components/three/GlobalCanvasLoader";
+import { Ground } from "@/components/system/Ground";
+import { Trace } from "@/components/system/Trace";
 import { site } from "@/lib/site";
+
+/**
+ * Outfit carries the headlines. It is geometric with even strokes and
+ * round bowls, which is the same family of shapes as the Floow wordmark,
+ * so the site reads as the company that made the products rather than as
+ * a separate studio. Inter carries running text, where the job is to
+ * disappear. Mono is the label face, which is the device both products
+ * already use for categories, codes and counts.
+ */
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -47,14 +47,14 @@ export const metadata: Metadata = {
   applicationName: site.name,
   authors: [{ name: site.name }],
   keywords: [
-    "software development Kigali",
-    "app development Rwanda",
-    "website design Rwanda",
-    "IT consultation Kigali",
-    "smart home installation Rwanda",
-    "CCTV cameras Kigali",
+    "technology company Kigali",
+    "software development Rwanda",
+    "virtual laboratory schools Africa",
+    "VR education Rwanda",
+    "AI automation Africa",
+    "smart home installation Kigali",
     "TalentLens",
-    "Floow parcel",
+    "Floow",
   ],
   openGraph: {
     type: "website",
@@ -69,66 +69,56 @@ export const metadata: Metadata = {
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
-  icons: {
-    icon: "/assets/icon.png",
-    apple: "/assets/icon.png",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  icons: { icon: "/assets/icon.png", apple: "/assets/icon.png" },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#121110",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2efe9" },
+    { media: "(prefers-color-scheme: dark)", color: "#121110" },
+  ],
 };
 
 /**
- * Decides before first paint whether the preloader shows. It runs once per
- * browser session (sessionStorage), never for reduced-motion or Data Saver
- * visitors, and never when storage is unavailable. `html[data-boot]` drives
- * the overlay's CSS and the scroll lock; components/motion/Boot.tsx owns the
- * rest of the lifecycle.
+ * Marks the document as scripted before first paint. Every reveal on the
+ * site rests in its visible state and only hides itself once this class
+ * is present, so a visitor without JavaScript, or one whose script fails,
+ * gets the whole page rather than a blank one. Two lines, and it removes
+ * an entire category of broken.
  */
-const bootBootstrap = `(function(){var d=document.documentElement;try{var skip=sessionStorage.getItem("${BOOT_SESSION_KEY}")==="1"||matchMedia("(prefers-reduced-motion: reduce)").matches||!!(navigator.connection&&navigator.connection.saveData);d.dataset.boot=skip?"skip":"loading"}catch(e){d.dataset.boot="skip"}})();`;
+const markScripted = `document.documentElement.classList.add("js");`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
+      data-ground="canvas"
+      /* The script below adds `js` and the Ground component writes
+         data-ground, both before React hydrates. Expected, not a bug. */
       suppressHydrationWarning
-      className={`${geist.variable} ${geistMono.variable}`}
+
+      className={`${outfit.variable} ${inter.variable} ${jetbrains.variable}`}
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: bootBootstrap }} />
-        <noscript>
-          <style>{`.boot{display:none!important}`}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: markScripted }} />
       </head>
-      <body className="antialiased">
-        <MotionTierProvider>
-          <SmoothScroll>
-            <BootProvider>
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-ember focus:px-5 focus:py-2.5 focus:text-sm focus:text-white"
-              >
-                Skip to content
-              </a>
+      <body className="dotgrid antialiased">
+        <Ground />
+        <Trace />
 
-              {/* One WebGL context for the whole site, behind the page. Scenes
-                  are declared where they appear (see components/three). */}
-              <GlobalCanvasLoader />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-ember focus:px-5 focus:py-2.5 focus:text-sm focus:text-white"
+        >
+          Skip to content
+        </a>
 
-              <ScrollProgress />
-              <Nav />
-              <main id="main">
-                <PageTransition>{children}</PageTransition>
-              </main>
-              <Footer />
-            </BootProvider>
-          </SmoothScroll>
-        </MotionTierProvider>
+        <Nav />
+        <main id="main" className="relative z-[1]">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

@@ -1,104 +1,87 @@
 import Link from "next/link";
-import { services, site } from "@/lib/site";
+import { capabilities, primaryNav, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
-const company = [
-  { label: "About Us", href: "/about" },
-  { label: "Careers", href: "/careers" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-];
-
+/**
+ * The footer keeps the ink ground the contact section arrives on, so the
+ * page ends in one chapter instead of flickering back to canvas for a
+ * few hundred pixels of links.
+ */
 export function Footer() {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="border-t border-hairline bg-canvas-deep">
-      <div className="container-x pt-[clamp(3.5rem,7vw,5.5rem)] pb-8">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
-          <div className="max-w-sm">
+    <footer className="relative z-[1] border-t border-line">
+      <div className="container-x py-16">
+        <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+          <div>
             <Logo />
-            <p className="mt-5 text-[0.9375rem] leading-relaxed text-mute">
-              An engineering team in Kigali building apps, websites and smart systems for African
-              SMEs and individuals — and our own products, TalentLens and Floow.
+            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
+              A technology company in Kigali building software, AI, immersive
+              learning and smart systems for organisations across Africa.
             </p>
-            <p className="mt-7 mb-3 text-[0.8125rem] font-medium text-body">
-              Occasional notes on engineering — no spam.
+            <p className="mt-7 mb-3 text-[0.875rem] font-medium">
+              Occasional notes from the Lab. No spam.
             </p>
             <NewsletterForm />
           </div>
 
-          <FooterColumn title="Services">
-            {services.map((s) => (
-              <FooterLink key={s.slug} href={`/services/${s.slug}`}>
-                {s.title}
+          <FooterColumn title="Solutions">
+            {capabilities.map((capability) => (
+              <FooterLink key={capability.id} href={`/solutions#${capability.id}`}>
+                {capability.name}
               </FooterLink>
             ))}
           </FooterColumn>
 
           <FooterColumn title="Company">
-            {company.map((c) => (
-              <FooterLink key={c.href} href={c.href}>
-                {c.label}
+            {primaryNav.map((item) => (
+              <FooterLink key={item.href} href={item.href}>
+                {item.label}
               </FooterLink>
             ))}
+            <FooterLink href="/contact">Contact</FooterLink>
           </FooterColumn>
 
           <FooterColumn title="Get in touch">
-            <address className="text-sm leading-relaxed text-mute not-italic">
+            <li className="text-[0.9375rem] text-tone-mute">
               {site.address.line1}
               <br />
               {site.address.line2}
               <br />
               {site.address.city}
-            </address>
-            <a
-              href={`mailto:${site.email}`}
-              className="mt-3 inline-block text-sm font-medium text-body transition-colors hover:text-ember-text-text"
-            >
-              {site.email}
-            </a>
-            {site.phone && (
+            </li>
+            <li>
               <a
-                href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                className="text-sm text-mute transition-colors hover:text-ember-text-text"
+                href={`mailto:${site.email}`}
+                className="text-[0.9375rem] font-medium underline decoration-line-firm underline-offset-4 transition-colors duration-[var(--t-hover)] hover:text-accent"
               >
-                {site.phone}
+                {site.email}
               </a>
-            )}
-
-            <div className="mt-5 flex gap-2">
+            </li>
+            <li className="flex gap-2 pt-2">
               {site.socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
                   aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-ink-raised text-[0.6875rem] font-semibold tracking-wide text-mute transition-all duration-300 hover:-translate-y-0.5 hover:border-ember hover:text-ember-text-text"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line-firm font-mono text-[0.6875rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:border-tone hover:text-tone"
                 >
                   {social.short}
                 </a>
               ))}
-            </div>
+            </li>
           </FooterColumn>
         </div>
 
-        <div className="hairline-t mt-12 flex flex-col-reverse items-center justify-between gap-5 pt-7 sm:flex-row">
-          <p className="text-[0.8125rem] text-faint">
-            &copy; {year} {site.name}. All rights reserved.
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-7">
+          <p className="font-mono text-[0.6875rem] tracking-[0.1em] text-tone-faint uppercase">
+            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
-          <nav className="flex items-center gap-6" aria-label="Legal">
-            <FooterLink href="/privacy" small>
-              Privacy Policy
-            </FooterLink>
-            <FooterLink href="/terms" small>
-              Terms of Service
-            </FooterLink>
-            <FooterLink href="/privacy#cookies" small>
-              Cookies
-            </FooterLink>
+          <nav className="flex gap-6" aria-label="Legal">
+            <FooterLink href="/privacy" inline>Privacy</FooterLink>
+            <FooterLink href="/terms" inline>Terms</FooterLink>
           </nav>
         </div>
       </div>
@@ -108,11 +91,12 @@ export function Footer() {
 
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col">
-      <h3 className="mb-4 text-[0.75rem] font-semibold tracking-[0.14em] text-faint uppercase">
+    <div>
+      <h2 className="label mb-5">
+        <span className="label-dot" aria-hidden />
         {title}
-      </h3>
-      <div className="flex flex-col gap-2.5">{children}</div>
+      </h2>
+      <ul className="flex flex-col gap-3">{children}</ul>
     </div>
   );
 }
@@ -120,20 +104,19 @@ function FooterColumn({ title, children }: { title: string; children: React.Reac
 function FooterLink({
   href,
   children,
-  small,
+  inline = false,
 }: {
   href: string;
   children: React.ReactNode;
-  small?: boolean;
+  inline?: boolean;
 }) {
-  return (
+  const link = (
     <Link
       href={href}
-      className={`w-fit text-mute transition-colors duration-300 hover:text-ember-text-text ${
-        small ? "text-[0.8125rem]" : "text-sm"
-      }`}
+      className="text-[0.9375rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone"
     >
       {children}
     </Link>
   );
+  return inline ? link : <li>{link}</li>;
 }

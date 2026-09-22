@@ -86,14 +86,9 @@ export default function TermsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Legal"
+        label="Legal"
         title={"Terms of service."}
-        accent={["service."]}
         lede="The framework that governs your use of this site, and how it relates to the agreements behind our engagements."
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Terms", href: "/terms" },
-        ]}
       />
       <LegalBody sections={sections} updated="August 2026" />
     </>

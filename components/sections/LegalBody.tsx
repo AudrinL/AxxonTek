@@ -1,8 +1,7 @@
-"use client";
-
-import { Reveal } from "@/components/motion/Reveal";
+import { Reveal } from "@/components/system/Reveal";
 
 export type LegalSection = {
+  /** Optional stable anchor. Falls back to a slug of the heading. */
   id?: string;
   heading: string;
   paragraphs: string[];
@@ -10,71 +9,71 @@ export type LegalSection = {
 };
 
 /**
- * Narrow measure, generous leading — legal copy is meant to be read, so it
- * gets a proper reading column rather than the full page width.
+ * Long-form legal copy. Narrow measure, generous leading, headings that
+ * are findable by eye, and a sticky contents list on wide screens so a
+ * reader can get to the clause they came for.
  */
-export function LegalBody({ sections, updated }: { sections: LegalSection[]; updated: string }) {
+export function LegalBody({
+  sections,
+  updated,
+}: {
+  sections: LegalSection[];
+  updated: string;
+}) {
   return (
-    <section className="pb-[clamp(6rem,13vw,11rem)]">
+    <section data-chapter-ground="canvas" className="chapter-y">
       <div className="container-x">
-        <div className="grid gap-x-16 gap-y-10 lg:grid-cols-[0.32fr_1fr]">
-          {/* Sticky contents rail */}
-          <nav aria-label="On this page" className="lg:sticky lg:top-28 lg:self-start">
-            <p className="eyebrow hairline-t mb-5 w-full pt-6">Contents</p>
+        <div className="grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]">
+          <aside className="lg:sticky lg:top-28 lg:self-start">
+            <p className="label mb-5">
+              <span className="label-dot" aria-hidden />
+              Contents
+            </p>
             <ol className="flex flex-col gap-2.5">
-              {sections.map((section, i) => (
+              {sections.map((section) => (
                 <li key={section.heading}>
                   <a
-                    href={`#${section.id ?? slugify(section.heading)}`}
-                    className="group flex gap-3 text-[0.8125rem] text-mute transition-colors hover:text-body"
+                    href={`#${section.id ?? slug(section.heading)}`}
+                    className="text-[0.875rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-accent"
                   >
-                    <span className="font-mono text-faint">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span>{section.heading}</span>
+                    {section.heading}
                   </a>
                 </li>
               ))}
             </ol>
-            <p className="mt-8 text-[0.75rem] text-faint">Last updated {updated}</p>
-          </nav>
+            <p className="mt-7 border-t border-line pt-5 font-mono text-[0.625rem] tracking-[0.12em] text-tone-faint uppercase">
+              Updated {updated}
+            </p>
+          </aside>
 
-          <div className="max-w-2xl">
+          <div className="max-w-[66ch]">
             {sections.map((section, i) => (
-              <Reveal key={section.heading}>
-                <div
-                  id={section.id ?? slugify(section.heading)}
-                  className="scroll-mt-28 border-t border-hairline py-10 first:border-t-0 first:pt-0"
-                >
-                  <h2 className="mb-5 flex items-baseline gap-4 text-[1.375rem] tracking-tight">
-                    <span className="font-mono text-[0.6875rem] text-ember-text">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+              <Reveal key={section.heading} delay={Math.min(i, 3) * 50}>
+                <div className="mb-12 scroll-mt-28" id={section.id ?? slug(section.heading)}>
+                  <h2 className="mb-4 font-display text-[1.5rem] font-semibold tracking-[-0.024em]">
                     {section.heading}
                   </h2>
-                  <div className="flex flex-col gap-4">
-                    {section.paragraphs.map((p, j) => (
-                      <p key={j} className="text-[0.9375rem] leading-[1.75] text-mute">
-                        {p}
-                      </p>
-                    ))}
-                    {section.list && (
-                      <ul className="mt-2 flex flex-col gap-2.5">
-                        {section.list.map((item) => (
-                          <li
-                            key={item}
-                            className="flex gap-3 text-[0.9375rem] leading-relaxed text-mute"
-                          >
-                            <span
-                              aria-hidden
-                              className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ember"
-                            />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                  {section.paragraphs.map((paragraph) => (
+                    <p
+                      key={paragraph.slice(0, 40)}
+                      className="mb-4 leading-relaxed text-tone-mute"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                  {section.list && (
+                    <ul className="mt-4 flex flex-col gap-2.5">
+                      {section.list.map((bullet) => (
+                        <li key={bullet} className="flex gap-3 text-tone-mute">
+                          <span
+                            aria-hidden
+                            className="mt-2.5 h-1 w-1 flex-none rounded-full bg-ember"
+                          />
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -85,9 +84,5 @@ export function LegalBody({ sections, updated }: { sections: LegalSection[]; upd
   );
 }
 
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+const slug = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");

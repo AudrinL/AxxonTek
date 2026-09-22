@@ -1,85 +1,83 @@
-"use client";
-
 import { ContactForm } from "@/components/forms/ContactForm";
-import { Icon } from "@/components/Icon";
-import { MaskedWords } from "@/components/motion/MaskedWords";
-import { Reveal } from "@/components/motion/Reveal";
+import { Reveal } from "@/components/system/Reveal";
 import { site } from "@/lib/site";
 
 /**
- * The ask, with the form right there. Putting the form on the homepage
- * removes a page load between "I'm interested" and "I've told you".
+ * The ask, on ink.
+ *
+ * The last ground change of the page. Everything above has been an
+ * argument; this is the one place a visitor does something, and giving
+ * it its own light is the cheapest way to say so. The promise sits next
+ * to the form rather than under it, because it is the thing that decides
+ * whether the form gets filled.
  */
 export function ContactSection() {
   return (
-    <section id="contact" className="section-y band scroll-mt-20">
+    <section
+      data-chapter-ground="ink"
+      id="contact"
+      className="bloom chapter-y relative overflow-hidden"
+    >
+      <span aria-hidden className="bloom-light -top-[22rem] -right-[18rem] opacity-60" />
+
       <div className="container-x">
-        <div className="grid gap-x-16 gap-y-12 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="grid gap-x-16 gap-y-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
           <div>
-            <Reveal>
-              <p className="eyebrow mb-5">Start a conversation</p>
+            <Reveal as="p" className="label mb-6">
+              <span className="label-dot" aria-hidden />
+              Start something
             </Reveal>
-            <MaskedWords
-              as="h2"
-              text={"Tell us what you are\ntrying to solve."}
-              accent={["solve."]}
-              className="text-heading max-w-[14ch]"
-            />
-            <Reveal delay={0.1}>
-              <p className="text-lede mt-6 max-w-md">
-                We will tell you honestly whether we are the right team — and if not, who might be.
+            <Reveal delay={70}>
+              <h2 className="text-chapter max-w-[13ch]">
+                Tell us what you are trying to make possible.
+              </h2>
+            </Reveal>
+            <Reveal delay={140}>
+              <p className="text-lede mt-7 max-w-[44ch]">
+                We will tell you honestly whether we are the right team, and if we
+                are not, who might be.
               </p>
             </Reveal>
 
-            <Reveal delay={0.16}>
-              <ul className="mt-9 flex flex-col gap-5">
-                <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
-                    <Icon name="mail" size={18} />
-                  </span>
-                  <span>
-                    <span className="block text-[0.8125rem] text-faint">Prefer email?</span>
-                    <a
-                      href={`mailto:${site.email}`}
-                      className="text-[0.9375rem] font-medium text-body transition-colors hover:text-ember-text-text"
-                    >
-                      {site.email}
-                    </a>
-                  </span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
-                    <Icon name="pin" size={18} />
-                  </span>
-                  <span>
-                    <span className="block text-[0.8125rem] text-faint">Visit us</span>
-                    <span className="text-[0.9375rem] font-medium text-body">
-                      {site.address.line1}, {site.address.line2}, {site.address.city}
-                    </span>
-                  </span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
-                    <Icon name="clock" size={18} />
-                  </span>
-                  <span>
-                    <span className="block text-[0.8125rem] text-faint">Response time</span>
-                    <span className="text-[0.9375rem] font-medium text-body">
-                      Within one business day, from an engineer
-                    </span>
-                  </span>
-                </li>
-              </ul>
+            <Reveal delay={200}>
+              <dl className="mt-12 grid gap-7 border-t border-line pt-9">
+                <Detail k="Prefer email" v={site.email} href={`mailto:${site.email}`} />
+                <Detail
+                  k="Visit"
+                  v={`${site.address.line1}, ${site.address.line2}, ${site.address.city}`}
+                />
+                <Detail k="Response time" v="Within one business day, from an engineer" />
+              </dl>
             </Reveal>
           </div>
 
-          <Reveal delay={0.12}>
-            <div className="card p-6 sm:p-8">
+          <Reveal delay={120}>
+            <div className="card p-6 sm:p-9">
               <ContactForm />
             </div>
           </Reveal>
         </div>
       </div>
     </section>
+  );
+}
+
+function Detail({ k, v, href }: { k: string; v: string; href?: string }) {
+  return (
+    <div>
+      <dt className="label mb-2">{k}</dt>
+      <dd className="text-[0.9375rem] font-medium">
+        {href ? (
+          <a
+            href={href}
+            className="underline decoration-line-firm underline-offset-4 transition-colors duration-[var(--t-hover)] hover:text-accent"
+          >
+            {v}
+          </a>
+        ) : (
+          v
+        )}
+      </dd>
+    </div>
   );
 }

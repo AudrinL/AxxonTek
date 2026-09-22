@@ -63,7 +63,7 @@ export function FeatureGrid({
 function FeatureCard({ feature }: { feature: Feature }) {
   return (
     <div className="card group h-full p-7 transition-[transform,box-shadow,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-ember/40 hover:shadow-card-hover sm:p-8">
-      <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-ember-tint text-ember transition-colors duration-500 group-hover:bg-ember group-hover:text-white">
+      <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-ember-tint text-ember-text transition-colors duration-500 group-hover:bg-ember group-hover:text-white">
         <Icon name={feature.icon} />
       </span>
       <h3 className="mb-2.5 text-[1.1875rem] font-semibold tracking-tight">{feature.title}</h3>

@@ -75,7 +75,7 @@ export function WhyUs() {
                 <Icon name="pin" size={15} />
               </span>
               <span className="text-[0.8125rem] leading-tight">
-                <span className="block font-semibold text-bone">Norrsken Kigali</span>
+                <span className="block font-semibold text-body">Norrsken Kigali</span>
                 <span className="text-mute">where we work — come and visit</span>
               </span>
             </div>
@@ -111,7 +111,7 @@ export function WhyUs() {
                     show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: easeOutExpo } },
                   }}
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
                     <Icon name={reason.icon} size={20} />
                   </span>
                   <span>

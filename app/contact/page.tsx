@@ -54,7 +54,7 @@ export default async function ContactPage({
                     href="https://maps.google.com/?q=Norrsken+Kigali,+1+KN+78+St,+Kigali"
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="mt-4 inline-flex items-center gap-2 text-sm text-ember transition-opacity hover:opacity-75"
+                    className="mt-4 inline-flex items-center gap-2 text-sm text-ember-text transition-opacity hover:opacity-75"
                   >
                     Open in Maps
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -74,14 +74,14 @@ export default async function ContactPage({
                 <InfoBlock label="Direct contact">
                   <a
                     href={`mailto:${site.email}`}
-                    className="block text-[0.9375rem] text-mute transition-colors hover:text-ember"
+                    className="block text-[0.9375rem] text-mute transition-colors hover:text-ember-text-text"
                   >
                     {site.email}
                   </a>
                   {site.phone && (
                     <a
                       href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                      className="block text-[0.9375rem] text-mute transition-colors hover:text-ember"
+                      className="block text-[0.9375rem] text-mute transition-colors hover:text-ember-text-text"
                     >
                       {site.phone}
                     </a>
@@ -98,7 +98,7 @@ export default async function ContactPage({
                         href={social.href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="text-[0.9375rem] text-mute transition-colors hover:text-ember"
+                        className="text-[0.9375rem] text-mute transition-colors hover:text-ember-text-text"
                       >
                         {social.label}
                       </a>

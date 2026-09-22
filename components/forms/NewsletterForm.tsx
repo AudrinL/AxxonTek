@@ -95,7 +95,7 @@ export function NewsletterForm() {
         <button
           type="submit"
           disabled={busy || status === "success"}
-          className="relative h-10 shrink-0 overflow-hidden rounded-full bg-ember px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-ember-deep disabled:opacity-70"
+          className="relative h-10 shrink-0 overflow-hidden rounded-full bg-ember-deep px-5 text-sm font-medium text-white transition-colors duration-300 hover:bg-ember-deep disabled:opacity-70"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
@@ -129,7 +129,7 @@ export function NewsletterForm() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: easeOutExpo }}
               className={`text-[0.8125rem] ${
-                status === "error" ? "text-red-400" : "text-ember-soft"
+                status === "error" ? "text-red-400" : "text-ember-text-soft"
               }`}
             >
               {message}

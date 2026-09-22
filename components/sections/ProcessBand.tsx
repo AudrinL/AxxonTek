@@ -1,95 +1,129 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { processSteps } from "@/lib/site";
-import { Icon } from "@/components/Icon";
-import { MagneticButton } from "@/components/motion/MagneticButton";
+import { Rule } from "@/components/layout/Rule";
+import { MaskedWords } from "@/components/motion/MaskedWords";
 import { Reveal } from "@/components/motion/Reveal";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
 
 /**
- * The page's one high-contrast break: the orange band. It carries the
- * strongest argument (research first, built by the people who scoped it)
- * and a conversion point at the midpoint of the page.
+ * How we work — and, folded into it, why us.
+ *
+ * These used to be two sections making the same argument in different
+ * clothes: "no handoffs" appeared in the trust line, the process, the
+ * reasons and the FAQ, four times on one page. Repetition reads as filler
+ * however well each sentence is written, so the promise now lives on the
+ * step that earns it.
+ *
+ * These are numbered because they genuinely are a sequence — the order is
+ * information a buyer needs, not decoration.
  */
+const steps = [
+  {
+    n: "01",
+    title: "We study the problem",
+    body: "Before scoping or quoting, we spend real time understanding what you are trying to fix — and whether you need what you think you need.",
+    promise: "You are never priced on a guess",
+  },
+  {
+    n: "02",
+    title: "We tell you the truth",
+    body: "You get a clear recommendation, including when the answer is a smaller project, a different approach, or not us at all.",
+    promise: "Including when the answer is no",
+  },
+  {
+    n: "03",
+    title: "We build it ourselves",
+    body: "The engineer who scoped it writes the code and installs the systems, and you keep their direct contact after launch.",
+    promise: "No handoffs, no junior bench",
+  },
+] as const;
+
 export function ProcessBand() {
   return (
-    <section id="process" className="band-ember relative isolate overflow-hidden scroll-mt-20">
-      {/* Large faint numeral as texture */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-10 -bottom-24 -z-10 text-[26rem] leading-none font-semibold tracking-tighter text-white/[0.06] select-none"
-      >
-        01
-      </div>
-
-      <div className="container-x section-y">
-        <div className="grid gap-x-16 gap-y-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <section id="process" className="section-y scroll-mt-24">
+      <div className="container-x">
+        <div className="mb-14 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div>
             <Reveal>
-              <p className="eyebrow mb-5 text-white/80">How we work</p>
+              <p className="label mb-6">How we work</p>
             </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="text-heading max-w-[14ch] text-white">
-                We study the problem first. Then the people who scoped it build it.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.12}>
-              <p className="mt-6 max-w-md text-[1.0625rem] leading-relaxed text-white/80">
-                Most agencies start building on day one, because that is what gets billed. We start
-                by understanding the problem — that is what makes the build worth paying for.
-              </p>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <MagneticButton href="/contact" variant="inverse" size="lg" strength={8}>
-                  Book a call
-                  <Icon name="arrow" size={16} />
-                </MagneticButton>
-                <MagneticButton
-                  href="/about"
-                  variant="ghost"
-                  size="lg"
-                  strength={6}
-                  className="text-white hover:bg-white/10"
-                >
-                  Meet the team
-                </MagneticButton>
-              </div>
-            </Reveal>
+            <MaskedWords
+              as="h2"
+              text="Small on purpose. Senior by default."
+              accent={["purpose."]}
+              className="text-heading max-w-[13ch]"
+            />
           </div>
-
-          <motion.ol
-            className="flex flex-col gap-3"
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
-            variants={{ show: { transition: { staggerChildren: 0.1 } } }}
-          >
-            {processSteps.map((step) => (
-              <motion.li
-                key={step.n}
-                variants={{
-                  hidden: { opacity: 0, y: 22 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeOutExpo } },
-                }}
-                className="flex gap-5 rounded-2xl border border-white/15 bg-white/[0.08] p-5 backdrop-blur-sm sm:p-6"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white font-mono text-[0.75rem] font-semibold text-ember-deep">
-                  {step.n}
-                </span>
-                <span>
-                  <span className="mb-1.5 block text-[1.125rem] font-semibold tracking-tight text-white">
-                    {step.title}
-                  </span>
-                  <span className="block text-[0.9375rem] leading-relaxed text-white/75">
-                    {step.body}
-                  </span>
-                </span>
-              </motion.li>
-            ))}
-          </motion.ol>
+          <Reveal delay={0.1}>
+            <p className="max-w-xs text-[0.9375rem] leading-relaxed text-mute">
+              Four engineers, no account managers. That is not a limitation we
+              apologise for — it is the reason the work fits.
+            </p>
+          </Reveal>
         </div>
+
+        <Rule />
+
+        <motion.ol
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+          variants={{ show: { transition: { staggerChildren: 0.1 } } }}
+        >
+          {steps.map((step) => (
+            <motion.li
+              key={step.n}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easeOutExpo } },
+              }}
+            >
+              <div className="grid gap-x-10 gap-y-4 py-10 md:grid-cols-[auto_minmax(0,1fr)_minmax(0,1.2fr)] md:py-12">
+                <span className="label pt-2 text-ember-text">{step.n}</span>
+
+                <h3 className="text-[clamp(1.5rem,2.8vw,2.25rem)] leading-none">
+                  {step.title}
+                </h3>
+
+                <div>
+                  <p className="max-w-lg text-[0.9375rem] leading-relaxed text-mute">
+                    {step.body}
+                  </p>
+                  <p className="mt-4 flex items-center gap-3 text-[0.8125rem] text-body">
+                    <span
+                      aria-hidden
+                      className="inline-block h-1.5 w-1.5 shrink-0 bg-moss"
+                    />
+                    {step.promise}
+                  </p>
+                </div>
+              </div>
+              <Rule />
+            </motion.li>
+          ))}
+        </motion.ol>
+
+        <Reveal delay={0.1}>
+          <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-3 bg-ember-deep px-8 py-4 font-medium text-white transition-colors duration-300 hover:bg-ember-deep"
+            >
+              Start with a call
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+              >
+                &#8594;
+              </span>
+            </Link>
+            <p className="text-[0.8125rem] text-faint">
+              30 minutes, an engineer, no obligation.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

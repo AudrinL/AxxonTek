@@ -166,7 +166,7 @@ export function BootProvider({ children }: { children: ReactNode }) {
       <div ref={rootRef} className="boot" aria-hidden data-state="loading">
         <div className="boot-inner">
           <span className="boot-mark">
-            Axxon<span className="text-ember">Tek</span>
+            Axxon<span className="text-ember-text">Tek</span>
           </span>
 
           <span className="boot-bar">

@@ -34,7 +34,7 @@ export function Stats() {
             }}
             className="px-2 py-3 md:px-8 md:first:pl-0 md:last:pr-0"
           >
-            <dd className="text-[clamp(1.75rem,3vw,2.25rem)] leading-none font-semibold tracking-tight text-bone tabular-nums">
+            <dd className="text-[clamp(1.75rem,3vw,2.25rem)] leading-none font-semibold tracking-tight text-body tabular-nums">
               {stat.value}
             </dd>
             <dt className="mt-2 text-[0.8125rem] leading-snug text-mute">{stat.label}</dt>

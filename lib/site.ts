@@ -20,8 +20,8 @@ export const site = {
 } as const;
 
 export const primaryNav = [
+  { label: "Work", href: "/work" },
   { label: "Services", href: "/#services" },
-  { label: "Products", href: "/#products" },
   { label: "How we work", href: "/#process" },
   { label: "About", href: "/about" },
   { label: "FAQ", href: "/#faq" },

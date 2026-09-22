@@ -1,5 +1,30 @@
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+/**
+ * Geist carries everything. It is the closest open face to the Neue
+ * Montreal that rho sets its whole site in — tall x-height, open
+ * apertures, flat terminals, no mannerism to get tired of at 5rem — and
+ * it is drawn on the same principles as SF, which is the register asked
+ * for. Hierarchy comes from size, never from a second personality; the
+ * display sizes stay at 400 and let scale do the work.
+ *
+ * Mono is the label face, which is the device Floow and TalentLens
+ * already use for categories, codes and counts.
+ */
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-geist-mono",
+  display: "swap",
+});
 
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
@@ -55,7 +80,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbfaf7",
+  themeColor: "#121110",
 };
 
 /**
@@ -69,7 +94,11 @@ const bootBootstrap = `(function(){var d=document.documentElement;try{var skip=s
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${geistMono.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootBootstrap }} />
         <noscript>

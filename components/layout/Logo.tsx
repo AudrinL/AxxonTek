@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 /**
  * Wordmark: the orange "A" mark is an image, the rest of the name is live
  * text in `currentColor`. `inverted` turns the whole thing white for use
- * over the orange hero.
+ * on a dark panel.
  */
 export function Logo({
   className = "",
@@ -21,7 +21,7 @@ export function Logo({
       href="/"
       aria-label={`${site.name} home`}
       className={`inline-flex items-center gap-2 transition-colors duration-300 ${
-        inverted ? "text-white" : "text-bone"
+        inverted ? "text-white" : "text-body"
       } ${className}`}
     >
       <Image
@@ -39,7 +39,7 @@ export function Logo({
           compact ? "text-[1.125rem]" : "text-[1.25rem]"
         }`}
       >
-        xxon<span className={inverted ? "text-white/70" : "text-ember"}>-</span>Tek
+        xxon<span className={inverted ? "text-white/70" : "text-ember-text"}>-</span>Tek
       </span>
     </Link>
   );

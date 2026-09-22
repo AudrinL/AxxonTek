@@ -22,11 +22,11 @@ const sizes = {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-ember text-white shadow-[0_1px_2px_rgba(0,0,0,0.12),0_8px_20px_-8px_var(--color-ember)] hover:bg-ember-deep",
-  outline: "border border-hairline-strong bg-ink-raised text-bone hover:border-ember hover:text-ember",
+    "bg-ember-deep text-white shadow-[0_1px_2px_rgba(0,0,0,0.12),0_8px_20px_-8px_var(--color-ember)] hover:bg-ember",
+  outline: "border border-hairline-strong bg-ink-raised text-bone hover:border-ember hover:text-ember-text-text",
   ghost: "text-bone hover:bg-ink-panel",
   /** For use on orange: white button, orange text. */
-  inverse: "bg-white text-ember-deep hover:bg-[#fff4ec]",
+  inverse: "bg-white text-ember-text-deep hover:bg-[#fff4ec]",
   /** For use on orange: outlined, white text. */
   "ghost-inverse": "border border-white/40 text-white hover:border-white hover:bg-white/10",
 };

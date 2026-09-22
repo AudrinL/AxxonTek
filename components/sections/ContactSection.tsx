@@ -34,37 +34,37 @@ export function ContactSection() {
             <Reveal delay={0.16}>
               <ul className="mt-9 flex flex-col gap-5">
                 <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
                     <Icon name="mail" size={18} />
                   </span>
                   <span>
                     <span className="block text-[0.8125rem] text-faint">Prefer email?</span>
                     <a
                       href={`mailto:${site.email}`}
-                      className="text-[0.9375rem] font-medium text-bone transition-colors hover:text-ember"
+                      className="text-[0.9375rem] font-medium text-body transition-colors hover:text-ember-text-text"
                     >
                       {site.email}
                     </a>
                   </span>
                 </li>
                 <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
                     <Icon name="pin" size={18} />
                   </span>
                   <span>
                     <span className="block text-[0.8125rem] text-faint">Visit us</span>
-                    <span className="text-[0.9375rem] font-medium text-bone">
+                    <span className="text-[0.9375rem] font-medium text-body">
                       {site.address.line1}, {site.address.line2}, {site.address.city}
                     </span>
                   </span>
                 </li>
                 <li className="flex gap-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ember-tint text-ember-text">
                     <Icon name="clock" size={18} />
                   </span>
                   <span>
                     <span className="block text-[0.8125rem] text-faint">Response time</span>
-                    <span className="text-[0.9375rem] font-medium text-bone">
+                    <span className="text-[0.9375rem] font-medium text-body">
                       Within one business day, from an engineer
                     </span>
                   </span>

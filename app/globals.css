@@ -1,86 +1,159 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Theme values
+ * Theme
  *
- * One light palette. Every colour in the codebase is a semantic token
- * defined here, so a surface change is a token change, not a component
- * change.
+ * Derived from the products AxxonTek actually built — Floow and
+ * TalentLens. Both sit on a warm off-white canvas, put their structure
+ * in near-black panels, mark every label in uppercase mono with a small
+ * dot, and float white cards on a soft shadow. The site uses the same
+ * system, so the studio and its work read as one hand.
+ *
+ * Structure follows rho.co, measured rather than guessed: an 8px radius
+ * on everything and 4px on buttons (never a pill), surfaces separated by
+ * a hairline instead of a drop shadow, cards on a dark panel made from a
+ * translucent tint of the panel's own light rather than a lighter grey,
+ * and display type set at 400 with normal tracking so size alone carries
+ * the confidence. Those four moves are most of the distance between a
+ * competent agency page and one that reads as an institution.
+ *
+ * Nothing here was chosen because it looked premium in the abstract.
  * ------------------------------------------------------------------ */
 :root {
   color-scheme: light;
 
-  /* Page + surfaces */
-  --t-ink: #fbfaf7;          /* page ground: warm white */
-  --t-ink-raised: #ffffff;   /* cards, panels */
-  --t-ink-panel: #f4f1eb;    /* sunken panels, inputs */
-  --t-surface-0: #fbfaf7;
-  --t-surface-1: #f5f2ec;    /* alternating band */
-  --t-surface-2: #ffffff;    /* card on a band */
+  /* Canvas — the warm off-white both products sit on. */
+  --t-canvas:       #f2efe9;
+  --t-canvas-deep:  #eae6de;  /* sunken wells, inputs */
+  --t-card:         #ffffff;
 
-  /* Text */
-  --t-bone: #17140f;         /* primary text */
-  --t-mute: #5d5750;         /* secondary text */
-  --t-faint: #928a80;        /* tertiary / labels */
+  /* Ink — Floow's sidebar black. Panels and primary text. */
+  --t-ink:          #121110;
+  --t-ink-soft:     #1c1a18;  /* raised surface inside a dark panel */
 
-  /* Brand */
-  --t-ember: #e85d04;
-  --t-ember-soft: #ff7a2f;
-  --t-ember-deep: #c24a00;
-  --t-ember-tint: #fff1e8;   /* pale orange wash for chips + icon wells */
+  /* A card on a dark panel is the panel's own light turned up, not a
+     grey rectangle laid on top. Warm, because the accent is orange —
+     rho tints theirs cool because theirs is teal. 7% reads as a surface
+     without ever becoming a second background. */
+  --t-tint:         rgba(246, 238, 230, 0.07);
+  --t-tint-strong:  rgba(246, 238, 230, 0.11);
 
-  /* Lines */
-  --t-hairline: rgba(23, 20, 15, 0.09);
-  --t-hairline-strong: rgba(23, 20, 15, 0.18);
+  /* Text on canvas */
+  --t-body:         #121110;
+  --t-mute:         #5f584f;
+  /* Labels are real text, not decoration, so `faint` has to clear 4.5:1
+     on the canvas. The lighter grey it used to be measured 2.67:1. */
+  --t-faint:        #675f55;
 
-  /* Shadows */
-  --shadow-card: 0 1px 2px rgba(23, 20, 15, 0.04), 0 8px 24px -12px rgba(23, 20, 15, 0.12);
-  --shadow-card-hover: 0 2px 4px rgba(23, 20, 15, 0.05), 0 20px 40px -16px rgba(232, 93, 4, 0.22);
-  --shadow-nav: 0 1px 0 rgba(23, 20, 15, 0.06), 0 8px 24px -16px rgba(23, 20, 15, 0.18);
+  /* Text on ink */
+  --t-on-ink:       #f6f3ee;
+  --t-on-ink-mute:  #b3aaa0;
+
+  /* The accent, taken straight from Floow. Bright enough to carry a
+     button fill, which means it cannot also carry small text: #f0581f on
+     the canvas measures 2.99:1. So there are two — `ember` fills and
+     marks, `ember-text` is the same hue darkened to clear 4.5:1 for any
+     orange that is actually words on a light surface. On a dark panel
+     the bright one is legible and is what gets used. */
+  --t-ember:        #f0581f;
+  --t-ember-text:   #a83c0b;
+  --t-ember-deep:   #cf430f;
+  --t-ember-wash:   #fdeee7;
+
+  /* TalentLens green. Live and verified states only, never decoration. */
+  --t-moss:         #1b7a4b;
+
+  /* Rules */
+  --t-line:         rgba(18, 17, 16, 0.10);
+  --t-line-strong:  rgba(18, 17, 16, 0.18);
+  --t-line-on-ink:  rgba(246, 243, 238, 0.14);
+
+  /* Elevation. A card is defined by its edge, not by the shadow under
+     it — the shadow is there to keep white off white, nothing more. The
+     old values floated everything 32px off the page, which is what made
+     the cards read as a template. */
+  --shadow-card:  0 1px 2px rgba(18, 17, 16, 0.03);
+  --shadow-lift:  0 1px 2px rgba(18, 17, 16, 0.04), 0 14px 34px -22px rgba(18, 17, 16, 0.18);
+
+  /* Motion. One ease for everything that enters or settles, and four
+     durations. Anything outside this set is a decision to defend. */
+  --t-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast:       180ms;
+  --t-base:       260ms;
+  --t-gentle:     420ms;
+  --t-slow:       700ms;
 }
 
-/* ------------------------------------------------------------------ *
- * Design tokens exposed to Tailwind (bg-ink, text-bone, border-hairline…)
- * ------------------------------------------------------------------ */
 @theme inline {
-  --color-ink: var(--t-ink);
-  --color-ink-raised: var(--t-ink-raised);
-  --color-ink-panel: var(--t-ink-panel);
+  --color-canvas: var(--t-canvas);
+  --color-canvas-deep: var(--t-canvas-deep);
+  --color-card: var(--t-card);
 
-  --color-bone: var(--t-bone);
+  --color-ink: var(--t-ink);
+  --color-ink-soft: var(--t-ink-soft);
+
+  --color-body: var(--t-body);
   --color-mute: var(--t-mute);
   --color-faint: var(--t-faint);
 
+  --color-on-ink: var(--t-on-ink);
+  --color-on-ink-mute: var(--t-on-ink-mute);
+
+  --color-tint: var(--t-tint);
+  --color-tint-strong: var(--t-tint-strong);
+
   --color-ember: var(--t-ember);
-  --color-ember-soft: var(--t-ember-soft);
+  --color-ember-text: var(--t-ember-text);
   --color-ember-deep: var(--t-ember-deep);
-  --color-ember-tint: var(--t-ember-tint);
+  --color-ember-wash: var(--t-ember-wash);
+  --color-moss: var(--t-moss);
 
-  --color-hairline: var(--t-hairline);
-  --color-hairline-strong: var(--t-hairline-strong);
-
-  --color-surface-0: var(--t-surface-0);
-  --color-surface-1: var(--t-surface-1);
-  --color-surface-2: var(--t-surface-2);
+  --color-line: var(--t-line);
+  --color-line-strong: var(--t-line-strong);
+  --color-line-on-ink: var(--t-line-on-ink);
 
   --shadow-card: var(--shadow-card);
-  --shadow-card-hover: var(--shadow-card-hover);
-  --shadow-nav: var(--shadow-nav);
+  --shadow-lift: var(--shadow-lift);
+
+  /* Names older components still use, pointed at the system above. */
+  --color-bone: var(--t-body);
+  --color-ink-raised: var(--t-card);
+  --color-ink-panel: var(--t-canvas-deep);
+  --color-smoke: var(--t-mute);
+  --color-hairline: var(--t-line);
+  --color-hairline-strong: var(--t-line-strong);
+  --color-ember-tint: var(--t-ember-wash);
+  --color-ember-soft: var(--t-ember);
+  --color-surface-1: var(--t-canvas-deep);
+  --color-surface-2: var(--t-card);
+  --color-kaolin: var(--t-canvas);
+  --color-clay: var(--t-ink);
+  --color-clay-raised: var(--t-ink-soft);
 }
 
 @theme {
-  /* Apple system font (San Francisco). Resolves to SF Pro on macOS / iOS /
-     iPadOS and falls back to the platform UI font elsewhere. */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  /* One neutral grotesque, the way Apple ships one superfamily. Geist is
+     the closest open face to the Neue Montreal that rho sets everything
+     in: tall x-height, open apertures, flat terminals, no mannerism to
+     get tired of at 5rem. Weight and size carry the hierarchy, never
+     width or flourish. Mono is the label face, which is the device both
+     products already use. */
+  --font-sans: var(--font-geist), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: var(--font-geist), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 
-  /* Vertical rhythm */
-  --spacing-section: clamp(6rem, 12vw, 10.5rem);
-  --spacing-gutter: clamp(1.25rem, 5vw, 4rem);
+  --spacing-section: clamp(5rem, 9vw, 7.5rem);
+  --spacing-gutter: clamp(1.25rem, 4.5vw, 3.5rem);
+
+  /* 8px on surfaces, 4px on controls. Measured off rho; the point is
+     that a radius should read as a manufacturing tolerance, not as a
+     style. Pills were the single most templated thing on this page. */
+  --radius-card: 0.5rem;
+  --radius-panel: 0.75rem;
+  --radius-control: 0.25rem;
 }
 
 /* ------------------------------------------------------------------ *
@@ -90,37 +163,25 @@
   html {
     -webkit-text-size-adjust: 100%;
     /* No `scroll-behavior: smooth`: Lenis owns smoothing and the two fight. */
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6rem;
   }
 
   /* Lenis (components/motion/SmoothScroll.tsx) */
   html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis:not(.lenis-autoToggle).lenis-stopped {
-    overflow: clip;
-  }
-  .lenis [data-lenis-prevent] {
-    overscroll-behavior: contain;
-  }
-  .lenis.lenis-smooth iframe {
-    pointer-events: none;
-  }
+  html.lenis body { height: auto; }
+  .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+  .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-smooth iframe { pointer-events: none; }
 
-  /* Preloader lock — set before first paint by the inline script in
-     app/layout.tsx and cleared by components/motion/Boot.tsx. */
-  html[data-boot="loading"] {
-    overflow: hidden;
-  }
+  html[data-boot="loading"] { overflow: hidden; }
 
   body {
-    background-color: var(--color-ink);
-    color: var(--color-bone);
+    background-color: var(--color-canvas);
+    color: var(--color-body);
     font-family: var(--font-sans);
     font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
   }
 
@@ -132,45 +193,46 @@
   :focus-visible {
     outline: 2px solid var(--color-ember);
     outline-offset: 3px;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
+  /* Headings are set at 400 with near-normal tracking. This is the one
+     change that does the most work on this site: 600 at -0.022em is the
+     marketing-page default, and it reads as a landing page trying to
+     sell. The same sentence at 400, large, with the leading pulled under
+     1, reads as a masthead. rho sets its 56px h1 at exactly 400 with
+     tracking left alone, and that is why it looks expensive. */
   h1, h2, h3, h4 {
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.012em;
     line-height: 1.02;
     text-wrap: balance;
   }
 
-  p {
-    text-wrap: pretty;
-  }
+  /* Sub-heads are the one place weight is allowed to carry hierarchy,
+     because at 24px size alone no longer separates them from body. */
+  h3, h4 { font-weight: 500; letter-spacing: -0.008em; }
 
-  * {
-    scrollbar-color: var(--color-hairline-strong) transparent;
-  }
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  p { text-wrap: pretty; }
+
+  * { scrollbar-color: var(--color-line-strong) transparent; }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-hairline-strong);
+    background: var(--color-line-strong);
+    border: 3px solid var(--color-canvas);
     border-radius: 99px;
-    border: 2px solid var(--color-ink);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-ember);
-  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-faint); }
 }
 
 /* ------------------------------------------------------------------ *
- * Utilities
+ * Layout
  * ------------------------------------------------------------------ */
 @utility container-x {
   width: 100%;
-  max-width: 80rem;
+  max-width: 84rem;
   margin-inline: auto;
   padding-inline: var(--spacing-gutter);
 }
@@ -179,85 +241,201 @@
   padding-block: var(--spacing-section);
 }
 
-/* Alternating band — a slightly warmer surface with hairlines so the change
-   of surface reads as deliberate. */
-@utility band {
-  background: var(--color-surface-1);
-  border-top: 1px solid var(--color-hairline);
-  border-bottom: 1px solid var(--color-hairline);
+/* ------------------------------------------------------------------ *
+ * Dark panels
+ *
+ * A dark section never begins with a hard edge. `panel-ink` carries its
+ * own fade at both ends, so the canvas resolves into the panel over
+ * ~8rem instead of cutting. This is why the section reads as a change of
+ * light rather than a block dropped onto the page.
+ * ------------------------------------------------------------------ */
+@utility panel-ink {
+  position: relative;
+  background: var(--color-ink);
+  color: var(--color-on-ink);
 }
 
-/* The page's one high-contrast break: solid orange. Text inside is always
-   white, so children use `text-white`. */
-@utility band-ember {
-  color: #fff;
-  background:
-    radial-gradient(90% 120% at 100% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
-    radial-gradient(70% 90% at 0% 100%, rgba(0, 0, 0, 0.14), transparent 60%),
-    linear-gradient(135deg, var(--color-ember) 0%, var(--color-ember-deep) 100%);
+/* Why the old fade looked like wet cement, and what replaced it.
+ *
+ * It was two stops — canvas to `transparent` — stretched over 9rem. Two
+ * problems compounded. First, a straight-line ramp spends most of its
+ * height in the middle of the range, so roughly half that 144px band sat
+ * in the 40–60% greys, and a large flat area of mid-grey reads as
+ * pavement no matter what sits either side of it. Second, the ramp was
+ * neutral: interpolating a warm #f2efe9 toward black in sRGB drains the
+ * warmth out first and the lightness second, so the midpoint is a dead
+ * grey that belongs to neither the canvas nor the panel.
+ *
+ * The fix is the same one a photographer would reach for. Shorten the
+ * transition, weight the stops so it falls fast through the middle and
+ * lingers at the two ends where the eye is actually looking for a match,
+ * and keep every intermediate step warm — the ramp runs through bone and
+ * clay and umber, never through grey. `in oklab` makes the steps
+ * perceptually even, which is what kills the banding.
+ */
+@utility panel-fade-top {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 7rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom in oklab,
+    var(--color-canvas) 0%,
+    #e7e1d6 22%,
+    #cec4b4 40%,
+    #a29685 55%,
+    #6b6156 70%,
+    #3c3630 83%,
+    #201d19 93%,
+    var(--color-ink) 100%
+  );
 }
 
-/* Eyebrow label above section headings */
-@utility eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-ember);
+@utility panel-fade-bottom {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 7rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to top in oklab,
+    var(--color-canvas) 0%,
+    #e7e1d6 22%,
+    #cec4b4 40%,
+    #a29685 55%,
+    #6b6156 70%,
+    #3c3630 83%,
+    #201d19 93%,
+    var(--color-ink) 100%
+  );
 }
 
-/* Fluid display type */
+/* ------------------------------------------------------------------ *
+ * Type scale
+ * ------------------------------------------------------------------ */
+/* Scale ratio ~1.35 between steps, taken off rho's 56 / 41.3 / 24.5. */
 @utility text-display {
-  font-size: clamp(2.375rem, 5vw, 4.125rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 6.2vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.018em;
 }
 
 @utility text-heading {
-  font-size: clamp(1.875rem, 3.6vw, 3rem);
-  line-height: 1.06;
-  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  line-height: 1.0;
+  letter-spacing: -0.014em;
 }
 
 @utility text-lede {
-  font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
   line-height: 1.6;
   color: var(--color-mute);
 }
 
-/* Accent words in headlines: italic, orange. */
-@utility text-ember-gradient {
-  background: linear-gradient(100deg, var(--color-ember-deep) 0%, var(--color-ember) 60%, var(--color-ember-soft) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* The label device both products use: uppercase mono, tracked out, with
+   a small ember dot. `.label` sets the type; `.label-dot` adds the dot. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-faint);
 }
 
-@utility hairline-t {
-  border-top: 1px solid var(--color-hairline);
+@utility label-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+@utility label-dot-mark {
+  display: inline-block;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 99px;
+  background: var(--color-ember);
+  flex-shrink: 0;
 }
 
-/* Card: raised surface with a soft shadow. */
-@utility card {
-  background: var(--color-ink-raised);
-  border: 1px solid var(--color-hairline);
-  box-shadow: var(--shadow-card);
-  border-radius: 1.25rem;
+/* Kept for components written before the label device existed. */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ember-text);
 }
 
 /* ------------------------------------------------------------------ *
- * Motion preferences — every decorative animation opts out here.
+ * Surfaces
+ * ------------------------------------------------------------------ */
+@utility card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* A card on a dark panel: the panel's own light at 7%, edged at 11%.
+   A solid lighter grey would introduce a second black to the page. */
+@utility card-ink {
+  background: var(--color-tint);
+  border: 1px solid var(--color-line-on-ink);
+  border-radius: var(--radius-card);
+  color: var(--color-on-ink);
+}
+
+/* Controls. 4px, 52px tall, label at 0.875rem — the geometry rho uses
+   for every button on the site, and the reason theirs read as software
+   rather than as marketing. */
+@utility control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  height: 3.25rem;
+  padding-inline: 1.375rem;
+  border-radius: var(--radius-control);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  transition: background-color var(--t-fast) var(--t-ease),
+              color var(--t-fast) var(--t-ease),
+              border-color var(--t-fast) var(--t-ease);
+}
+
+@utility band {
+  background: var(--color-canvas-deep);
+}
+
+@utility band-ember {
+  color: #fff;
+  background: var(--color-ember);
+}
+
+@utility hairline-t {
+  border-top: 1px solid var(--color-line);
+}
+
+@utility text-ember-gradient {
+  color: var(--color-ember-text);
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion preferences
  * ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -266,27 +444,20 @@
 
 /* ------------------------------------------------------------------ *
  * Preloader (components/motion/Boot.tsx)
- *
- * Present in the server HTML so it paints instantly. Hidden outright when
- * the boot script decided to skip it, and slid away once it has finished.
  * ------------------------------------------------------------------ */
 .boot {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: var(--color-ink);
-  color: var(--color-bone);
+  background: var(--color-canvas);
+  color: var(--color-body);
   transform: translateY(0);
   transition: transform 0.9s var(--ease-in-out-quint);
   will-change: transform;
 }
-.boot[data-state="exit"] {
-  transform: translateY(-100%);
-}
+.boot[data-state="exit"] { transform: translateY(-100%); }
 html[data-boot="skip"] .boot,
-html[data-boot="done"] .boot {
-  display: none;
-}
+html[data-boot="done"] .boot { display: none; }
 
 .boot-inner {
   position: absolute;
@@ -294,71 +465,4 @@ html[data-boot="done"] .boot {
   padding: var(--spacing-gutter);
   transition: opacity 0.4s ease;
 }
-.boot[data-state="exit"] .boot-inner {
-  opacity: 0;
-}
-
-.boot-mark {
-  position: absolute;
-  top: var(--spacing-gutter);
-  left: var(--spacing-gutter);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  font-size: 1.125rem;
-}
-
-.boot-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(14rem, 40vw);
-  height: 2px;
-  transform: translate(-50%, -50%);
-  background: var(--color-hairline-strong);
-  overflow: hidden;
-}
-.boot-bar-fill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--color-ember);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-.boot-counter {
-  position: absolute;
-  left: var(--spacing-gutter);
-  bottom: calc(var(--spacing-gutter) - 0.1em);
-  display: flex;
-  font-size: clamp(4rem, 12vw, 9rem);
-  line-height: 1;
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
-}
-.boot-digit {
-  display: block;
-  height: 1em;
-  overflow: hidden;
-}
-.boot-digit-col {
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.35s var(--ease-out-expo);
-}
-.boot-digit-col > span {
-  display: block;
-  height: 1em;
-}
-
-.boot-label {
-  position: absolute;
-  right: var(--spacing-gutter);
-  bottom: var(--spacing-gutter);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-faint);
-}
+.boot[data-state="exit"] .boot-inner { opacity: 0; }

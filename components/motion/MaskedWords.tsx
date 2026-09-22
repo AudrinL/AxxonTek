@@ -38,7 +38,7 @@ export function MaskedWords({
   text,
   className,
   accent = [],
-  accentClassName = "text-ember",
+  accentClassName = "text-ember-text",
   delay = 0,
   immediate = false,
   as = "h2",
@@ -113,9 +113,19 @@ export function MaskedWords({
             const i = wordIndexGlobal++;
             return (
               <Fragment key={`${lineIndex}-${wordIndex}`}>
-                <span data-mask className="inline-block overflow-hidden pb-[0.12em] align-bottom">
+                {/* The mask is `overflow-hidden` at the heading's own
+                    line-height, which display type sets below 1 — so the
+                    glyphs are taller than the box clipping them and
+                    descenders get cut. The padding opens the box up; the
+                    matching negative margin keeps the line rhythm. Nothing
+                    leaks while hidden: the word sits at y:110%, clear of
+                    the mask entirely. */}
+                <span
+                  data-mask
+                  className="inline-block overflow-hidden align-bottom pt-[0.14em] pb-[0.26em] -mt-[0.14em] -mb-[0.26em]"
+                >
                   <motion.span
-                    className={`inline-block ${isAccent ? `font-display italic font-normal ${accentClassName}` : ""}`}
+                    className={`inline-block ${isAccent ? `font-medium ${accentClassName}` : ""}`}
                     variants={mode === "lines" ? lineMask : wordMask}
                     custom={mode === "lines" ? { line: lineOf[i] ?? 0, base: delay } : undefined}
                     transition={mode === "lines" ? undefined : { duration: 1, ease: easeOutExpo }}

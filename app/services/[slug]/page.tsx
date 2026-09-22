@@ -86,7 +86,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                       viewBox="0 0 24 24"
                       fill="none"
                       aria-hidden
-                      className="shrink-0 text-faint transition-all duration-500 group-hover:translate-x-0.5 group-hover:text-ember"
+                      className="shrink-0 text-faint transition-all duration-500 group-hover:translate-x-0.5 group-hover:text-ember-text-text"
                     >
                       <path
                         d="M7 17L17 7m0 0H8m9 0v9"

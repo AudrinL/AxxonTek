@@ -24,9 +24,22 @@ export function Nav() {
   const lenis = useLenis();
 
   const [condensed, setCondensed] = useState(false);
+  const [overInk, setOverInk] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => setCondensed(latest > 24));
+  // The homepage opens on an ink hero, so the bar has to invert while it is
+  // over it and change back once the canvas arrives. 0.85 of the viewport is
+  // where the hero's bottom fade has finished resolving.
+  const onInkHero = pathname === "/";
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setCondensed(latest > 24);
+    setOverInk(onInkHero && latest < window.innerHeight * 0.85);
+  });
+
+  useEffect(() => {
+    setOverInk(onInkHero && window.scrollY < window.innerHeight * 0.85);
+  }, [onInkHero]);
 
   // Close the drawer on navigation.
   useEffect(() => {
@@ -52,10 +65,8 @@ export function Nav() {
   const isActive = (href: string) =>
     href.startsWith("/#") ? false : pathname === href || pathname.startsWith(`${href}/`);
 
-  // The homepage hero is orange edge to edge, so the bar starts white-on-
-  // orange there and returns to its normal colours once it condenses (or
-  // when the drawer, which is page-coloured, is open).
-  const inverted = pathname === "/" && !condensed && !menuOpen;
+  // Light-on-dark only while the bar is actually over the ink hero.
+  const inverted = overInk && !menuOpen;
 
   return (
     <>
@@ -70,8 +81,10 @@ export function Nav() {
         <div
           className={`transition-[background-color,box-shadow,border-color] duration-400 ${
             condensed
-              ? "border-b border-hairline bg-ink/85 shadow-nav backdrop-blur-xl backdrop-saturate-150"
-              : "border-b border-transparent bg-ink/0"
+              ? inverted
+                ? "border-b border-line-on-ink bg-ink/80 backdrop-blur-xl backdrop-saturate-150"
+                : "border-b border-hairline bg-canvas/85 shadow-nav backdrop-blur-xl backdrop-saturate-150"
+              : "border-b border-transparent bg-canvas/0"
           }`}
         >
           <nav
@@ -90,7 +103,7 @@ export function Nav() {
                     className={`group relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-300 ${
                       inverted
                         ? `hover:bg-white/10 hover:text-white ${isActive(item.href) ? "text-white" : "text-white/80"}`
-                        : `hover:bg-ink-panel hover:text-bone ${isActive(item.href) ? "text-bone" : "text-mute"}`
+                        : `hover:bg-ink-panel hover:text-body ${isActive(item.href) ? "text-body" : "text-mute"}`
                     }`}
                   >
                     {item.label}
@@ -120,7 +133,7 @@ export function Nav() {
                 className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full border transition-colors lg:hidden ${
                   inverted
                     ? "border-white/40 text-white hover:border-white"
-                    : "border-hairline text-bone hover:border-hairline-strong"
+                    : "border-hairline text-body hover:border-hairline-strong"
                 }`}
               >
                 <span className="flex h-3 w-4 flex-col justify-between">
@@ -150,7 +163,7 @@ export function Nav() {
         {menuOpen && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-ink lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-canvas lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -174,7 +187,7 @@ export function Nav() {
                   >
                     <Link
                       href={item.href}
-                      className="flex items-center justify-between border-b border-hairline py-4 text-[1.5rem] font-medium tracking-tight text-bone"
+                      className="flex items-center justify-between border-b border-hairline py-4 text-[1.5rem] font-medium tracking-tight text-body"
                     >
                       {item.label}
                       <Icon name="arrow" className="text-faint" />
@@ -195,7 +208,7 @@ export function Nav() {
                     <li key={s.slug}>
                       <Link
                         href={`/services/${s.slug}`}
-                        className="text-[0.9375rem] text-mute transition-colors hover:text-bone"
+                        className="text-[0.9375rem] text-mute transition-colors hover:text-body"
                       >
                         {s.title}
                       </Link>
@@ -216,7 +229,7 @@ export function Nav() {
                 </MagneticButton>
                 <a
                   href={`mailto:${site.email}`}
-                  className="text-center text-sm text-mute transition-colors hover:text-ember"
+                  className="text-center text-sm text-mute transition-colors hover:text-ember-text-text"
                 >
                   {site.email}
                 </a>

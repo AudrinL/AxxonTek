@@ -26,7 +26,7 @@ export function LegalBody({ sections, updated }: { sections: LegalSection[]; upd
                 <li key={section.heading}>
                   <a
                     href={`#${section.id ?? slugify(section.heading)}`}
-                    className="group flex gap-3 text-[0.8125rem] text-mute transition-colors hover:text-bone"
+                    className="group flex gap-3 text-[0.8125rem] text-mute transition-colors hover:text-body"
                   >
                     <span className="font-mono text-faint">
                       {String(i + 1).padStart(2, "0")}
@@ -47,7 +47,7 @@ export function LegalBody({ sections, updated }: { sections: LegalSection[]; upd
                   className="scroll-mt-28 border-t border-hairline py-10 first:border-t-0 first:pt-0"
                 >
                   <h2 className="mb-5 flex items-baseline gap-4 text-[1.375rem] tracking-tight">
-                    <span className="font-mono text-[0.6875rem] text-ember">
+                    <span className="font-mono text-[0.6875rem] text-ember-text">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {section.heading}

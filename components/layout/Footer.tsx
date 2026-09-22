@@ -14,7 +14,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-hairline bg-ink">
+    <footer className="border-t border-hairline bg-canvas-deep">
       <div className="container-x pt-[clamp(3.5rem,7vw,5.5rem)] pb-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
           <div className="max-w-sm">
@@ -23,7 +23,7 @@ export function Footer() {
               An engineering team in Kigali building apps, websites and smart systems for African
               SMEs and individuals — and our own products, TalentLens and Floow.
             </p>
-            <p className="mt-7 mb-3 text-[0.8125rem] font-medium text-bone">
+            <p className="mt-7 mb-3 text-[0.8125rem] font-medium text-body">
               Occasional notes on engineering — no spam.
             </p>
             <NewsletterForm />
@@ -55,14 +55,14 @@ export function Footer() {
             </address>
             <a
               href={`mailto:${site.email}`}
-              className="mt-3 inline-block text-sm font-medium text-bone transition-colors hover:text-ember"
+              className="mt-3 inline-block text-sm font-medium text-body transition-colors hover:text-ember-text-text"
             >
               {site.email}
             </a>
             {site.phone && (
               <a
                 href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                className="text-sm text-mute transition-colors hover:text-ember"
+                className="text-sm text-mute transition-colors hover:text-ember-text-text"
               >
                 {site.phone}
               </a>
@@ -76,7 +76,7 @@ export function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-ink-raised text-[0.6875rem] font-semibold tracking-wide text-mute transition-all duration-300 hover:-translate-y-0.5 hover:border-ember hover:text-ember"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-ink-raised text-[0.6875rem] font-semibold tracking-wide text-mute transition-all duration-300 hover:-translate-y-0.5 hover:border-ember hover:text-ember-text-text"
                 >
                   {social.short}
                 </a>
@@ -129,7 +129,7 @@ function FooterLink({
   return (
     <Link
       href={href}
-      className={`w-fit text-mute transition-colors duration-300 hover:text-ember ${
+      className={`w-fit text-mute transition-colors duration-300 hover:text-ember-text-text ${
         small ? "text-[0.8125rem]" : "text-sm"
       }`}
     >

@@ -43,7 +43,7 @@ export function PageHero({ eyebrow, title, accent = [], lede, action, crumbs }: 
             {crumbs.map((crumb, i) => (
               <span key={crumb.href} className="flex items-center gap-2">
                 {i > 0 && <span aria-hidden>/</span>}
-                <Link href={crumb.href} className="transition-colors hover:text-bone">
+                <Link href={crumb.href} className="transition-colors hover:text-body">
                   {crumb.label}
                 </Link>
               </span>

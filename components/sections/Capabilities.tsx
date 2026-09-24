@@ -1,6 +1,22 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/system/Reveal";
-import { capabilities } from "@/lib/site";
+import { capabilities, hosting, services } from "@/lib/site";
+
+/**
+ * The four service cards with imagery, shown under the row list. Hosting
+ * is included so the homepage carries a taste of the one priced service
+ * and can hand the visitor straight to /pricing.
+ */
+const showcase = [
+  ...services,
+  {
+    name: hosting.name,
+    blurb: hosting.lede,
+    image: hosting.image,
+    href: "/pricing",
+  },
+];
 
 /**
  * The range, on ink.
@@ -81,6 +97,37 @@ export function Capabilities() {
                     &#8594;
                   </span>
                 </span>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+
+        {/* The services, with imagery. The row list above is the contents
+            page; this is the shelf. */}
+        <ul className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {showcase.map((service, i) => (
+            <Reveal as="li" key={service.name} delay={Math.min(i, 3) * 60} className="h-full">
+              <Link
+                href={service.href}
+                className="group card flex h-full flex-col overflow-hidden"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
+                  <Image
+                    src={service.image}
+                    alt={service.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-[var(--t-base)] ease-out group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="font-display text-[1.125rem] font-semibold tracking-[-0.02em] transition-colors duration-[var(--t-hover)] group-hover:text-accent">
+                    {service.name}
+                  </h3>
+                  <p className="mt-2 text-[0.875rem] leading-relaxed text-tone-mute">
+                    {service.blurb}
+                  </p>
+                </div>
               </Link>
             </Reveal>
           ))}

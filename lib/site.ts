@@ -20,9 +20,9 @@ export const site = {
   /** Leave empty until there is a real line. The UI hides it when blank. */
   phone: "" as string,
   address: {
-    line1: "Norrsken Kigali",
-    line2: "1 KN 78 St",
-    city: "Kigali, Rwanda",
+    line1: "Brampton",
+    line2: "Ontario",
+    city: "Canada",
   },
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/axxontek", short: "In" },
@@ -36,6 +36,7 @@ export const primaryNav = [
   { label: "Lab", href: "/lab" },
   { label: "Playground", href: "/playground" },
   { label: "Work", href: "/work" },
+  { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
 ] as const;
 
@@ -220,6 +221,87 @@ export const products: Product[] = [
       "An organisation can hire on evidence instead of instinct, and a candidate can practise the same tests for free before they sit one.",
     status: "Live",
     image: "/assets/work/talentlens.png",
+  },
+];
+
+/* ------------------------------------------------------------------ *
+ * Hosting
+ *
+ * The one service on the site with a public, fixed price. Everything
+ * else is scoped after a conversation; hosting is a known quantity, so
+ * it is quoted plainly. Same content rule applies: the reader is the
+ * subject. "Your site stays up" beats "we provide uptime".
+ * ------------------------------------------------------------------ */
+export type HostingPlan = {
+  name: string;
+  price: number;
+  currency: string;
+  period: string;
+  cadence: string;
+  checkoutUrl: string;
+  lede: string;
+  image: string;
+  includes: string[];
+  note: string;
+};
+
+export const hosting: HostingPlan = {
+  name: "Managed hosting",
+  price: 133,
+  currency: "USD",
+  period: "year",
+  cadence: "Billed once a year",
+  checkoutUrl: "https://flutterwave.com/pay/t8rgtxiizwgr",
+  lede:
+    "Your site stays online, fast and patched, on infrastructure we run and monitor so you never have to think about it.",
+  image: "/assets/services/hosting.png",
+  includes: [
+    "Your site live on managed infrastructure, tuned for African networks",
+    "A free SSL certificate, renewed automatically so the lock never lapses",
+    "Daily backups you can restore from, kept off the main server",
+    "Security patches and uptime monitoring handled by us, not by you",
+    "A custom domain connected properly, with email routing if you need it",
+    "A real engineer to reach when something looks wrong",
+  ],
+  note:
+    "Domain registration is billed separately at cost. Sites we did not build are welcome after a short review.",
+} as const;
+
+/* ------------------------------------------------------------------ *
+ * Services, with imagery
+ *
+ * The build work that a hosting customer usually needs first. Each one
+ * keeps the content rule: the reader is the subject. Images live under
+ * /public/assets/services and are 16:9 so the cards line up.
+ * ------------------------------------------------------------------ */
+export type Service = {
+  name: string;
+  blurb: string;
+  image: string;
+  href: string;
+};
+
+export const services: Service[] = [
+  {
+    name: "Software development",
+    blurb:
+      "The system your organisation runs on, built for mid-range phones on mobile data rather than a demo laptop.",
+    image: "/assets/services/software-development.png",
+    href: "/contact",
+  },
+  {
+    name: "App development",
+    blurb:
+      "A customer-facing app that turns a visit into an order, with mobile money and WhatsApp wired in from the first screen.",
+    image: "/assets/services/app-development.avif",
+    href: "/contact",
+  },
+  {
+    name: "IT consultation",
+    blurb:
+      "Know what you need before you pay for it: an honest audit and a written recommendation you can act on with us or without us.",
+    image: "/assets/services/it-consultation.png",
+    href: "/contact",
   },
 ];
 

@@ -368,3 +368,20 @@ html.js [data-reveal="shown"] {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ==================================================================
+ * Float. The slow drift on the hero mockups, so they read as objects
+ * hanging in space rather than pasted onto the page. Each piece takes
+ * its own duration and delay through the custom properties.
+ * ================================================================== */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(-1 * var(--float-by, 8px))); }
+}
+.floaty {
+  animation: floaty var(--float-dur, 7s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .floaty { animation: none; }
+}

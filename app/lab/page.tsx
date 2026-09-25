@@ -90,10 +90,10 @@ export default function LabPage() {
                 Join the school pilot
               </Link>
               <Link
-                href="/playground"
+                href="/products"
                 className="text-[0.9375rem] text-tone-mute underline decoration-line-firm underline-offset-[6px] transition-colors duration-[var(--t-hover)] hover:text-tone"
               >
-                Try a prototype in the Playground
+                See what has shipped
               </Link>
             </div>
           </Reveal>

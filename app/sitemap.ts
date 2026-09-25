@@ -20,9 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/about", priority: 0.7 },
     { path: "/contact", priority: 0.8 },
     { path: "/security", priority: 0.4 },
-    { path: "/lab", priority: 0.6 },
-    { path: "/playground", priority: 0.6 },
-    { path: "/pricing", priority: 0.6 },
+    { path: "/lab", priority: 0.7 },
+    { path: "/pricing", priority: 0.7 },
     { path: "/privacy", priority: 0.3 },
     { path: "/terms", priority: 0.3 },
   ];

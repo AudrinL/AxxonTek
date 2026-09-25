@@ -41,7 +41,9 @@ export const primaryNav = [
   { label: "Products", href: "/products" },
   { label: "Work", href: "/work" },
   { label: "Studio", href: "/studio" },
+  { label: "Lab", href: "/lab" },
   { label: "Capabilities", href: "/capabilities" },
+  { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
 ] as const;
 
@@ -375,7 +377,7 @@ export const faqs = [
   },
   {
     q: "Is the virtual laboratory work available now?",
-    a: "It is in active development in the Lab, and the first browser prototypes are on the Playground where anyone can use them. If you run a school and want to be part of the pilot, get in touch and say so.",
+    a: "It is in active development in the Lab, with the first browser prototypes already running. If you run a school and want to be part of the pilot, get in touch and say so.",
   },
 ] as const;
 

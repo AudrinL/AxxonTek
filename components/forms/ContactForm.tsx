@@ -12,10 +12,33 @@ const fieldBase =
 
 const labelBase = "mb-2 block text-[0.875rem] font-medium text-tone";
 
-export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
+/** The intents from the masterplan. The first is the default. */
+const INTERESTS = [
+  "Building a website",
+  "Building a digital product",
+  "Transforming an existing system",
+  "Working with AxxonTek",
+  "Partnership",
+  "Something else",
+] as const;
+
+export function ContactForm({
+  defaultEmail,
+  defaultInterest,
+  concept,
+}: {
+  defaultEmail?: string;
+  defaultInterest?: string;
+  concept?: string;
+} = {}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [formError, setFormError] = useState("");
+  const [interest, setInterest] = useState<string>(
+    defaultInterest && INTERESTS.includes(defaultInterest as (typeof INTERESTS)[number])
+      ? defaultInterest
+      : INTERESTS[0]
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -98,6 +121,34 @@ export function ContactForm({ defaultEmail }: { defaultEmail?: string } = {}) {
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
+
+      {/* Intent. Carried as a hidden field so it posts with everything else. */}
+      <input type="hidden" name="interest" value={interest} />
+      {concept && <input type="hidden" name="concept" value={concept} />}
+
+      <fieldset>
+        <legend className={labelBase}>I&rsquo;m interested in</legend>
+        <div className="flex flex-wrap gap-2">
+          {INTERESTS.map((option) => {
+            const active = interest === option;
+            return (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setInterest(option)}
+                aria-pressed={active}
+                className={`rounded-full border px-4 py-2 text-[0.875rem] transition-colors duration-[var(--t-hover)] ${
+                  active
+                    ? "border-transparent bg-ink text-canvas"
+                    : "border-line-firm text-tone-mute hover:border-tone hover:text-tone"
+                }`}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field

@@ -42,7 +42,7 @@ export default async function WorkDetailPage({
   return (
     <>
       <header className="container-x pt-40 pb-16 md:pt-48">
-        <Link href="/work" className="label mb-10 inline-block hover:text-ember-text-text">
+        <Link href="/work" className="label mb-10 inline-block hover:text-accent">
           &#8592; All work
         </Link>
 
@@ -58,7 +58,7 @@ export default async function WorkDetailPage({
             term="Live"
             value={
               item.url ? (
-                <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-ember-text-text">
+                <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-accent">
                   Visit &#8599;
                 </a>
               ) : (

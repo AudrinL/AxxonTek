@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, Inter, JetBrains_Mono } from "next/font/google";
+import { Outfit, Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Ground } from "@/components/system/Ground";
 import { Trace } from "@/components/system/Trace";
+import { SmoothScroll } from "@/components/system/SmoothScroll";
+import { Loader } from "@/components/system/Loader";
 import { site } from "@/lib/site";
 
 /**
@@ -34,6 +36,20 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-jetbrains",
+  display: "swap",
+});
+
+/**
+ * The serif accent. One warm, high-contrast face used sparingly for a
+ * single emphasised word inside a headline, the way Inzovu uses Instrument
+ * Serif in gold. It is the studio's signal that a headline is being spoken,
+ * not just set, and it replaces the italic the house rules forbid.
+ */
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
+  variable: "--font-instrument",
   display: "swap",
 });
 
@@ -98,12 +114,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          data-ground, both before React hydrates. Expected, not a bug. */
       suppressHydrationWarning
 
-      className={`${outfit.variable} ${inter.variable} ${jetbrains.variable}`}
+      className={`${outfit.variable} ${inter.variable} ${jetbrains.variable} ${instrument.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: markScripted }} />
       </head>
       <body className="dotgrid antialiased">
+        <SmoothScroll />
+        <Loader />
         <Ground />
         <Trace />
 

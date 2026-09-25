@@ -23,7 +23,7 @@ export default function WorkPage() {
               still running.
             </h1>
           </div>
-          <p className="max-w-sm text-[0.9375rem] leading-relaxed text-mute">
+          <p className="max-w-sm text-[0.9375rem] leading-relaxed text-tone-mute">
             Every project here was scoped, built and is supported by the same
             four people. Where a client has asked us not to name them, we name
             the sector instead.

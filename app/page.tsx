@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { Situations } from "@/components/sections/Situations";
-import { Capabilities } from "@/components/sections/Capabilities";
-import { Proof } from "@/components/sections/Proof";
-import { LabPreview } from "@/components/sections/LabPreview";
-import { PlaygroundTaste } from "@/components/sections/PlaygroundTaste";
+import { WhatWeBuild } from "@/components/sections/WhatWeBuild";
+import { FeaturedProducts } from "@/components/sections/FeaturedProducts";
+import { StudioTeaser } from "@/components/sections/StudioTeaser";
+import { CapabilitiesStrip } from "@/components/sections/CapabilitiesStrip";
 import { Method } from "@/components/sections/Method";
 import { Faq } from "@/components/sections/Faq";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -16,31 +15,31 @@ export const metadata: Metadata = {
 };
 
 /**
- * The homepage, as an arc rather than a list.
+ * The homepage, as the masterplan's arc: a technology company introducing
+ * itself on three levels, then the evidence, then the ask.
  *
- *   Hero        the thesis, and what is possible now
- *   Situations  the visitor's own problem, in their words
- *   Capabilities  ink. the full width of what is available
- *   Proof       canvas. two products that already run
- *   Lab         ink. what is being worked out next
- *   Playground  canvas. the first thing they can touch
- *   Method      how working together actually goes
- *   FAQ         the remaining objections
- *   Contact     ink. the ask
+ *   Hero          ink.    the thesis, in the company's own voice
+ *   What we build  canvas. products, systems, emerging technology
+ *   Products      ink.    the two we own and run
+ *   Studio        canvas. what we could build for you
+ *   Capabilities  canvas. the range, as a moving ribbon
+ *   Method        canvas. how working together actually goes
+ *   FAQ           canvas. the remaining objections
+ *   Contact       ink.    the ask
  *
- * The ground changes four times across the whole page. Each change marks
- * a genuine shift in what is being argued, which is the only thing that
- * earns one.
+ * The ground follows one rule now, not a rhythm: ink is a product or the
+ * company's own voice, canvas is the customer's world and our evidence. So
+ * it drops to ink exactly twice, for the products and for the close, and
+ * holds one long calm light stretch in between. Nothing alternates.
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Situations />
-      <Capabilities />
-      <Proof />
-      <LabPreview />
-      <PlaygroundTaste />
+      <WhatWeBuild />
+      <FeaturedProducts />
+      <StudioTeaser />
+      <CapabilitiesStrip />
       <Method />
       <Faq />
       <ContactSection />

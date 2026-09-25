@@ -1,45 +1,43 @@
 import Link from "next/link";
-import { capabilities, primaryNav, site } from "@/lib/site";
+import { primaryNav, secondaryNav, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
-import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
 /**
- * The footer keeps the ink ground the contact section arrives on, so the
- * page ends in one chapter instead of flickering back to canvas for a
- * few hundred pixels of links.
+ * A clean footer, not a sitemap. Two link columns, the brand line, contact
+ * and legal. It keeps whatever ground the section above it arrived on, so a
+ * page that ends dark ends dark all the way down rather than flickering back
+ * to canvas for a few hundred pixels of links.
  */
 export function Footer() {
   return (
     <footer className="relative z-[1] border-t border-line">
       <div className="container-x py-16">
-        <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
             <Logo />
-            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
-              A technology company in Kigali building software, AI, immersive
-              learning and smart systems for organisations across Africa.
+            <p className="mt-5 max-w-xs font-display text-[1.375rem] font-semibold leading-[1.15] tracking-[-0.022em]">
+              Technology for a changing Africa.
             </p>
-            <p className="mt-7 mb-3 text-[0.875rem] font-medium">
-              Occasional notes from the Lab. No spam.
+            <p className="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
+              A technology company in Kigali. We build products, systems and the
+              emerging technology that becomes both.
             </p>
-            <NewsletterForm />
           </div>
 
-          <FooterColumn title="Solutions">
-            {capabilities.map((capability) => (
-              <FooterLink key={capability.id} href={`/solutions#${capability.id}`}>
-                {capability.name}
-              </FooterLink>
-            ))}
-          </FooterColumn>
-
-          <FooterColumn title="Company">
+          <FooterColumn title="Explore">
             {primaryNav.map((item) => (
               <FooterLink key={item.href} href={item.href}>
                 {item.label}
               </FooterLink>
             ))}
-            <FooterLink href="/contact">Contact</FooterLink>
+          </FooterColumn>
+
+          <FooterColumn title="Company">
+            {secondaryNav.map((item) => (
+              <FooterLink key={item.href} href={item.href}>
+                {item.label}
+              </FooterLink>
+            ))}
           </FooterColumn>
 
           <FooterColumn title="Get in touch">

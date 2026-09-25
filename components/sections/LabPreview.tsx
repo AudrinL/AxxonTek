@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Reveal } from "@/components/system/Reveal";
 
 /**
- * The Lab, on ink. The second and last ground change of the homepage.
+ * The Lab, on ink. The single dark beat in the middle of the homepage:
+ * the ground has been calm and light since the Hero, and it drops here
+ * once, deliberately, before returning to light for the rest.
  *
  * The rule for this section is that a reader has to finish it knowing
  * something specific they did not know before. A list of technologies

@@ -19,13 +19,16 @@ const showcase = [
 ];
 
 /**
- * The range, on ink.
+ * The range.
  *
- * This is the first ground change on the page, and it is spent here on
- * purpose: the argument shifts from "we understand your problem" to
- * "here is the full width of what is available to you", and a change of
- * light is the cheapest way to signal a change of subject without a
- * heading that says "now a different subject".
+ * This stays on canvas, in one continuous light stretch with the
+ * problem before it (Situations) and the proof after it (Proof). The
+ * argument here shifts from "we understand your problem" to "here is the
+ * full width of what is available", but a shift of subject does not need
+ * a shift of light: three light sections read as one calm chapter, and
+ * the homepage saves its ground changes for the two beats that truly
+ * earn them, the Lab and the close. The heading and the label carry the
+ * turn instead.
  *
  * Rows rather than cards. Five capabilities as five cards reads as a
  * price list; as five rows with real weight on the name it reads as a
@@ -33,9 +36,7 @@ const showcase = [
  */
 export function Capabilities() {
   return (
-    <section data-chapter-ground="ink" className="bloom chapter-y relative overflow-hidden">
-      <span aria-hidden className="bloom-light -right-[18rem] -bottom-[26rem] opacity-60" />
-
+    <section data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-8">
           <div className="max-w-[20ch]">

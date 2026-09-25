@@ -1,111 +1,146 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Reveal } from "@/components/system/Reveal";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { Icon } from "@/components/Icon";
-import { HeroIllustration } from "@/components/sections/HeroIllustration";
+import { ScrollCue } from "@/components/system/ScrollCue";
+import { useParallax } from "@/lib/motion";
 
 /**
- * The hero asks for one thing: a call. Headline, one sentence, one button,
- * one line of reassurance, nothing else competes.
+ * The front door, on ink because this is the company speaking in its own
+ * voice. A desaturated photograph under a warm ember wash, a headline that
+ * rises line by line from behind its own mask, and one emphasised word set
+ * in the serif so the sentence is spoken rather than merely displayed.
  *
- * Full-viewport and edge to edge. A photograph sits under an orange wash
- * across the whole section; a white slice cuts in from the right on a
- * diagonal and the illustration sits across that edge, anchored to the
- * corner so it fills wide displays and bleeds off the bottom like a real
- * object rather than sitting in a box. On phones the slice becomes a
- * bottom band with a diagonal top.
- *
- * The ground is declared as ink so the fixed nav reads as light over the
- * orange without the nav needing a second variant. This is a faithful
- * rebuild of the original orange hero using only the current system:
- * Reveal for the entrance, Icon for the marks, CSS for the drift.
+ * The backdrop drifts on scroll through a scrubbed parallax, so the words
+ * sit in front of a world that moves rather than on a flat plate. Under
+ * reduced motion the headline is simply present and nothing drifts.
  */
 export function Hero() {
+  const backdrop = useParallax<HTMLDivElement>(120);
+  const root = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    /* The loader covers the hero for the opening beat, so we can set the
+       hidden state explicitly here without any flash, and skip the CSS
+       hidden rules that fight React's dev double-mount. No JS, or reduced
+       motion, means the headline is simply present. */
+    const lines = el.querySelectorAll("[data-hero-line] > span");
+    const rises = el.querySelectorAll("[data-hero-rise]");
+
+    gsap.set(lines, { yPercent: 110 });
+    gsap.set(rises, { opacity: 0, y: 20 });
+
+    const tl = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.35 });
+    tl.to(lines, { yPercent: 0, duration: 1.1, stagger: 0.12 }).to(
+      rises,
+      { y: 0, opacity: 1, duration: 0.9, stagger: 0.12 },
+      "-=0.7"
+    );
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section
+      ref={root}
       data-chapter-ground="ink"
-      className="relative flex min-h-[100svh] flex-col overflow-hidden text-white lg:min-h-[max(100svh,44rem)]"
+      className="bloom relative flex min-h-[100svh] flex-col justify-between overflow-hidden pt-28 pb-8 text-white lg:min-h-[max(100svh,44rem)]"
     >
-      {/* Backdrop: the photo, desaturated, under a warm orange wash. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-30 overflow-hidden">
+      {/* Backdrop: the photo, desaturated, under a warm ember wash, drifting. */}
+      <div ref={backdrop} aria-hidden className="pointer-events-none absolute inset-0 -z-30 scale-110">
         <Image
           src="/assets/hero.webp"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[28%_center] grayscale brightness-[1.3] contrast-[1.05]"
+          className="object-cover object-[30%_center] grayscale brightness-[1.25] contrast-[1.05]"
         />
         <div
           className="absolute inset-0 mix-blend-multiply"
           style={{
             background:
-              "linear-gradient(112deg, var(--ember-deep) 0%, var(--ember) 44%, #ff7a45 100%)",
+              "linear-gradient(118deg, var(--ember-deep) 0%, var(--ember) 46%, #ff7a45 100%)",
           }}
         />
-        <div className="absolute inset-0" style={{ backgroundColor: "color-mix(in srgb, var(--ember) 60%, transparent)" }} />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: "color-mix(in srgb, var(--ink) 46%, transparent)" }}
+        />
+      </div>
+      <span aria-hidden className="bloom-light -top-[16rem] -left-[14rem] opacity-70" />
+
+      {/* Top meta row: the studio's mono coordinates. */}
+      <div
+        data-hero-rise
+        className="container-x flex items-center justify-between font-mono text-[0.6875rem] tracking-[0.16em] text-white/70 uppercase"
+      >
+        <span>Kigali, Rwanda</span>
+        <span className="hidden sm:block">Technology, working now</span>
+        <span>Est. 2026</span>
       </div>
 
-      {/* Desktop: the white slice, cut on a diagonal from the right. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[46%] bg-canvas [clip-path:polygon(52%_0,100%_0,100%_100%,0_100%)] lg:block"
-      />
+      {/* Headline + copy. */}
+      <div className="container-x">
+        <h1 className="max-w-[16ch] font-display text-[clamp(2.75rem,7.4vw,6.5rem)] font-semibold leading-[0.98] tracking-[-0.038em]">
+          <Line>Technology for</Line>
+          <Line>
+            a <span className="text-serif text-[1.06em] text-[#ffd8c7]">changing</span> Africa.
+          </Line>
+        </h1>
 
-      {/* Copy */}
-      <div className="container-x flex flex-1 flex-col justify-center pt-32 pb-8 lg:pb-32">
-        <div className="max-w-[30rem] xl:max-w-[34rem]">
-          <Reveal delay={80}>
-            <h1 className="max-w-[12ch] text-[clamp(2.75rem,5.4vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
-              Software built for how Africa{" "}
-              <span className="italic text-[#ffd8c7]">actually</span> works.
-            </h1>
-          </Reveal>
+        <div className="mt-9 grid gap-8 lg:grid-cols-[minmax(0,34rem)_auto] lg:items-end lg:justify-between">
+          <p data-hero-rise className="max-w-[38ch] text-[clamp(1.0625rem,1.4vw,1.25rem)] leading-relaxed text-white/85">
+            AxxonTek designs, builds and operates digital products, platforms and
+            systems for businesses and communities across Africa, and runs the
+            products it invents.
+          </p>
 
-          <Reveal delay={200}>
-            <p className="mt-7 max-w-[28rem] text-[clamp(1.0625rem,1.35vw,1.1875rem)] leading-relaxed text-white/85">
-              Apps, websites and smart systems for businesses in Rwanda and across
-              Africa, scoped by the engineers who build them, and priced before the
-              build starts.
-            </p>
-          </Reveal>
-
-          <Reveal delay={300}>
-            <div className="mt-9">
-              <Link
-                href="/contact"
-                className="group inline-flex h-[3.125rem] items-center gap-2 rounded-full bg-white px-7 text-[0.9375rem] font-semibold text-ink transition-[background-color,transform] duration-[var(--t-hover)] ease-[var(--ease-out)] hover:bg-white/90"
-              >
-                Book a call
-                <span
-                  aria-hidden
-                  className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-1"
-                >
-                  <Icon name="arrow" size={16} />
-                </span>
-              </Link>
-              <p className="mt-4 text-[0.875rem] text-white/70">
-                30 minutes with an engineer, not a salesperson · Reply within one
-                business day
-              </p>
-            </div>
-          </Reveal>
+          <div data-hero-rise className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/products"
+              className="group inline-flex h-[3.125rem] items-center gap-2 rounded-full bg-white px-7 text-[0.9375rem] font-semibold text-ink transition-[background-color,transform] duration-[var(--t-hover)] ease-[var(--ease-out)] hover:bg-white/90"
+            >
+              See our products
+              <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-1">
+                <Icon name="arrow" size={16} />
+              </span>
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex h-[3.125rem] items-center rounded-full border border-white/30 px-7 text-[0.9375rem] font-semibold text-white transition-colors duration-[var(--t-hover)] hover:border-white/70"
+            >
+              Build with us
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Illustration. In flow under the copy on phones, inside its own white
-          band; anchored to the bottom-right corner on desktop so it fills
-          wide screens and bleeds off the edges. */}
-      <Reveal
-        delay={380}
-        className="relative max-lg:container-x max-lg:pb-12 lg:absolute lg:-right-[1vw] lg:-bottom-[1.5vw] lg:w-[min(48vw,56rem)]"
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -inset-x-[var(--gutter)] -top-6 bottom-0 -z-10 bg-canvas [clip-path:polygon(0_22%,100%_0,100%_100%,0_100%)] lg:hidden"
-        />
-        <HeroIllustration className="mx-auto mt-12 max-w-[26rem] lg:mt-0 lg:max-w-none" />
-      </Reveal>
+      {/* Foot: scroll cue. */}
+      <div data-hero-rise className="container-x flex items-center justify-between">
+        <ScrollCue />
+        <span className="hidden font-mono text-[0.625rem] tracking-[0.16em] text-white/45 uppercase sm:block">
+          Products · Systems · Emerging tech
+        </span>
+      </div>
     </section>
+  );
+}
+
+/** One headline line, masked so it rises from behind its own edge. */
+function Line({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="block overflow-hidden pb-[0.06em]" data-hero-line>
+      <span className="block will-change-transform">{children}</span>
+    </span>
   );
 }

@@ -113,6 +113,7 @@
   --font-display: var(--font-outfit), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, serif;
 
   --radius-card: var(--r-card);
   --radius-inner: var(--r-inner);
@@ -243,6 +244,16 @@
   color: var(--c-mute);
 }
 
+/* The serif accent. One emphasised word inside a display headline, warm
+   and high-contrast against the geometric sans. Used sparingly, in place
+   of the italic the house rules forbid. */
+@utility text-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.005em;
+}
+
 /* The label device both products use: uppercase mono with an ember dot. */
 @utility label {
   display: inline-flex;
@@ -369,6 +380,10 @@ html.js [data-reveal="shown"] {
   }
 }
 
+/* Cinematic entrances rest visible. GSAP sets the hidden start itself once
+   it is running (while the loader covers the hero), so nothing is stranded
+   at zero opacity without JavaScript or under reduced motion. */
+
 /* ==================================================================
  * Float. The slow drift on the hero mockups, so they read as objects
  * hanging in space rather than pasted onto the page. Each piece takes
@@ -384,4 +399,58 @@ html.js [data-reveal="shown"] {
 }
 @media (prefers-reduced-motion: reduce) {
   .floaty { animation: none; }
+}
+
+/* ==================================================================
+ * Marquee. The endless ribbon the studio uses for awards, capabilities
+ * and product marks. Two copies of the track slide left by exactly half
+ * the lane width, so the loop is seamless without measuring anything.
+ * ================================================================== */
+@keyframes marquee-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-lane {
+  width: max-content;
+  animation: marquee-slide var(--marquee-dur, 34s) linear infinite;
+  animation-direction: var(--marquee-dir, normal);
+}
+.marquee:hover .marquee-lane { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-lane { animation: none; }
+}
+
+/* ==================================================================
+ * Stage frame. The thin inset rule with lit corner ticks the cinematic
+ * stages sit inside (Inzovu's fly-through, our Studio and product
+ * stages). Pseudo-free so it composes with the ground tokens.
+ * ================================================================== */
+.stage-frame { position: relative; }
+.stage-frame-inner {
+  position: absolute;
+  inset: clamp(0.75rem, 2vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: var(--r-card);
+  pointer-events: none;
+}
+.stage-tick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid currentColor;
+  opacity: 0.7;
+}
+
+/* The scroll cue's self-drawing line. */
+@keyframes scroll-cue {
+  0%   { transform: scaleX(0); transform-origin: left; }
+  45%  { transform: scaleX(1); transform-origin: left; }
+  55%  { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+.scroll-cue-run {
+  animation: scroll-cue 2.4s var(--ease-gravity) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-run { animation: none; }
 }

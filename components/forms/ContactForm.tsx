@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { CONTACT_INTERESTS } from "@/lib/validation";
 
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Record<string, string>;
@@ -12,15 +13,8 @@ const fieldBase =
 
 const labelBase = "mb-2 block text-[0.875rem] font-medium text-tone";
 
-/** The intents from the masterplan. The first is the default. */
-const INTERESTS = [
-  "Building a website",
-  "Building a digital product",
-  "Transforming an existing system",
-  "Working with AxxonTek",
-  "Partnership",
-  "Something else",
-] as const;
+/** The intents come from lib/validation, so the form and the server agree. */
+const INTERESTS = CONTACT_INTERESTS;
 
 export function ContactForm({
   defaultEmail,

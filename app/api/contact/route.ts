@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
-import { parseContact } from "@/lib/validation";
+import { parseContact, type ContactPayload } from "@/lib/validation";
+import { log } from "@/lib/log";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/**
+ * Contact submissions.
+ *
+ * The chosen intent and any Studio concept are first-class: they are stored
+ * in their own columns when the schema has them, and folded into the message
+ * as a fallback when it does not, so the qualifying context is never lost on
+ * an older database. Every outcome is logged as one structured line.
+ */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -14,7 +23,9 @@ export async function POST(request: Request) {
   }
 
   // Honeypot: real people never fill this field in.
-  if (typeof (body as Record<string, unknown>)?.website === "string" && (body as Record<string, string>).website !== "") {
+  const website = (body as Record<string, unknown>)?.website;
+  if (typeof website === "string" && website !== "") {
+    log.info("contact.honeypot");
     return NextResponse.json({ ok: true });
   }
 
@@ -25,6 +36,7 @@ export async function POST(request: Request) {
 
   const supabase = getSupabase();
   if (!supabase) {
+    log.warn("contact.not_configured");
     return NextResponse.json(
       {
         error:
@@ -34,20 +46,65 @@ export async function POST(request: Request) {
     );
   }
 
-  const { error } = await supabase.from("contact_submissions").insert({
-    name: parsed.data.name,
-    email: parsed.data.email,
-    company: parsed.data.company,
-    message: parsed.data.message,
+  const { data } = parsed;
+
+  // Preferred insert: interest and concept in their own columns.
+  const full = await supabase.from("contact_submissions").insert({
+    name: data.name,
+    email: data.email,
+    company: data.company,
+    message: data.message,
+    interest: data.interest,
+    concept: data.concept,
   });
 
-  if (error) {
-    console.error("[contact] insert failed:", error.message);
+  if (!full.error) {
+    log.info("contact.saved", { interest: data.interest, concept: data.concept ?? null });
+    return NextResponse.json({ ok: true });
+  }
+
+  // The columns may not exist on an older schema. PostgREST reports this as
+  // an undefined-column error; fall back to folding the context into the
+  // message so the lead is never dropped, and flag that a migration is due.
+  if (isMissingColumn(full.error)) {
+    log.warn("contact.schema_fallback", { detail: full.error.message });
+    const fallback = await supabase.from("contact_submissions").insert({
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      message: withContext(data),
+    });
+    if (!fallback.error) {
+      log.info("contact.saved", { interest: data.interest, concept: data.concept ?? null, fallback: true });
+      return NextResponse.json({ ok: true });
+    }
+    log.error("contact.insert_failed", { detail: fallback.error.message });
     return NextResponse.json(
       { error: "We could not save your message. Please try again in a moment." },
       { status: 502 },
     );
   }
 
-  return NextResponse.json({ ok: true });
+  log.error("contact.insert_failed", { detail: full.error.message });
+  return NextResponse.json(
+    { error: "We could not save your message. Please try again in a moment." },
+    { status: 502 },
+  );
+}
+
+/** Prepend the intent and concept to the message when they have no column. */
+function withContext(data: ContactPayload): string {
+  const header = [`Interest: ${data.interest}`, data.concept ? `Studio concept: ${data.concept}` : null]
+    .filter(Boolean)
+    .join("\n");
+  return `${header}\n\n${data.message}`;
+}
+
+/** Postgres 42703 / PostgREST PGRST204 both mean a column is not there. */
+function isMissingColumn(error: { code?: string; message?: string }): boolean {
+  return (
+    error.code === "42703" ||
+    error.code === "PGRST204" ||
+    /column .* does not exist/i.test(error.message ?? "")
+  );
 }

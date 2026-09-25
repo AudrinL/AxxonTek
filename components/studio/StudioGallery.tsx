@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { ConceptPoster } from "@/components/studio/ConceptPoster";
+import { ConceptCard } from "@/components/studio/ConceptCard";
 import {
   studioCategories,
   studioConcepts,

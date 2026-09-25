@@ -7,8 +7,15 @@ create table if not exists contact_submissions (
   email text not null,
   company text,
   message text not null,
+  interest text,
+  concept text,
   created_at timestamptz not null default now()
 );
+
+-- For projects created before interest/concept existed. Safe to run repeatedly;
+-- until this runs, the API folds these values into `message` instead.
+alter table contact_submissions add column if not exists interest text;
+alter table contact_submissions add column if not exists concept text;
 
 alter table contact_submissions enable row level security;
 

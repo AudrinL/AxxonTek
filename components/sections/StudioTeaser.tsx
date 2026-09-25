@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/system/Reveal";
 import { Icon } from "@/components/Icon";
-import { ConceptPoster } from "@/components/studio/ConceptPoster";
+import { ConceptCard } from "@/components/studio/ConceptCard";
 import { studioConcepts } from "@/lib/site";
 
 /**
@@ -40,15 +40,7 @@ export function StudioTeaser() {
         <div className="mt-14 grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4">
           {shown.map((concept, i) => (
             <Reveal key={concept.slug} delay={Math.min(i, 3) * 70}>
-              <Link href={`/studio/${concept.slug}`} className="group block">
-                <ConceptPoster
-                  concept={concept}
-                  className="transition-transform duration-[var(--t-base)] ease-out group-hover:-translate-y-1.5"
-                />
-                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.12em] text-tone-faint uppercase transition-colors duration-[var(--t-hover)] group-hover:text-accent">
-                  {concept.industry}
-                </p>
-              </Link>
+              <ConceptCard concept={concept} />
             </Reveal>
           ))}
         </div>

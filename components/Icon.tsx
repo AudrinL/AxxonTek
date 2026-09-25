@@ -36,7 +36,11 @@ const paths: Record<string, string> = {
   users: "M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zm7.5.5a3 3 0 100-6 3 3 0 000 6zM3 20v-1.5A4.5 4.5 0 017.5 14h3a4.5 4.5 0 014.5 4.5V20m2-6a4 4 0 014 4v2",
 };
 
-type IconProps = SVGProps<SVGSVGElement> & { name: string; size?: number };
+/** The known icon names. Using this instead of `string` turns a typo into a
+ *  build error rather than a silently wrong (fallback) icon at runtime. */
+export type IconName = keyof typeof paths;
+
+type IconProps = SVGProps<SVGSVGElement> & { name: IconName; size?: number };
 
 export function Icon({ name, size = 22, ...props }: IconProps) {
   const d = paths[name] ?? paths.target;

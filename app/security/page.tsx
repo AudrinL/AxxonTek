@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
-import { Icon } from "@/components/Icon";
+import { Icon, type IconName } from "@/components/Icon";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
  * same plain voice as the rest of the site, and gives a way to report a
  * problem. It grows a formal disclosure policy when there is one to publish.
  */
-const areas = [
+const areas: { icon: IconName; k: string; v: string }[] = [
   {
     icon: "lock",
     k: "Authentication",

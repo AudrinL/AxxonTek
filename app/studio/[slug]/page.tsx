@@ -66,11 +66,16 @@ export default async function StudioConceptPage({
             <Reveal>
               {concept.preview ? (
                 <div className="window aspect-[16/10] w-full">
+                  {/* A concept preview is third-party content, so it runs in a
+                      locked-down frame: scripts and same-origin for the demo to
+                      work, nothing else, and no referrer leakage. */}
                   <iframe
                     src={concept.preview}
                     title={`${concept.title} live preview`}
                     className="h-full w-full"
                     loading="lazy"
+                    sandbox="allow-scripts allow-same-origin"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
               ) : (
@@ -157,15 +162,7 @@ export default async function StudioConceptPage({
           </p>
           <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3">
             {more.map((c) => (
-              <Link key={c.slug} href={`/studio/${c.slug}`} className="group block">
-                <ConceptPoster
-                  concept={c}
-                  className="transition-transform duration-[var(--t-base)] ease-out group-hover:-translate-y-1.5"
-                />
-                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.12em] text-tone-faint uppercase transition-colors duration-[var(--t-hover)] group-hover:text-accent">
-                  {c.industry} / {c.number}
-                </p>
-              </Link>
+              <ConceptCard key={c.slug} concept={c} />
             ))}
           </div>
         </div>

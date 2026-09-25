@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 import { isEmail } from "@/lib/validation";
+import { log } from "@/lib/log";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
 
   const supabase = getSupabase();
   if (!supabase) {
+    log.warn("newsletter.not_configured");
     return NextResponse.json(
       { error: "Subscriptions are not connected yet. Please check back shortly." },
       { status: 503 },
@@ -41,12 +43,13 @@ export async function POST(request: Request) {
     if (error.code === "23505") {
       return NextResponse.json({ ok: true, alreadySubscribed: true });
     }
-    console.error("[newsletter] insert failed:", error.message);
+    log.error("newsletter.insert_failed", { detail: error.message });
     return NextResponse.json(
       { error: "We could not sign you up. Please try again in a moment." },
       { status: 502 },
     );
   }
 
+  log.info("newsletter.subscribed");
   return NextResponse.json({ ok: true });
 }

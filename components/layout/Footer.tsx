@@ -1,24 +1,56 @@
 import Link from "next/link";
 import { primaryNav, secondaryNav, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
+import { Icon } from "@/components/Icon";
+import { ParticleField } from "@/components/system/ParticleField";
+import { StageFrame } from "@/components/system/StageFrame";
 
 /**
- * A clean footer, not a sitemap. Two link columns, the brand line, contact
- * and legal. It keeps whatever ground the section above it arrived on, so a
- * page that ends dark ends dark all the way down rather than flickering back
- * to canvas for a few hundred pixels of links.
+ * The footer opens with a brand moment: a reactive particle field that idles
+ * as an organised constellation, scatters away from the cursor, and assembles
+ * into the wordmark while hovered. Below it, the real work: one clear ask and
+ * clean link columns. It keeps whatever ground the section above it arrived
+ * on, and the particles take their colour from that ground.
  */
 export function Footer() {
   return (
     <footer className="relative z-[1] border-t border-line">
+      {/* Brand particle strip */}
+      <ParticleField
+        text="AXXONTEK"
+        className="stage-frame min-h-[clamp(15rem,30vw,24rem)] text-accent"
+      >
+        <StageFrame />
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--gutter)]">
+          <span className="font-mono text-[0.625rem] tracking-[0.16em] text-tone-faint uppercase">
+            {site.address.city}
+          </span>
+          <span className="font-mono text-[0.625rem] tracking-[0.16em] text-tone-faint uppercase">
+            Move your cursor
+          </span>
+        </div>
+        {/* Sized spacer so the strip has height; the canvas fills it. */}
+        <div className="h-[clamp(15rem,30vw,24rem)]" aria-hidden />
+        <span className="sr-only">AxxonTek</span>
+      </ParticleField>
+
       <div className="container-x py-16">
-        <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        {/* The ask */}
+        <div className="flex flex-col items-start justify-between gap-8 border-b border-line pb-14 lg:flex-row lg:items-end">
+          <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+            Have something <span className="text-serif text-accent">worth</span> building?
+          </h2>
+          <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">
+            Start a project
+            <Icon name="arrow" size={16} />
+          </Link>
+        </div>
+
+        {/* Columns */}
+        <div className="mt-14 grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
             <Logo />
-            <p className="mt-5 max-w-xs font-display text-[1.375rem] font-semibold leading-[1.15] tracking-[-0.022em]">
-              Technology for a changing Africa.
-            </p>
-            <p className="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
+            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
               A technology company in Kigali. We build products, systems and the
               emerging technology that becomes both.
             </p>

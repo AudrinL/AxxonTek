@@ -64,20 +64,7 @@ export function StudioGallery() {
       {shown.length > 0 ? (
         <div className="mt-5 grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3">
           {shown.map((concept) => (
-            <Link key={concept.slug} href={`/studio/${concept.slug}`} className="group block">
-              <ConceptPoster
-                concept={concept}
-                className="transition-transform duration-[var(--t-base)] ease-out group-hover:-translate-y-1.5"
-              />
-              <div className="mt-3 flex items-center justify-between gap-3">
-                <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-tone-faint uppercase transition-colors duration-[var(--t-hover)] group-hover:text-accent">
-                  {concept.industry} / {concept.number}
-                </p>
-                <p className="font-mono text-[0.625rem] tracking-[0.1em] text-tone-faint uppercase">
-                  View concept
-                </p>
-              </div>
-            </Link>
+            <ConceptCard key={concept.slug} concept={concept} trailing="View concept" />
           ))}
         </div>
       ) : (

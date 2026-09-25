@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/system/Reveal";
 import { Icon } from "@/components/Icon";
 import { ConceptPoster } from "@/components/studio/ConceptPoster";
+import { ConceptCard } from "@/components/studio/ConceptCard";
 import { getStudioConcept, studioConcepts } from "@/lib/site";
 
 export function generateStaticParams() {

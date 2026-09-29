@@ -59,7 +59,7 @@ export function OurProducts() {
                   >
                     <div className="flex items-baseline gap-6">
                       <span
-                        className={`font-mono text-[0.75rem] tracking-[0.14em] uppercase transition-colors duration-[var(--t-base)] ${
+                        className={`w-6 shrink-0 font-mono text-[0.75rem] tracking-[0.14em] uppercase transition-colors duration-[var(--t-base)] ${
                           open ? "text-accent" : "text-tone-faint"
                         }`}
                       >
@@ -93,7 +93,7 @@ export function OurProducts() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="pt-5 lg:pl-[calc(0.75rem+1.5rem+1ch)]">
+                        <div className="pt-5 lg:pl-12">
                           <p className="max-w-[48ch] text-[0.9375rem] leading-relaxed text-tone-mute">
                             {item.line}
                           </p>

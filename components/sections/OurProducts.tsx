@@ -26,14 +26,14 @@ export function OurProducts() {
     <section id="products" data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-8">
-          <div className="max-w-[20ch]">
+          <div>
             <Reveal as="p" className="label mb-6">
               <span className="label-dot" aria-hidden />
               Our products
             </Reveal>
             <Reveal delay={70}>
               <h2 className="text-chapter">
-                Six things we build, and <span className="text-serif text-accent">run</span> for you.
+                Six things we build,<br />and <span className="text-serif text-accent">run</span> for you.
               </h2>
             </Reveal>
           </div>

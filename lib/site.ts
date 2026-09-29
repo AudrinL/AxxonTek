@@ -85,42 +85,42 @@ export type Situation = {
 
 export const situations: Situation[] = [
   {
-    said: "Your customers have to call someone to buy from you.",
+    said: "Sell without the phone call.",
     answer:
-      "An ordering and payment flow built for the phones and connections your customers actually have, with mobile money and WhatsApp wired in rather than bolted on.",
+      "An ordering and payment flow built for the phones and connections your customers actually have, with mobile money and WhatsApp wired in, not bolted on.",
     tags: ["Software", "Payments"],
     href: "/solutions#software",
   },
   {
-    said: "Your school teaches science students never get to perform.",
+    said: "Run the lab without the lab.",
     answer:
-      "A virtual laboratory for physics, biology and chemistry that runs on the devices the school already owns. No building, no glassware, no technician.",
+      "A virtual laboratory for physics, biology and chemistry that runs on the devices your school already owns. No building, no glassware, no technician.",
     tags: ["Immersive", "Education"],
     href: "/lab",
   },
   {
-    said: "Your team runs the whole operation on spreadsheets and WhatsApp.",
+    said: "Out of the spreadsheet. Into one system.",
     answer:
-      "One system that holds the process end to end, with the messaging tools your team already lives in connected to it instead of replaced.",
+      "One place that holds the process from start to finish, with the messaging tools your team already lives in connected, not replaced.",
     tags: ["Platforms", "Automation"],
     href: "/solutions#software",
   },
   {
-    said: "You have data, and no idea what it is telling you.",
+    said: "Data that finally talks back.",
     answer:
-      "Reporting that answers the questions you actually ask out loud, and automation for the decisions that repeat every week.",
+      "Reports that answer the questions you actually ask out loud, and automation for the decisions that repeat every week.",
     tags: ["AI", "Data"],
     href: "/solutions#ai",
   },
   {
-    said: "You cannot prove who opened which door, or when.",
+    said: "Know who opened which door.",
     answer:
       "Cameras, access control and automation designed around your actual space, installed properly, with a record you can rely on and run from your phone.",
     tags: ["Smart systems"],
     href: "/solutions#smart",
   },
   {
-    said: "You are about to spend real money and you are not sure on what.",
+    said: "Spend once. Spend well.",
     answer:
       "An independent review and a written recommendation you can act on, including when the honest answer is a smaller project, a different approach, or not us.",
     tags: ["Advisory"],
@@ -758,7 +758,7 @@ export const offerings: Offering[] = [
   {
     id: "web",
     name: "Web Development",
-    line: "A website or web application your customers use without a second thought, fast on the phone in their hand.",
+    line: "Fast on every phone. Websites and web apps your customers use without a second thought.",
     tags: ["Websites", "Web apps", "E-commerce"],
     href: "/solutions#software",
     image: "/assets/home/web.webp",
@@ -767,7 +767,7 @@ export const offerings: Offering[] = [
   {
     id: "mobile",
     name: "Mobile Development",
-    line: "An app that opens quickly, works on a weak connection and feels at home on the devices people here really own.",
+    line: "Made for the phone in their hand. Apps that open quickly and keep working when the connection does not.",
     tags: ["Android", "iOS", "Offline first"],
     href: "/solutions#software",
     image: "/assets/home/mobile.webp",
@@ -776,7 +776,7 @@ export const offerings: Offering[] = [
   {
     id: "cloud",
     name: "Cloud & Hosting Infrastructure",
-    line: "Servers, databases and deployment that stay up while you get on with the business, watched by people who answer.",
+    line: "Always on, so you can be too. Servers, databases and deployment, watched by people who pick up the phone.",
     tags: ["Hosting", "Databases", "Monitoring"],
     href: "/capabilities",
     image: "/assets/home/cloud.webp",
@@ -785,7 +785,7 @@ export const offerings: Offering[] = [
   {
     id: "saas",
     name: "SaaS Product Development",
-    line: "Your idea, built as a product other businesses can subscribe to, with billing, accounts and scale thought through from day one.",
+    line: "From idea to subscription. A product other businesses can sign up for, with billing, accounts and scale built in.",
     tags: ["Subscriptions", "Multi-tenant", "APIs"],
     href: "/capabilities",
     image: "/assets/home/saas.webp",
@@ -794,7 +794,7 @@ export const offerings: Offering[] = [
   {
     id: "design",
     name: "UX/UI Design & Redesign",
-    line: "Screens people understand the first time, whether the product is new or long overdue for a second look.",
+    line: "Clear on the first tap. Screens people understand straight away, for new products and long overdue redesigns.",
     tags: ["Research", "Interface design", "Design systems"],
     href: "/capabilities",
     image: "/assets/home/ux.webp",
@@ -803,7 +803,7 @@ export const offerings: Offering[] = [
   {
     id: "smart",
     name: "Smart Home Systems",
-    line: "Lights, locks, cameras and climate that answer to your phone, designed around your space and installed properly.",
+    line: "Your home, on your phone. Lights, locks, cameras and climate, designed around your space and installed properly.",
     tags: ["Automation", "Access control", "Cameras"],
     href: "/solutions#smart",
     image: "/assets/home/smart.webp",

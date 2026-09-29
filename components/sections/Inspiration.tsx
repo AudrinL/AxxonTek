@@ -24,7 +24,7 @@ export function Inspiration() {
             href="/studio"
             className="group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline"
           >
-            Explore Inspiration
+            Explore all concepts
             <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
               <Icon name="arrow" size={15} />
             </span>

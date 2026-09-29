@@ -27,18 +27,18 @@ export function OurProducts() {
       <div className="container-x">
         <div className="mx-auto max-w-[52rem]">
           <Reveal as="p" className="label mb-3">
-            Our products
+            Products
           </Reveal>
           <Reveal delay={70}>
             <h2 className="text-display">
-              Six things we build, and <span className="text-serif">run</span> for you.
+              Six ways to <span className="text-serif">build</span>. One team to run it.
             </h2>
           </Reveal>
           <Reveal delay={140}>
             <p className="text-lede mt-6 max-w-[38ch]">
-              <span className="text-tone">Ask for one, or a few that work together.</span>{" "}
-              Each is designed, built and looked after by the same team, so nothing
-              falls between suppliers.
+              <span className="text-tone">Every one is designed, built and looked after by the same team.</span>{" "}
+              So nothing falls between suppliers, and when something needs attention,
+              you know exactly who to call.
             </p>
           </Reveal>
         </div>
@@ -93,7 +93,8 @@ export function OurProducts() {
                       <div className="overflow-hidden">
                         <div className="pt-5 lg:pl-12">
                           <p className="max-w-[46ch] text-[1.0625rem] leading-[1.47] text-tone-mute">
-                            {item.line}
+                            <span className="font-semibold text-tone">{lead(item.line)}</span>{" "}
+                            {rest(item.line)}
                           </p>
                           <p className="mt-4 flex flex-wrap gap-1.5">
                             {item.tags.map((tag) => (
@@ -142,6 +143,10 @@ export function OurProducts() {
     </section>
   );
 }
+
+/** Apple's caption rhythm: the first sentence is the feature, the rest the benefit. */
+const lead = (line: string) => line.slice(0, line.indexOf(". ") + 1);
+const rest = (line: string) => line.slice(line.indexOf(". ") + 2);
 
 /** One photograph with the house treatment: desaturated, ember wash, shade. */
 function Plate({

@@ -94,8 +94,8 @@ export function Hero() {
         data-hero-rise
         className="mt-7 max-w-[30ch] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.19] font-semibold tracking-[0.007em] text-white/70"
       >
-        <span className="text-white">Software, cloud and smart systems</span>, built and
-        run for businesses across Africa.
+        <span className="text-white">Software, cloud and smart systems.</span> Built and run
+        for you.
       </p>
 
       <div data-hero-rise className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
@@ -109,7 +109,7 @@ export function Hero() {
           href="#products"
           className="group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] transition-colors duration-[var(--t-hover)] hover:underline"
         >
-          See what we build
+          Learn more
           <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
             <Icon name="arrow" size={15} />
           </span>

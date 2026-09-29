@@ -94,8 +94,8 @@ export function Hero() {
         data-hero-rise
         className="mt-7 max-w-[30ch] text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[1.19] font-semibold tracking-[0.007em] text-white/70"
       >
-        <span className="text-white">Software, cloud and smart systems.</span> Built and run
-        for you.
+        <span className="text-white">We build software, cloud and smart systems</span> for
+        businesses across Africa.
       </p>
 
       <div data-hero-rise className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">

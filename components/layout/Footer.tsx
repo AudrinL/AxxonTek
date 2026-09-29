@@ -38,7 +38,7 @@ export function Footer() {
         {/* The ask */}
         <div className="flex flex-col items-start justify-between gap-8 border-b border-line pb-14 lg:flex-row lg:items-end">
           <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.01em]">
-            Have something <span className="text-serif text-accent">worth</span> building?
+            Have a <span className="text-serif">project</span> in mind?
           </h2>
           <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">
             Start a project
@@ -51,8 +51,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
-              A technology company in Kigali. We build products, systems and the
-              emerging technology that becomes both.
+              A technology company in Kigali. We build software, cloud and smart systems.
             </p>
           </div>
 

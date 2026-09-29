@@ -85,44 +85,44 @@ export type Situation = {
 
 export const situations: Situation[] = [
   {
-    said: "Sell without the phone call.",
+    said: "Online ordering and payments.",
     answer:
-      "An ordering and payment flow built for the phones and connections your customers actually have, with mobile money and WhatsApp wired in, not bolted on.",
+      "Let customers order and pay from their phone, with mobile money and WhatsApp.",
     tags: ["Software", "Payments"],
     href: "/solutions#software",
   },
   {
-    said: "Run the lab without the lab.",
+    said: "Virtual science labs.",
     answer:
-      "A virtual laboratory for physics, biology and chemistry that runs on the devices your school already owns. No building, no glassware, no technician.",
+      "Practical lessons for schools, on the computers they already have.",
     tags: ["Immersive", "Education"],
     href: "/lab",
   },
   {
-    said: "Out of the spreadsheet. Into one system.",
+    said: "One system for your team.",
     answer:
-      "One place that holds the process from start to finish, with the messaging tools your team already lives in connected, not replaced.",
+      "Replace spreadsheets and scattered chats with one simple tool.",
     tags: ["Platforms", "Automation"],
     href: "/solutions#software",
   },
   {
-    said: "Data that finally talks back.",
+    said: "Reports and automation.",
     answer:
-      "Reports that answer the questions you actually ask out loud, and automation for the decisions that repeat every week.",
+      "See what your data says, and automate the tasks you repeat.",
     tags: ["AI", "Data"],
     href: "/solutions#ai",
   },
   {
-    said: "Know who opened which door.",
+    said: "Cameras and access control.",
     answer:
-      "Cameras, access control and automation designed around your actual space, installed properly, with a record you can rely on and run from your phone.",
+      "Know who comes and goes, and check it from your phone.",
     tags: ["Smart systems"],
     href: "/solutions#smart",
   },
   {
-    said: "Spend once. Spend well.",
+    said: "Honest technology advice.",
     answer:
-      "An independent review and a written recommendation you can act on, including when the honest answer is a smaller project, a different approach, or not us.",
+      "Get an independent review before you spend money.",
     tags: ["Advisory"],
     href: "/solutions#advisory",
   },
@@ -652,7 +652,7 @@ export const studioConcepts: StudioConcept[] = [
     image: "/assets/inspiration/restaurant.webp",
     industry: "Restaurants",
     number: "01",
-    title: "A dining room that fills its own tables",
+    title: "Restaurant website",
     blurb: "A menu people can read on the walk over, a story worth the trip, and reservations taken without a single phone call.",
     style: "Editorial",
     features: ["Reservations", "Menu", "Story"],
@@ -663,7 +663,7 @@ export const studioConcepts: StudioConcept[] = [
     image: "/assets/inspiration/hotel.webp",
     industry: "Hotels",
     number: "01",
-    title: "A stay booked before the guest arrives",
+    title: "Hotel website",
     blurb: "Rooms shown the way they actually feel, availability that is always current, and a booking flow that finishes on a phone.",
     style: "Luxury",
     features: ["Booking", "Rooms", "Payments"],
@@ -674,7 +674,7 @@ export const studioConcepts: StudioConcept[] = [
     image: "/assets/inspiration/real-estate.webp",
     industry: "Real Estate",
     number: "01",
-    title: "Listings that answer the first ten questions",
+    title: "Real estate website",
     blurb: "Every property with the map, the numbers and the walkthrough a buyer needs before they ever pick up the phone.",
     style: "Minimal",
     features: ["Listings", "Maps", "Enquiries"],
@@ -685,7 +685,7 @@ export const studioConcepts: StudioConcept[] = [
     image: "/assets/inspiration/pharmacy.webp",
     industry: "Healthcare",
     number: "01",
-    title: "A clinic patients can reach at 9pm",
+    title: "Clinic website",
     blurb: "Appointments booked without the front desk, clear guidance before a visit, and a calm, legible presence people trust.",
     style: "Corporate",
     features: ["Appointments", "Services", "Patient info"],
@@ -695,7 +695,7 @@ export const studioConcepts: StudioConcept[] = [
     slug: "education-01",
     industry: "Education",
     number: "01",
-    title: "A school that admits its next class online",
+    title: "School website",
     blurb: "Programmes laid out plainly, applications taken end to end, and a site parents can navigate on the phone in their hand.",
     style: "Editorial",
     features: ["Admissions", "Programmes", "Portal"],
@@ -705,7 +705,7 @@ export const studioConcepts: StudioConcept[] = [
     slug: "finance-01",
     industry: "Finance",
     number: "01",
-    title: "A lender that feels as safe as it is",
+    title: "Finance website",
     blurb: "Products explained without the jargon, applications that start on the site, and the quiet authority a money brand needs.",
     style: "Corporate",
     features: ["Products", "Applications", "Trust"],
@@ -715,7 +715,7 @@ export const studioConcepts: StudioConcept[] = [
     slug: "retail-01",
     industry: "Retail",
     number: "01",
-    title: "A shop that never closes",
+    title: "Online shop",
     blurb: "A catalogue that loads on a slow connection, checkout with mobile money, and stock that stays honest across both.",
     style: "Bold",
     features: ["E-commerce", "Payments", "Catalogue"],
@@ -758,7 +758,7 @@ export const offerings: Offering[] = [
   {
     id: "web",
     name: "Web Development",
-    line: "Fast on every phone. Websites and web apps your customers use without a second thought.",
+    line: "Websites and web apps that load fast and are easy to use.",
     tags: ["Websites", "Web apps", "E-commerce"],
     href: "/solutions#software",
     image: "/assets/home/web.webp",
@@ -767,7 +767,7 @@ export const offerings: Offering[] = [
   {
     id: "mobile",
     name: "Mobile Development",
-    line: "Made for the phone in their hand. Apps that open quickly and keep working when the connection does not.",
+    line: "Android and iPhone apps that work even on slow internet.",
     tags: ["Android", "iOS", "Offline first"],
     href: "/solutions#software",
     image: "/assets/home/mobile.webp",
@@ -776,7 +776,7 @@ export const offerings: Offering[] = [
   {
     id: "cloud",
     name: "Cloud & Hosting Infrastructure",
-    line: "Always on, so you can be too. Servers, databases and deployment, watched by people who pick up the phone.",
+    line: "Reliable hosting, servers and databases, monitored for you.",
     tags: ["Hosting", "Databases", "Monitoring"],
     href: "/capabilities",
     image: "/assets/home/cloud.webp",
@@ -785,7 +785,7 @@ export const offerings: Offering[] = [
   {
     id: "saas",
     name: "SaaS Product Development",
-    line: "From idea to subscription. A product other businesses can sign up for, with billing, accounts and scale built in.",
+    line: "Turn your idea into software that people can subscribe to.",
     tags: ["Subscriptions", "Multi-tenant", "APIs"],
     href: "/capabilities",
     image: "/assets/home/saas.webp",
@@ -794,7 +794,7 @@ export const offerings: Offering[] = [
   {
     id: "design",
     name: "UX/UI Design & Redesign",
-    line: "Clear on the first tap. Screens people understand straight away, for new products and long overdue redesigns.",
+    line: "Clear, simple screens for new or existing products.",
     tags: ["Research", "Interface design", "Design systems"],
     href: "/capabilities",
     image: "/assets/home/ux.webp",
@@ -803,7 +803,7 @@ export const offerings: Offering[] = [
   {
     id: "smart",
     name: "Smart Home Systems",
-    line: "Your home, on your phone. Lights, locks, cameras and climate, designed around your space and installed properly.",
+    line: "Control your lights, locks and cameras from your phone.",
     tags: ["Automation", "Access control", "Cameras"],
     href: "/solutions#smart",
     image: "/assets/home/smart.webp",

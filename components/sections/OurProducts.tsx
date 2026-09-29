@@ -5,182 +5,211 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/system/Reveal";
 import { Icon } from "@/components/Icon";
-import { scrollPageBy } from "@/lib/motion";
 import { offerings } from "@/lib/site";
 
-/** How long the slow push-in on a tile takes, which is also how long its dot fills. */
+/** How long each card holds, which is also how long its dot takes to fill. */
 const CYCLE_MS = 7000;
+/** Card gap in px, matching the 20px rhythm Apple uses between tiles. */
+const GAP = 20;
+/** How far the front card's photograph is pushed in, at rest and while it plays. */
+const HOLD_ZOOM = 0.06;
+const PLAY_ZOOM = 0.03;
+
+const n = offerings.length;
+const mod = (a: number, m: number) => ((a % m) + m) % m;
 
 /**
- * Our Products, built the way Apple builds "Get the highlights".
+ * Our Products, built the way Apple builds "Get the highlights", made endless.
  *
- * A row header (headline left, text link right), then a horizontal slider of
- * rounded cards that snap into place, the next one always peeking in from the
- * right so it is obvious there is more. Each card is a single photograph with
- * its caption pinned to the top-left corner. Below the row sits a glass pill:
- * a play and pause button and one dot per card. While it plays, the dot for
- * the current card stretches and fills over seven seconds as the photograph
- * slowly pushes in, and when it is full the slider moves on to the next card
- * and loops. Drag or swipe to move by hand, click a dot to jump, press pause
- * to hold everything still.
+ * A row header, then a slider of rounded cards, two to a screen on a desktop.
+ * The slider is a ring: one continuous position drives every card, and a card
+ * that slides off the left edge wraps round to the back of the queue, so it
+ * never runs out and never rewinds. The position eases towards wherever it
+ * has been told to go, which is what makes every move (autoplay, a dot, a
+ * drag, an arrow key) glide the same way instead of snapping.
+ *
+ * The card at the front is zoomed in a little, and as it plays a dot in the
+ * pill below fills over seven seconds while its photograph pushes in a touch
+ * further. When the dot is full the ring advances. Drag or swipe to move by
+ * hand, click a dot to go straight there by the shortest way round, press
+ * pause to hold everything still.
  */
 export function OurProducts() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [inView, setInView] = useState(false);
 
-  const scroller = useRef<HTMLUListElement | null>(null);
-  const tiles = useRef<(HTMLLIElement | null)[]>([]);
+  const stage = useRef<HTMLUListElement | null>(null);
+  const cards = useRef<(HTMLLIElement | null)[]>([]);
   const photos = useRef<(HTMLDivElement | null)[]>([]);
   const fills = useRef<(HTMLSpanElement | null)[]>([]);
+
+  const pos = useRef(0); // where the ring is right now, in cards
+  const target = useRef(0); // where it is heading
+  const step = useRef(0); // card width plus gap, in px
   const progress = useRef(0);
   const reduced = useRef(false);
-  const dragging = useRef(false);
-  const count = offerings.length;
+  const drag = useRef({ on: false, moved: false, startX: 0, startTarget: 0, lastX: 0, lastT: 0, v: 0 });
+  const activeRef = useRef(0);
 
-  /* Where the scroller needs to be for a card to sit at the content edge. */
-  const targetFor = useCallback((i: number) => {
-    const el = scroller.current;
-    const tile = tiles.current[i];
-    if (!el || !tile) return 0;
-    const pad = parseFloat(getComputedStyle(el).paddingLeft) || 0;
-    /* Measured, not offsetLeft, which ignores the scroller as an ancestor. */
-    return tile.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft - pad;
+  const goTo = useCallback((i: number) => {
+    /* The shortest way round the ring, in either direction. */
+    let delta = mod(i - mod(Math.round(target.current), n), n);
+    if (delta > n / 2) delta -= n;
+    target.current = Math.round(target.current) + delta;
   }, []);
 
-  const nearest = useCallback(() => {
-    const el = scroller.current;
-    if (!el) return 0;
-    let best = 0;
-    let bestDist = Infinity;
-    tiles.current.forEach((_, i) => {
-      const dist = Math.abs(targetFor(i) - el.scrollLeft);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = i;
-      }
-    });
-    return best;
-  }, [targetFor]);
-
-  const goTo = useCallback(
-    (i: number) => {
-      scroller.current?.scrollTo({
-        left: targetFor(i),
-        behavior: reduced.current ? "auto" : "smooth",
-      });
-    },
-    [targetFor]
-  );
+  const nudge = useCallback((by: number) => {
+    target.current = Math.round(target.current) + by;
+  }, []);
 
   useEffect(() => {
     reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced.current) setPlaying(false);
 
-    const el = scroller.current;
+    const el = stage.current;
     if (!el) return;
 
-    const onScroll = () => {
-      const best = nearest();
-      setActive((prev) => (prev === best ? prev : best));
+    const measure = () => {
+      const first = cards.current[0];
+      if (first) step.current = first.offsetWidth + GAP;
     };
-    el.addEventListener("scroll", onScroll, { passive: true });
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
 
-    /* Only play while the slider is actually on screen. */
     const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.35,
+      threshold: 0.3,
     });
     io.observe(el);
 
-    /* Mouse drag, so it slides by hand on a desktop as well as by touch. */
-    let startX = 0;
-    let startLeft = 0;
-    let moved = false;
+    /* Pointer drag, for mouse and touch alike. Vertical swipes still scroll
+       the page because the stage only claims pan-y for the browser. */
+    const d = drag.current;
     const down = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      dragging.current = true;
-      moved = false;
-      startX = e.clientX;
-      startLeft = el.scrollLeft;
-      el.style.scrollSnapType = "none";
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      d.on = true;
+      d.moved = false;
+      d.startX = e.clientX;
+      d.startTarget = target.current;
+      d.lastX = e.clientX;
+      d.lastT = performance.now();
+      d.v = 0;
+      el.setPointerCapture?.(e.pointerId);
       el.style.cursor = "grabbing";
     };
     const move = (e: PointerEvent) => {
-      if (!dragging.current) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 6) moved = true;
-      el.scrollLeft = startLeft - dx;
+      if (!d.on || !step.current) return;
+      const dx = e.clientX - d.startX;
+      if (Math.abs(dx) > 6) d.moved = true;
+      target.current = d.startTarget - dx / step.current;
+      const now = performance.now();
+      const dt = Math.max(1, now - d.lastT);
+      d.v = (e.clientX - d.lastX) / dt; // px per ms
+      d.lastX = e.clientX;
+      d.lastT = now;
     };
-    const up = () => {
-      if (!dragging.current) return;
-      dragging.current = false;
-      el.style.scrollSnapType = "";
+    const up = (e: PointerEvent) => {
+      if (!d.on) return;
+      d.on = false;
       el.style.cursor = "";
-      el.scrollTo({ left: targetFor(nearest()), behavior: "smooth" });
+      el.releasePointerCapture?.(e.pointerId);
+      /* A flick carries on a little, then it settles on the nearest card. */
+      const carry = step.current ? (-d.v * 220) / step.current : 0;
+      target.current = Math.round(target.current + Math.max(-1, Math.min(1, carry)));
     };
     /* A drag must not count as a click on the card underneath it. */
     const swallow = (e: MouseEvent) => {
-      if (moved) {
+      if (d.moved) {
         e.preventDefault();
         e.stopPropagation();
-        moved = false;
+        d.moved = false;
       }
     };
     el.addEventListener("pointerdown", down);
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
     el.addEventListener("click", swallow, true);
 
     return () => {
-      el.removeEventListener("scroll", onScroll);
+      ro.disconnect();
       io.disconnect();
       el.removeEventListener("pointerdown", down);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", up);
+      el.removeEventListener("pointercancel", up);
       el.removeEventListener("click", swallow, true);
     };
-  }, [nearest, targetFor]);
+  }, []);
 
-  /* Restart the fill whenever the current card changes. */
-  useEffect(() => {
-    progress.current = 0;
-  }, [active]);
-
-  /* One rAF loop drives the fill and the push-in, writing straight to the
-     DOM so a 60fps animation never re-renders the tree. When a dot is full,
-     it hands over to the next card. */
+  /* One rAF loop owns everything that moves. It eases the ring towards its
+     target, lays every card out from the single position, zooms the front
+     card, fills the dot, and hands over to the next card when the dot is
+     full. It writes straight to the DOM so nothing re-renders at 60fps. */
   useEffect(() => {
     let raf = 0;
     let last = performance.now();
 
-    const paint = () => {
-      fills.current.forEach((el, i) => {
-        if (el) el.style.transform = `scaleX(${i === active ? progress.current : 0})`;
-      });
-      photos.current.forEach((el, i) => {
-        if (el) {
-          const scale = i === active && !reduced.current ? 1 + 0.06 * progress.current : 1;
-          el.style.transform = `scale(${scale})`;
-        }
-      });
-    };
-
     const tick = (now: number) => {
-      const dt = now - last;
+      const dt = Math.min(64, now - last);
       last = now;
-      if (playing && inView && !reduced.current && !dragging.current) {
+
+      /* Exponential ease: quick off the mark, long soft landing. */
+      const k = reduced.current ? 1 : 1 - Math.exp(-dt / 190);
+      pos.current += (target.current - pos.current) * k;
+      if (Math.abs(target.current - pos.current) < 0.0005) pos.current = target.current;
+
+      const current = mod(Math.round(target.current), n);
+      if (current !== activeRef.current) {
+        activeRef.current = current;
+        progress.current = 0;
+        setActive(current);
+      }
+
+      if (playing && inView && !reduced.current && !drag.current.on) {
         progress.current = Math.min(1, progress.current + dt / CYCLE_MS);
         if (progress.current >= 1) {
           progress.current = 0;
-          goTo((active + 1) % count);
+          nudge(1);
         }
       }
-      paint();
+
+      const s = step.current;
+      for (let i = 0; i < n; i++) {
+        const card = cards.current[i];
+        if (!card) continue;
+        /* Wrap each card into the window [-1, n-1) so it rejoins at the back. */
+        const rel = mod(i - pos.current + 1, n) - 1;
+        const front = Math.max(0, 1 - Math.abs(rel));
+        card.style.transform = `translate3d(${(rel - i) * s}px,0,0)`;
+        card.style.opacity = rel < 0 ? String(Math.max(0, 1 + rel * 1.1)) : "1";
+        card.style.pointerEvents = rel < -0.6 || rel > 2.4 ? "none" : "";
+        const photo = photos.current[i];
+        if (photo) {
+          const push = i === activeRef.current && !reduced.current ? PLAY_ZOOM * progress.current : 0;
+          photo.style.transform = `scale(${1 + HOLD_ZOOM * front + push})`;
+        }
+      }
+      fills.current.forEach((el, i) => {
+        if (el) el.style.transform = `scaleX(${i === activeRef.current ? progress.current : 0})`;
+      });
+
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [active, playing, inView, goTo, count]);
+  }, [playing, inView, nudge]);
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      nudge(1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      nudge(-1);
+    }
+  };
 
   return (
     <section
@@ -191,7 +220,7 @@ export function OurProducts() {
       <div className="container-x">
         <Reveal className="section-row">
           <h2 className="text-chapter">
-            Six ways to <span className="text-serif">build</span>. One team to run it.
+            Our <span className="text-serif">products</span>.
           </h2>
           <Link
             href="/contact"
@@ -205,39 +234,39 @@ export function OurProducts() {
         </Reveal>
       </div>
 
-      {/* The slider. Full bleed, but its first card lines up with the content edge.
-          The end padding lets the last card travel all the way to that edge too,
-          otherwise the final dots could never become current. */}
+      {/* The stage. Full bleed, but the front card lines up with the content edge. */}
       <ul
-        ref={scroller}
-        className="no-scrollbar m-0 flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain p-0 [--card:82vw] sm:[--card:24rem] lg:[--card:27rem]"
-        style={{
-          ["--edge" as string]: "calc((100% - min(100% - 2 * var(--gutter), 78.75rem)) / 2)",
-          paddingLeft: "var(--edge)",
-          paddingRight: "max(var(--edge), calc(100% - var(--edge) - var(--card)))",
-          scrollPaddingLeft: "var(--edge)",
-        }}
+        ref={stage}
+        tabIndex={0}
+        aria-label="Our products"
+        onKeyDown={onKey}
+        className="relative m-0 h-[33rem] cursor-grab touch-pan-y list-none p-0 outline-offset-4 select-none [--card:82vw] sm:h-[34rem] md:[--card:calc((min(100%-2*var(--gutter),78.75rem)-1.25rem)/2)] lg:h-[34rem]"
+        style={{ ["--edge" as string]: "calc((100% - min(100% - 2 * var(--gutter), 78.75rem)) / 2)" }}
       >
         {offerings.map((item, i) => (
           <li
             key={item.id}
             ref={(el) => {
-              tiles.current[i] = el;
+              cards.current[i] = el;
             }}
-            className="w-[var(--card)] shrink-0 snap-start list-none"
+            className="absolute top-0 bottom-0 w-[var(--card)] will-change-transform"
+            /* Each card is parked at its own slot with `left`, where a percentage
+               resolves against the stage. The ring then moves it with a transform
+               measured from that slot. */
+            style={{ left: `calc(var(--edge) + ${i} * (var(--card) + ${GAP}px))` }}
           >
             <Link
               href={item.href}
               draggable={false}
-              className="group relative flex aspect-[27/35] flex-col overflow-hidden rounded-[var(--r-card)] bg-black"
+              className="group relative flex h-full flex-col overflow-hidden rounded-[var(--r-card)] bg-black"
             >
               {/* The copy has its own room at the top of the card. */}
-              <div className="px-7 pt-8 pb-6 lg:px-8">
-                <p className="text-[clamp(1.25rem,1.6vw,1.5rem)] leading-[1.17] font-semibold tracking-[0.009em] text-white/[0.92]">
-                  {item.name}. {lead(item.line)}
+              <div className="px-7 pt-8 pb-6 lg:px-9 lg:pt-9">
+                <p className="max-w-[20ch] text-[clamp(1.375rem,2.2vw,2rem)] leading-[1.125] font-semibold tracking-[0.004em] text-white/[0.92]">
+                  {item.name}
                 </p>
-                <p className="mt-3 text-[1.0625rem] leading-[1.47] text-white/60">
-                  {rest(item.line)}
+                <p className="mt-3 max-w-[32ch] text-[1.0625rem] leading-[1.47] text-white/60">
+                  {item.line}
                 </p>
               </div>
 
@@ -256,7 +285,7 @@ export function OurProducts() {
                     alt=""
                     fill
                     draggable={false}
-                    sizes="(min-width: 1024px) 432px, (min-width: 640px) 384px, 82vw"
+                    sizes="(min-width: 768px) 620px, 82vw"
                     priority={i < 3}
                     className="object-cover"
                     style={{ objectPosition: item.focus }}
@@ -331,7 +360,3 @@ export function OurProducts() {
     </section>
   );
 }
-
-/** Apple's caption rhythm: the first sentence is the feature, the rest the benefit. */
-const lead = (line: string) => line.slice(0, line.indexOf(". ") + 1);
-const rest = (line: string) => line.slice(line.indexOf(". ") + 2);

@@ -18,13 +18,13 @@ export function Inspiration() {
       <div className="container-x">
         <Reveal className="section-row">
           <h2 className="text-chapter">
-            Not sure yet? Find your <span className="text-serif">direction</span>.
+            Design <span className="text-serif">inspiration</span>.
           </h2>
           <Link
             href="/studio"
             className="group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline"
           >
-            Explore all concepts
+            See all designs
             <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
               <Icon name="arrow" size={15} />
             </span>
@@ -70,8 +70,8 @@ export function Inspiration() {
 
         <Reveal delay={80}>
           <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
-            Every frame is a concept, designed by us, not client work. {studioConcepts.length} directions
-            so far, and the shelf grows every month.
+            Not sure what you want? Browse our concept designs, pick a style you like, and
+            we will build it for you. These are concepts, not client work.
           </p>
         </Reveal>
       </div>

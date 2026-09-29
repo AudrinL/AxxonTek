@@ -102,7 +102,8 @@ The copy follows a few habits, and it's worth keeping them when you add more:
 
 - Talk to the reader, not about ourselves. "Your customers use it without a second thought" beats
   "we build user-friendly software".
-- Headlines are short and come in two beats, each ending with a full stop.
+- Keep it plain. Section headings are simple labels ("Our products", "Our solutions"), and each card
+  gets a name and one short sentence. Nobody should have to read much to get it.
 - Don't invent proof. If we don't have a number or a client we can name, we don't write one.
 - No em dashes and no italics anywhere on the site.
 

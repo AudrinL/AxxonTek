@@ -20,8 +20,8 @@ export function Situations() {
     <section data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
         <Reveal className="section-row">
-          <h2 className="text-chapter max-w-[24ch]">
-            Solutions using AxxonTek. <span className="text-tone-faint">Start from the problem you have.</span>
+          <h2 className="text-chapter">
+            Our <span className="text-serif">solutions</span>.
           </h2>
           <Link
             href="/contact"
@@ -77,8 +77,7 @@ export function Situations() {
 
         <Reveal delay={80}>
           <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
-            If none of these fit, describe the problem on a call and we will tell you
-            honestly whether it is one we should take.
+            Do not see your problem here? Tell us about it and we will say honestly whether we can help.
           </p>
         </Reveal>
       </div>

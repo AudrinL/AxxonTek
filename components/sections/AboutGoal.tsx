@@ -8,16 +8,16 @@ import { useParallax } from "@/lib/motion";
 
 const commitments = [
   {
-    title: "Built for the conditions.",
-    body: "Light pages, mid-range phones, mobile data and mobile money. Made for how people here actually connect.",
+    title: "Built for Africa.",
+    body: "Fast on basic phones and slow internet, with mobile money built in.",
   },
   {
-    title: "Kept running.",
-    body: "We host, watch and support everything we ship. Launch day is where it starts, not where it ends.",
+    title: "Always supported.",
+    body: "We host and look after everything we build.",
   },
   {
-    title: "Honest about fit.",
-    body: "If a smaller project or a different approach serves you better, we will say so, even when the answer is not us.",
+    title: "Honest advice.",
+    body: "If a smaller or cheaper option fits you better, we will tell you.",
   },
 ];
 
@@ -63,11 +63,11 @@ export function AboutGoal() {
       <div className="container-x">
         <div className="mx-auto max-w-[52rem]">
           <Reveal as="p" className="label mb-3">
-            About
+            About us
           </Reveal>
           <Reveal delay={70}>
             <h2 className="text-display">
-              <span className="text-serif">Working</span> technology. Everywhere it is needed.
+              Technology that <span className="text-serif">works</span> for everyone.
             </h2>
           </Reveal>
           <Reveal delay={140}>
@@ -75,10 +75,9 @@ export function AboutGoal() {
               <span className="text-tone">
                 AxxonTek is a technology company in Kigali.
               </span>{" "}
-              We design, build and operate software, cloud and smart systems for
-              businesses, schools and clinics across Africa, and we run two products
-              of our own, <span className="text-tone">Floow and TalentLens</span>. So
-              the tools we hand you are ones we already trust.
+              We build software, cloud and smart systems for businesses, schools and
+              clinics across Africa. We also run two products of our own:{" "}
+              <span className="text-tone">Floow and TalentLens</span>.
             </p>
           </Reveal>
           <Reveal delay={200}>
@@ -86,7 +85,7 @@ export function AboutGoal() {
               href="/about"
               className="group mt-8 inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] transition-colors duration-[var(--t-hover)] hover:underline"
             >
-              Learn more about AxxonTek
+              Learn more about us
               <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
                 <Icon name="arrow" size={15} />
               </span>

@@ -17,14 +17,14 @@ export function Inspiration() {
     <section data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-8">
-          <div className="max-w-[20ch]">
+          <div>
             <Reveal as="p" className="label mb-6">
               <span className="label-dot" aria-hidden />
               Inspiration
             </Reveal>
             <Reveal delay={70}>
               <h2 className="text-chapter">
-                Not sure yet? Find your <span className="text-serif text-accent">direction</span>.
+                Not sure yet?<br />Find your <span className="text-serif text-accent">direction</span>.
               </h2>
             </Reveal>
           </div>

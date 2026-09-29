@@ -9,16 +9,22 @@ import { FooterDust, FooterMark } from "@/components/layout/FooterParticles";
  * The footer, after rho.co: faint dust drifting behind everything, which
  * swirls round the cursor, then the ask and the link columns, and at the very
  * foot the logo drawn in dots that part as the cursor passes over them.
+ *
+ * On a desktop the footer is exactly one screen tall: the content keeps its
+ * natural size and the dotted logo takes whatever height is left, resizing
+ * itself to fit. On a very short window it grows past a screen instead of
+ * squashing the logo to nothing.
  */
 export function Footer() {
   return (
-    <footer className="relative z-[1] overflow-hidden border-t border-line">
+    <footer className="relative z-[1] overflow-hidden border-t border-line lg:flex lg:min-h-[100svh] lg:flex-col">
       <FooterDust />
 
-      <div className="container-x relative py-10 lg:py-16">
-        {/* The ask */}
-        <div className="flex flex-col items-start justify-between gap-5 border-b border-line pb-8 lg:flex-row lg:items-end lg:gap-8 lg:pb-14">
-          <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.01em]">
+      <div className="container-x relative w-full py-10 lg:pt-[5.5rem] lg:pb-6">
+        {/* The ask. Desktop only: on a phone every page already ends with
+            its own ask just above, and repeating it only makes the footer long. */}
+        <div className="hidden items-center justify-between gap-8 border-b border-line pb-8 lg:flex">
+          <h2 className="font-display text-[clamp(2rem,3.4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.005em]">
             Have a <span className="text-serif">project</span> in mind?
           </h2>
           <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">
@@ -30,7 +36,7 @@ export function Footer() {
         {/* Columns */}
         {/* Phones: logo on top, then each list two links to a row, then contact.
             Desktop: four columns. */}
-        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:mt-14 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-12">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:mt-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-12">
           <div className="col-span-2 lg:col-span-1">
             <Logo large />
             <p className="mt-5 hidden max-w-xs lg:block text-[0.875rem] leading-[1.43] text-tone-mute">
@@ -86,7 +92,7 @@ export function Footer() {
           </FooterColumn>
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 lg:mt-14 lg:gap-4 lg:pt-7">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 lg:mt-8 lg:gap-4 lg:pt-5">
           <p className="text-[0.75rem] leading-4 text-tone-faint">
             &copy; {new Date().getFullYear()} {site.name}. {site.tagline}.
           </p>
@@ -98,8 +104,8 @@ export function Footer() {
       </div>
 
       {/* The logo in dots, the last thing on the page. */}
-      <div className="relative pb-4 lg:pb-6">
-        <div className="relative mx-auto aspect-[958/310] w-full max-w-[calc(78.75rem+2*var(--gutter))]">
+      <div className="relative pb-4 lg:flex lg:flex-1 lg:flex-col lg:pb-4">
+        <div className="relative mx-auto aspect-[958/310] w-full max-w-[calc(78.75rem+2*var(--gutter))] lg:aspect-auto lg:min-h-[6.5rem] lg:flex-1">
           <FooterMark />
           <span className="sr-only">AxxonTek</span>
         </div>

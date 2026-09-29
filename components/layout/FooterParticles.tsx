@@ -58,7 +58,7 @@ export function FooterMark() {
       cell={2}
       gap={small ? 1 : 3}
       radius={small ? 70 : 110}
-      className="h-full w-full"
+      className="absolute inset-0"
     />
   );
 }

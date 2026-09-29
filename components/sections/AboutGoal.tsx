@@ -61,17 +61,17 @@ export function AboutGoal() {
       </div>
 
       <div className="container-x">
-        <div className="mx-auto max-w-[56rem] text-center">
-          <Reveal as="p" className="label mb-4">
+        <div className="mx-auto max-w-[52rem]">
+          <Reveal as="p" className="label mb-3">
             About us and our goal
           </Reveal>
           <Reveal delay={70}>
-            <h2 className="text-display mx-auto max-w-[13ch]">
+            <h2 className="text-display">
               <span className="text-serif">Working</span> technology in every place that needs it.
             </h2>
           </Reveal>
           <Reveal delay={140}>
-            <p className="text-lede mx-auto mt-8 max-w-[34ch]">
+            <p className="text-lede mt-6 max-w-[40ch]">
               <span className="text-tone">
                 AxxonTek is a technology company in Kigali.
               </span>{" "}
@@ -93,10 +93,10 @@ export function AboutGoal() {
           </Reveal>
         </div>
 
-        <ul className="mt-24 grid gap-4 md:grid-cols-3">
+        <ul className="mt-24 grid gap-5 md:grid-cols-3">
           {commitments.map((c, i) => (
             <Reveal as="li" key={c.title} delay={i * 70} className="h-full">
-              <div className="h-full rounded-[var(--r-card)] bg-[#161617] p-8 lg:p-10">
+              <div className="h-full rounded-[var(--r-card)] bg-ink-soft p-8 lg:p-10">
                 <h3 className="font-display text-[1.75rem] font-semibold leading-[1.14] tracking-[0.007em]">
                   {c.title}
                 </h3>

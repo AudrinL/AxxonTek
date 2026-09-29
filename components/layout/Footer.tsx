@@ -73,7 +73,7 @@ export function Footer() {
           </FooterColumn>
 
           <FooterColumn title="Get in touch">
-            <li className="text-[0.9375rem] text-tone-mute">
+            <li className="text-[0.75rem] leading-4 text-tone-mute">
               {site.address.line1}
               <br />
               {site.address.line2}
@@ -83,7 +83,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${site.email}`}
-                className="text-[0.9375rem] font-medium underline decoration-line-firm underline-offset-4 transition-colors duration-[var(--t-hover)] hover:text-accent"
+                className="text-[0.75rem] font-medium underline decoration-line-firm underline-offset-4 transition-colors duration-[var(--t-hover)] hover:text-accent"
               >
                 {site.email}
               </a>
@@ -122,10 +122,7 @@ export function Footer() {
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="label mb-5">
-        <span className="label-dot" aria-hidden />
-        {title}
-      </h2>
+      <h2 className="mb-4 text-[0.75rem] leading-4 font-semibold tracking-[-0.01em] text-tone">{title}</h2>
       <ul className="flex flex-col gap-3">{children}</ul>
     </div>
   );
@@ -143,7 +140,7 @@ function FooterLink({
   const link = (
     <Link
       href={href}
-      className="text-[0.9375rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone"
+      className="text-[0.75rem] leading-4 tracking-[-0.01em] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone"
     >
       {children}
     </Link>

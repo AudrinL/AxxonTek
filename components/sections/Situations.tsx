@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/components/Icon";
 import { Reveal } from "@/components/system/Reveal";
 import { situations } from "@/lib/site";
 
@@ -18,23 +19,22 @@ export function Situations() {
   return (
     <section data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
-        <div className="mx-auto max-w-[44rem] text-center">
-          <Reveal as="p" className="label mb-4">
-            Solutions using AxxonTek
-          </Reveal>
-          <Reveal delay={70}>
-            <h2 className="text-chapter">Start from the problem you have.</h2>
-          </Reveal>
-          <Reveal delay={140}>
-            <p className="text-lede mt-6">
-              <span className="text-tone">Find yours below, and see how AxxonTek answers it.</span>{" "}
-              If none of them fit, describe the problem on a call and we will tell you
-              honestly whether it is one we should take.
-            </p>
-          </Reveal>
-        </div>
+        <Reveal className="section-row">
+          <h2 className="text-chapter max-w-[24ch]">
+            Solutions using AxxonTek. <span className="text-tone-faint">Start from the problem you have.</span>
+          </h2>
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline"
+          >
+            Talk to us
+            <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
+              <Icon name="arrow" size={15} />
+            </span>
+          </Link>
+        </Reveal>
 
-        <ul className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {situations.map((situation, i) => (
             <Reveal
               as="li"
@@ -44,7 +44,7 @@ export function Situations() {
             >
               <Link
                 href={situation.href}
-                className="card group flex h-full flex-col p-7 transition-[transform,border-color] duration-[var(--t-base)] ease-out hover:-translate-y-0.5 hover:border-line-firm"
+                className="card group flex h-full flex-col p-8 lg:p-10 transition-[transform,border-color] duration-[var(--t-base)] ease-out hover:-translate-y-0.5 hover:border-line-firm"
               >
                 <p className="font-display text-[1.3125rem] leading-[1.19] font-semibold tracking-[0.011em]">
                   {situation.said}
@@ -74,6 +74,13 @@ export function Situations() {
             </Reveal>
           ))}
         </ul>
+
+        <Reveal delay={80}>
+          <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
+            If none of these fit, describe the problem on a call and we will tell you
+            honestly whether it is one we should take.
+          </p>
+        </Reveal>
       </div>
     </section>
   );

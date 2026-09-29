@@ -14,26 +14,24 @@ export function Inspiration() {
   const shown = studioConcepts.filter((c) => c.image).slice(0, 4);
 
   return (
-    <section data-chapter-ground="canvas" className="chapter-y relative">
+    <section data-chapter-ground="ink" className="chapter-y section-alt relative">
       <div className="container-x">
-        <div className="mx-auto max-w-[44rem] text-center">
-          <Reveal as="p" className="label mb-4">
-            Inspiration
-          </Reveal>
-          <Reveal delay={70}>
-            <h2 className="text-chapter">
-              Not sure yet?<br />Find your <span className="text-serif">direction</span>.
-            </h2>
-          </Reveal>
-          <Reveal delay={140}>
-            <p className="text-lede mt-6">
-              <span className="text-tone">Directions we have designed for real industries.</span>{" "}
-              Find one you like and we will make it yours. The shelf grows every month.
-            </p>
-          </Reveal>
-        </div>
+        <Reveal className="section-row">
+          <h2 className="text-chapter">
+            Not sure yet? Find your <span className="text-serif">direction</span>.
+          </h2>
+          <Link
+            href="/studio"
+            className="group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline"
+          >
+            Explore Inspiration
+            <span aria-hidden className="inline-block transition-transform duration-500 ease-[var(--ease-out)] group-hover:translate-x-0.5">
+              <Icon name="arrow" size={15} />
+            </span>
+          </Link>
+        </Reveal>
 
-        <div className="mt-14 grid gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-5">
+        <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-5">
           {shown.map((concept, i) => (
             <Reveal key={concept.slug} delay={(i % 4) * 70}>
               <Link href={`/studio/${concept.slug}`} className="group block">
@@ -71,15 +69,10 @@ export function Inspiration() {
         </div>
 
         <Reveal delay={80}>
-          <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            <Link href="/studio" className="pill pill-ember hover:bg-ember-deep">
-              Explore Inspiration
-              <Icon name="arrow" size={16} />
-            </Link>
-            <span className="text-[0.875rem] text-tone-faint">
-              {studioConcepts.length} concepts and counting
-            </span>
-          </div>
+          <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
+            Every frame is a concept, designed by us, not client work. {studioConcepts.length} directions
+            so far, and the shelf grows every month.
+          </p>
         </Reveal>
       </div>
     </section>

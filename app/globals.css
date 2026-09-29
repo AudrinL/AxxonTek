@@ -50,7 +50,7 @@
   --r-inner:   1.25rem;
   --r-pill:    999px;
 
-  --gutter:  clamp(1.25rem, 4.5vw, 3.5rem);
+  --gutter:  clamp(1.25rem, 6.25vw, 5.6rem);  /* Apple: 87.5% wide, so 6.25% each side */
   --chapter: clamp(5.5rem, 10vw, 9rem);
 
   /* ---- contextual tokens: the canvas ground ----
@@ -206,7 +206,7 @@
  * ================================================================== */
 @utility container-x {
   width: 100%;
-  max-width: 82rem;
+  max-width: calc(78.75rem + 2 * var(--gutter));  /* 1260px of content */
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
@@ -227,30 +227,30 @@
  * Type scale. Ratio is roughly 1.35 between steps.
  * ================================================================== */
 @utility text-display {
-  /* Apple "headline super": 96 / 100, 600, hair-tight. */
+  /* Apple "headline super": 80 / 84 at 1440, 96 / 100 on wide screens. */
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(3rem, 8.4vw, 6rem);
-  line-height: 1.04;
+  font-size: clamp(3rem, 5.6vw, 6rem);
+  line-height: 1.05;
   letter-spacing: -0.005em;
 }
 
 @utility text-chapter {
-  /* Apple "headline": 56 / 60, 600. */
+  /* Apple "section header headline": 48 / 52, 600. */
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
-  line-height: 1.07;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.083;
   letter-spacing: -0.005em;
 }
 
 @utility text-lede {
-  /* Apple "intro": 28 / 32, 600, secondary gray. Wrap the phrase that
-     matters in a span coloured var(--c-ink) for the two-tone effect. */
-  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  /* Apple "eyebrow reduced": 21 / 25, 600, secondary gray. Wrap the phrase
+     that matters in a span coloured var(--c-ink) for the two-tone effect. */
+  font-size: clamp(1.1875rem, 1.5vw, 1.3125rem);
   font-weight: 600;
   line-height: 1.19;
-  letter-spacing: 0.007em;
+  letter-spacing: 0.011em;
   color: var(--c-faint);
 }
 
@@ -269,19 +269,38 @@
 
 /* The label device both products use: uppercase mono with an ember dot. */
 @utility label {
-  /* Apple "eyebrow": sentence case, 600, a step above body. */
+  /* Apple "eyebrow": sentence case, 600, 24px, white. */
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   font-family: var(--font-display);
-  font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.19;
-  letter-spacing: 0.011em;
-  color: var(--c-faint);
+  line-height: 1.17;
+  letter-spacing: 0.009em;
+  color: var(--c-ink);
 }
 @utility label-dot {
   display: none;
+}
+
+/* Apple alternates #000 and #1d1d1f between sections. A section-alt paints
+   the lifted one and drops its cards to black, as Apple's highlights do. */
+@utility section-alt {
+  background: var(--ink-soft);
+  --c-surface: #000;
+  --c-surface-2: #1d1d1f;
+}
+
+/* The row header every gallery section opens with: a 48px headline on the
+   left, a text link on the right, 44px of air before the content. */
+@utility section-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+  margin-bottom: 2.75rem;
 }
 
 /* ==================================================================

@@ -25,17 +25,17 @@ export function OurProducts() {
   return (
     <section id="products" data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
-        <div className="mx-auto max-w-[44rem] text-center">
-          <Reveal as="p" className="label mb-4">
+        <div className="mx-auto max-w-[52rem]">
+          <Reveal as="p" className="label mb-3">
             Our products
           </Reveal>
           <Reveal delay={70}>
-            <h2 className="text-chapter">
-              Six things we build,<br />and <span className="text-serif">run</span> for you.
+            <h2 className="text-display">
+              Six things we build, and <span className="text-serif">run</span> for you.
             </h2>
           </Reveal>
           <Reveal delay={140}>
-            <p className="text-lede mt-6">
+            <p className="text-lede mt-6 max-w-[38ch]">
               <span className="text-tone">Ask for one, or a few that work together.</span>{" "}
               Each is designed, built and looked after by the same team, so nothing
               falls between suppliers.
@@ -43,7 +43,7 @@ export function OurProducts() {
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-x-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+        <div className="mt-20 grid gap-x-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
           <ul className="border-t border-line">
             {offerings.map((item, i) => {
               const open = i === active;

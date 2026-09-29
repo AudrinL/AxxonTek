@@ -241,8 +241,8 @@ export function OurProducts() {
                 </p>
               </div>
 
-              {/* The photograph sits below it, in its own rounded frame, all
-                  tinted the same orange so six sources read as one set. */}
+              {/* The photograph sits below it, in its own rounded frame,
+                  in its natural colours. */}
               <div className="relative mx-3 mb-3 min-h-0 flex-1 overflow-hidden rounded-[1.25rem]">
                 <div
                   ref={(el) => {
@@ -258,19 +258,8 @@ export function OurProducts() {
                     draggable={false}
                     sizes="(min-width: 1024px) 432px, (min-width: 640px) 384px, 82vw"
                     priority={i < 3}
-                    className="object-cover grayscale brightness-[1.3] contrast-[1.1]"
+                    className="object-cover"
                     style={{ objectPosition: item.focus }}
-                  />
-                  <div
-                    className="absolute inset-0 mix-blend-multiply"
-                    style={{
-                      background:
-                        "linear-gradient(160deg, var(--ember-deep) 0%, var(--ember) 50%, #ff8a55 100%)",
-                    }}
-                  />
-                  <div
-                    className="absolute inset-0 mix-blend-soft-light"
-                    style={{ background: "var(--ember)", opacity: 0.55 }}
                   />
                 </div>
 

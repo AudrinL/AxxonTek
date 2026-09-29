@@ -1,36 +1,39 @@
-# AxxonTek — Company Website
+# AxxonTek website
 
-Marketing site for **AxxonTek**, an engineering company based at Norrsken Kigali, Rwanda — apps and
-websites for African SMEs and individuals, IT consultation, an innovation lab (TalentLens, Floow), and
-smart-home and camera installation.
+This is the website for AxxonTek, a technology company in Kigali. We build software, cloud
+infrastructure and smart systems for businesses, schools and clinics across Africa, and we run two
+products of our own, Floow and TalentLens. The site is how people find out all that, see what we
+could build for them, and get in touch.
 
-Built with **Next.js 15** (App Router), **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**.
-One light theme with orange as the brand accent.
+It's a Next.js 15 app (App Router) with TypeScript and Tailwind CSS v4. Smooth scrolling comes from
+Lenis and the motion from GSAP. There's no database of our own to look after: the contact and
+newsletter forms save to Supabase, and that's the only backend.
 
----
+## Running it
 
-## Quick start
+You'll need Node 20 or newer.
 
 ```bash
 npm install
 npm run dev
 ```
 
-The site runs at <http://localhost:3000>.
+Then open <http://localhost:3000>.
 
-| Script              | What it does                              |
-| ------------------- | ----------------------------------------- |
-| `npm run dev`       | Dev server (Turbopack) with hot reload     |
-| `npm run build`     | Production build                          |
-| `npm start`         | Serve the production build                |
-| `npm run typecheck` | TypeScript check, no emit                 |
-| `npm run lint`      | Next.js lint                              |
+| Command             | What it does                                   |
+| ------------------- | ---------------------------------------------- |
+| `npm run dev`       | Starts the dev server with hot reload          |
+| `npm run build`     | Makes a production build                       |
+| `npm start`         | Serves that production build                   |
+| `npm run typecheck` | Runs TypeScript without producing any output   |
+| `npm run lint`      | Runs the Next.js linter                        |
+| `npm test`          | Runs the tests (Vitest)                        |
+| `npm run photos`    | Shrinks photos in `public/assets/photos` to web-sized WebP |
 
----
+## Setting up the forms
 
-## Environment
-
-The contact and newsletter forms write to Supabase. Copy `.env.example` to `.env.local` and fill in:
+The contact and newsletter forms write to Supabase, so they need a few settings first. Copy
+`.env.example` to `.env.local` and fill it in:
 
 ```
 NEXT_PUBLIC_SITE_URL=https://axxontek.com
@@ -38,296 +41,152 @@ SUPABASE_URL=...
 SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-Then run [`supabase-schema.sql`](supabase-schema.sql) once in your Supabase project's SQL editor to
-create the `contact_submissions` and `newsletter_subscribers` tables.
+Then paste [`supabase-schema.sql`](supabase-schema.sql) into your Supabase project's SQL editor and
+run it once. That creates the `contact_submissions` and `newsletter_subscribers` tables.
 
-**Without these variables the forms still work** — they return a clear "not connected yet" message
-and a `503`. They never report a false success.
+If you skip all this, nothing breaks. The site still runs, and the forms tell the visitor they aren't
+connected yet instead of pretending the message went through.
 
-> `SUPABASE_SERVICE_ROLE_KEY` is a server-only secret. It is read exclusively inside route handlers
-> (`app/api/*`) and is never exposed to the browser. Do not prefix it with `NEXT_PUBLIC_`.
+One thing to be careful with: `SUPABASE_SERVICE_ROLE_KEY` is a secret. It's only ever read inside the
+API routes in `app/api`, never in the browser, so don't give it a `NEXT_PUBLIC_` prefix.
 
----
-
-## Project structure
+## Where things live
 
 ```
 app/
-├── layout.tsx              # Root shell: metadata, theme bootstrap, nav, footer
-├── page.tsx                # Homepage
-├── globals.css             # Design tokens, base styles, utilities (Tailwind v4)
-├── about|blog|careers/     # Content pages
-├── contact/                # Contact page (accepts ?email= prefill from the hero)
-├── privacy|terms/          # Legal pages
-├── services/[slug]/        # Six service pages, generated from lib/site.ts
-├── api/contact/route.ts    # Validated contact submissions -> Supabase
-├── api/newsletter/route.ts # Validated newsletter signups -> Supabase
-├── sitemap.ts, robots.ts   # Generated from route data — cannot drift
-└── not-found.tsx           # 404
+  page.tsx                 the homepage
+  layout.tsx               fonts, metadata, nav, footer, and the page-wide ground colour
+  globals.css              design tokens, type scale and shared utilities
+  products/, work/         one page per item, generated from the data files
+  studio/                  the Inspiration pages (the URL is still /studio)
+  solutions/, capabilities/, pricing/, about/, lab/, security/, contact/
+  privacy/, terms/         the legal pages
+  api/contact, api/newsletter   validated form submissions, saved to Supabase
+  sitemap.ts, robots.ts    built from the same route data, so they can't drift
 
 components/
-├── layout/                 # Nav, Footer, Logo, PageTransition, ScrollProgress
-├── sections/               # Hero (+HeroIllustration), Stats, ServicesGrid, Products (+ProductVisual), ProcessBand,
-│                           # WhyUs, Faq, ContactSection, FeatureGrid, CtaBanner, PageHero, ...
-├── three/                  # GlobalCanvas (+loader): the one WebGL context
-│                           # HeroField -> HeroScene -> AfricaScene: the Africa point field (parked)
-│                           # AfricaStatic (SVG fallback), africa-geo (shared geometry)
-├── motion/                 # MotionTier, SmoothScroll, Boot (preloader), VelocitySkew,
-│                           # Reveal, MaskedWords, Scramble, MagneticButton, useHydrated
-├── forms/                  # ContactForm, NewsletterForm
-└── Icon.tsx                # Line-icon set
+  sections/                the big blocks pages are made of (Hero, OurProducts, AboutGoal, ...)
+  studio/                  concept cards and the gallery
+  layout/                  Nav, Footer, Logo
+  forms/                   the two forms
+  system/                  the ground, loader, smooth scroll, reveal, marquee and other plumbing
 
 lib/
-├── site.ts                 # All copy + navigation data — services, products, process, FAQ, photos
-├── motion.ts               # Shared easings and variants
-├── capabilities.ts         # Motion tier detection (full / lite / off) and per-tier budgets
-├── gsap.ts                 # GSAP + ScrollTrigger registration (import from here)
-├── boot.ts                 # Preloader session key shared by layout and Boot
-├── validation.ts           # Form validation shared by the API routes
-└── supabase.ts             # Server-side Supabase client
+  site.ts                  most of the copy and navigation lives here
+  work.ts                  the list of projects on /work
+  validation.ts            form checks shared with the API routes (has tests)
+  supabase.ts              the server-side Supabase client
+  motion.ts                the shared Lenis and GSAP hooks
 ```
 
-**To edit content**, change [`lib/site.ts`](lib/site.ts). Service pages, nav, footer links, and the
-sitemap all read from it.
+**Changing the words on the site** usually means editing [`lib/site.ts`](lib/site.ts). The six
+offerings on the homepage (`offerings`), the problem cards (`situations`), the Inspiration concepts
+(`studioConcepts`), the nav and the footer links all come from there. Projects on `/work` are in
+[`lib/work.ts`](lib/work.ts).
 
----
+## The homepage
 
-## Homepage narrative
+It runs in five parts, then the footer:
 
-The homepage is ordered for conversion. Each section answers the question the previous one raises,
-and the ask ("Book a call") is never more than one screen away:
+1. **Hero.** The one-line pitch and a way to start a project.
+2. **Products.** The six things we build: web, mobile, cloud and hosting, SaaS, UX and UI design,
+   and smart homes. On desktop, hovering a row swaps the photo beside it.
+3. **About.** Who we are, what we're aiming for, and three promises about how we work.
+4. **Inspiration.** Concept designs for real industries, for people who don't yet know what they want.
+   Every one is labelled a concept, because none of them are client work.
+5. **Solutions.** Six problems people actually have, and how we'd solve them.
 
-| Section | Job | Leaves the reader asking |
-| --- | --- | --- |
-| Hero | What we sell, for whom, one primary CTA, three trust points | "What exactly?" |
-| Stats strip | Honest snapshot (founded, team size, projects, reply time) | "Are you real?" |
-| Services | The catalogue — four cards, one line each, all linking to their page | "Have you shipped anything?" |
-| Products | TalentLens and Floow, built in the lab — the proof until a client case study exists | "How do you work?" |
-| Process band | Research first, built by the people who scoped it (orange break + CTA) | "Why you?" |
-| Why AxxonTek | Three concrete reasons | "Any catches?" |
-| FAQ | The objections a buyer has before contacting us | "How do I start?" |
-| Contact | The form, embedded — no extra page load | — |
+### Writing for it
 
-Rules this order follows:
+The copy follows a few habits, and it's worth keeping them when you add more:
 
-- **One service taxonomy.** `services` in `lib/site.ts` is the only list of what we sell. Nav,
-  hero chips, the grid, the footer, and the sitemap all read from it. `products` is the lab's output.
-- **Photos are slots.** `photos` and each service's `photo` in `lib/site.ts` are optional paths; every
-  section has a photo-less fallback. See `public/assets/photos/README.md` for the shot list and
-  `npm run photos` to optimise originals.
-- **The primary CTA is always "Book a call".** It appears in the nav, the hero, the process band
-  and the contact section. Nothing else competes with it.
-- **Numbers are static.** The stats strip is plain text so search engines and no-JS visitors see
-  the real values, not a count-up starting at zero.
-- **Copy is honest.** The company is young; the page says so and sells the process instead of
-  inventing social proof. Replace the "Why us" cards with a named case study as soon as one exists.
+- Talk to the reader, not about ourselves. "Your customers use it without a second thought" beats
+  "we build user-friendly software".
+- Headlines are short and come in two beats, each ending with a full stop.
+- Don't invent proof. If we don't have a number or a client we can name, we don't write one.
+- No em dashes and no italics anywhere on the site.
 
-### Theme
+## How it looks
 
-One light palette, no dark mode. Every colour in the codebase is a semantic token (`bg-ink`,
-`text-bone`, `text-mute`, `border-hairline`, `bg-ember`, `bg-ember-tint`, …) defined once in
-`app/globals.css`. Components never hard-code colour values, so adding a surface means adding a
-token, not touching components.
+The design is modelled on Apple's product pages: black background, white text, one typeface, big
+calm headlines and lots of space.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `ink` | warm white | Page ground |
-| `ink-raised` | white | Cards, inputs |
-| `surface-1` / `band` | warm sand | Alternating sections |
-| `bone` / `mute` / `faint` | ink → grey | Text hierarchy |
-| `ember` / `ember-deep` / `ember-soft` / `ember-tint` | orange scale | Brand accent, buttons, icon wells |
-| `band-ember` | orange gradient | The one high-contrast break per page |
+- **Font.** Inter, using its optical-size setting, so large text gets the finer display cut and small
+  text the sturdier one. Apple's own font isn't licensed for the web, and this is the closest match.
+  Headlines are semibold, body text regular.
+- **Colour.** Pure black ground, `#f5f5f7` text and `#86868b` for secondary text. Orange is the only
+  accent. Colours are tokens in `app/globals.css`, so components don't hard-code them.
+- **Layout.** Content is 87.5% of the screen wide (1260px at most), with 144px above and below each
+  section. Some sections sit on a slightly lifted `#1d1d1f` instead of pure black (`section-alt`).
+- **Type utilities.** `text-display`, `text-chapter`, `text-lede` and `label` are the sizes to reach
+  for. In a `text-lede` paragraph, wrap the phrase that matters in `text-tone` and it turns white
+  against the gray.
+- **Cards** have 28px corners and a 20px gap.
 
-### Hero
+The light theme is switched off for now. `components/system/Ground.tsx` holds the whole site on the
+dark ground. The old chapter-by-chapter light and dark switching is still in git history if you want
+it back.
 
-The hero asks for one thing — a call — so it carries a headline, one sentence, one button and one
-line of reassurance, nothing else (`components/sections/Hero.tsx`). It is full-viewport and edge to
-edge: `photos.hero` from `lib/site.ts` is desaturated and multiplied with an orange gradient across
-the whole section, a white slice cuts in from the right on a diagonal, and the illustration sits
-across the edge, anchored to the bottom-right corner of the screen so it fills wide displays and
-bleeds off like a real object. On phones the slice becomes a bottom band with a diagonal top.
+## Motion
 
-The illustration (`HeroIllustration.tsx`) is drawn entirely in code — a browser window showing a
-miniature AxxonTek page, a phone, and two live smart-installation cards — in the brand's own
-tokens, with a light perspective and a slow float. It weighs nothing and needs no assets. Sizes
-inside it are in `em` scaled by container width (`cqw`), so it keeps its proportions at every size.
+Lenis smooths the scroll and GSAP's ScrollTrigger runs the scroll-linked effects. Both are set up in
+`lib/motion.ts` and mounted once by `components/system/SmoothScroll.tsx`.
 
-The header starts white on orange there and returns to its normal colours as it condenses
-(`inverted` in `Nav.tsx`). Replace the photo by dropping a 16:9 image in `public/assets/` and
-pointing `photos.hero` at it — keep the subject on the left third so the copy sits over the darker
-side.
+Everything animated starts out visible and only hides itself once JavaScript is running, so a
+visitor without JavaScript still gets the whole page. Anyone who has asked their device for reduced
+motion gets no smooth scroll, no parallax and no entrances.
 
----
+## Adding photos
 
-## Motion architecture
+Drop a photo into `public/assets/`. Big originals are wasteful, so for anything in
+`public/assets/photos` run `npm run photos` and it makes a web-sized WebP next to it. The homepage
+images are in `public/assets/home` and `public/assets/inspiration`.
 
-The site has one rule for motion: **the visitor's device decides how much it gets.**
-`lib/capabilities.ts` sorts every visitor into a tier during the first client render, and every
-expensive effect asks for that tier before it mounts:
+## Deploying
 
-| Tier | Who | What runs |
-| --- | --- | --- |
-| `full` | Desktop-class device, fine pointer, decent connection | Everything: smooth scroll, 3D at up to DPR 2, pointer effects, flourishes |
-| `lite` | Phones, ≤4 GB memory, 3G | Smooth wheel scroll, 3D at DPR 1 with fewer points, no pointer effects |
-| `off` | `prefers-reduced-motion`, Data Saver, 2G, no WebGL2 | Native scrolling, static SVG hero, no three.js download, no preloader |
+We host on Netlify. [`netlify.toml`](netlify.toml) sets up the build, the Next.js plugin (which turns
+pages and API routes into Netlify Functions), security and cache headers, and redirects from the old
+`.html` URLs. Because that file exists, it overrides the build settings in the Netlify dashboard. If a
+deploy acts strangely, check that **Base directory** is empty in *Site configuration, Build and
+deploy*, since that's the one setting the file can't control.
 
-Override it from devtools for testing: `localStorage.setItem("axxontek-motion", "off")` (or
-`lite` / `full`), then reload.
+Set the same three variables from the setup section above in *Site configuration, Environment
+variables*.
 
-### The layers
-
-- **Smooth scroll** — [Lenis](https://lenis.darkroom.engineering/) on the window
-  (`components/motion/SmoothScroll.tsx`), driven by GSAP's ticker so scroll, ScrollTrigger and
-  scrubbed timelines advance in the same frame. Lenis scrolls the real window, so framer-motion's
-  `useScroll`, IntersectionObserver and `getBoundingClientRect` keep working. Touch devices keep
-  native scrolling. Lock scrolling with `lenis.stop()` / `start()` (the nav drawer does), never with
-  `overflow` on `<body>`.
-- **Scroll timelines** — GSAP ScrollTrigger, registered once in `lib/gsap.ts`. The hero scrubs a
-  timeline (the photo drifts, the copy lifts and dims, the illustration lags behind for depth).
-- **One WebGL context** — `components/three/GlobalCanvas.tsx` is a fixed, transparent canvas behind
-  the page. Scenes live where they appear in the DOM: render a drei `<View>` with a positioned
-  `className`, put R3F children inside, call `useRegisterScene()`, and the canvas draws them into
-  that element's rectangle (only while it is on screen). The canvas — and three.js with it, ~230 kB
-  gzipped — is only loaded while a scene is registered (`lib/scenes.ts`), after hydration, and
-  never for the `off` tier. No page uses one at the moment.
-- **Africa field (parked)** — `HeroField` → `AfricaScene.tsx`: a point cloud of the continent,
-  orange hubs, arcs from Kigali; the vertex shader scatters the points on scroll and parts them
-  around the pointer, with `AfricaStatic.tsx` as its no-JS fallback. It was the first hero visual
-  and is kept for a section that wants it; drop `<HeroField className="absolute inset-0" />` in a
-  positioned box. The dotted SVG also appears inside the hero illustration's mini page.
-- **Preloader** — `components/motion/Boot.tsx`. A wordmark, a bar and a rolling counter that track
-  real work (system fonts settling, the WebGL bundle arriving), floored at 1 s and capped at 2.4 s.
-  It is in the server HTML so it paints instantly; an inline script in `app/layout.tsx` sets
-  `html[data-boot]` before first paint so it never shows twice in a session, nor for reduced-motion
-  or Data Saver visitors. Hero entrances wait for `useBootReady()` so they play in front of the
-  visitor rather than behind the overlay. **Trade-off:** on a first visit the hero's largest text
-  appears ~1 s later than it would without the overlay; that is a brand decision, and the two knobs
-  are `MIN_DURATION` / `MAX_DURATION`.
-- **Text** — `MaskedWords` gained `mode="lines"`: it measures where the headline wraps and lifts
-  each line as one piece (the hero uses it). `Scramble` decodes labels character by character; the
-  final text is what the server renders and what assistive tech reads.
-- **Velocity skew** — `VelocitySkew` leans a block by scroll velocity and springs back. Opt-in per
-  grid (services, products); a skew on a layout would break every `position: fixed` descendant.
-- **Framer Motion** still handles entrance reveals, page transitions, the FAQ accordion and
-  magnetic buttons. The root `MotionConfig reducedMotion="user"` neutralises transform animations
-  for reduced-motion visitors. Components must **not** branch their markup on `useReducedMotion` or
-  on the motion tier — both differ between server and client, and that is a hydration mismatch.
-  Gate *presence* with `useHydrated()` instead (see `GlobalCanvasLoader`).
-
-### Performance rules the code follows
-
-- **Nothing heavy is in the initial bundle.** three.js, React Three Fiber and the scene arrive
-  after hydration; the `off` tier never requests them. An earlier Lenis/GSAP build was removed
-  because it cost seconds of first paint on mobile data — this one keeps that lesson by tiering:
-  phones get native touch scrolling and DPR 1, slow connections get a static page.
-- The page-transition curtain runs only on client-side navigations, never the first load. The
-  preloader is the one deliberate exception, and it is skipped for repeat visits in a session.
-- Source images are pre-optimised (WebP, sensibly sized).
-- Components that render the same image at two breakpoints share one `sizes` value, so the browser
-  downloads one derivative instead of two.
-- Every decorative animation is **disabled under `prefers-reduced-motion`**, in CSS, in JS, and by
-  the tier system.
-
----
-
-## Accessibility
-
-- Skip-to-content link, visible focus rings, and a real keyboard-operable mobile menu
-  (`aria-expanded`, Escape to close, scroll lock).
-- The theme toggle is a labelled `<button>`; the FAQ is a proper disclosure pattern
-  (`aria-expanded`, `aria-controls`, `role="region"`).
-- Masked headline animations keep real spaces and text in the DOM, so the copy stays selectable and
-  readable by assistive tech.
-- Form fields have visible, persistent labels, `aria-invalid`, `aria-describedby`, and live regions
-  for status messages.
-
----
-
-## Deployment (Netlify)
-
-[`netlify.toml`](netlify.toml) configures the build. It must exist — this site is a compiled
-Next.js app, not static HTML, so Netlify cannot serve the repo root directly.
-
-It sets:
-
-- `command = "npm run build"` and `publish = ".next"`
-- `@netlify/plugin-nextjs` — turns SSR pages, `/api/*` routes, and `next/image` into Netlify
-  Functions. Without it the build output is unservable.
-- `NODE_VERSION = "20"`
-- Cache headers for immutable assets, security headers, and 301s from the old `*.html` URLs.
-
-Because `netlify.toml` exists, it **overrides the build settings in the Netlify UI**. If a deploy
-still misbehaves, check *Site configuration → Build & deploy* and make sure **Base directory is
-empty**; that one setting is not controlled by this file.
-
-### Required environment variables
-
-Set these in *Site configuration → Environment variables*:
-
-| Variable | Notes |
-| --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Production domain, e.g. `https://axxontek.com`. Drives canonical URLs, `sitemap.xml`, `robots.txt`. |
-| `SUPABASE_URL` | Server-side only. |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-side only. Never prefix with `NEXT_PUBLIC_`. |
-
-Without the two Supabase values the site deploys and renders fine, but the contact and newsletter
-forms return a clear "not connected yet" message instead of saving anything.
-
-### Forms no longer use Netlify Forms
-
-The old static site collected the newsletter through Netlify Forms (`data-netlify="true"`). That is
-gone — submissions now POST to `/api/contact` and `/api/newsletter` and are stored in Supabase, which
-is what `supabase-schema.sql` was written for. If the Netlify Forms dashboard still lists an old
-`newsletter` form, it will not receive anything further.
-
-### Verifying a deploy locally
+To try the real Netlify build on your own machine:
 
 ```bash
 npx netlify-cli build
 ```
 
-This runs the real Netlify pipeline, including the Next.js Runtime plugin and function bundling.
+The app is an ordinary Next.js server app, so `npm run build && npm start` works on Vercel or any
+Node host too, without the Netlify plugin.
 
-### Other hosts
+A loose end: `netlify.toml` still redirects `/blog.html` and `/careers.html`, but those pages no
+longer exist. Take those two redirects out or bring the pages back.
 
-The app is a standard Next.js server app (`npm run build && npm start`) and runs on Vercel or any
-Node host without the Netlify plugin.
+## When something's off
 
----
-
-## Troubleshooting
-
-**"Port 3000 is in use, using 3002 instead"** — an earlier dev server is still running. Whatever is
-on 3000 is serving a stale build and will throw 500s and 404s for chunks that no longer exist. Kill
-it rather than using the new port:
+**"Port 3000 is in use, using 3002 instead."** An old dev server is still running. It's serving a
+stale build and will throw errors for files that no longer exist, so kill it rather than moving to
+the new port:
 
 ```bash
 npx kill-port 3000
 ```
 
-On Windows, find and kill it directly:
+On Windows you can find the process with `netstat -ano | findstr :3000` and stop it with
+`taskkill /F /PID <pid>`.
 
-```bash
-netstat -ano | findstr :3000
-```
+**The first page load is slow in dev.** That's normal. Turbopack compiles each route the first time
+you visit it, and every load after that is quick.
 
-Then `taskkill /F /PID <pid>`. Orphaned servers are the most common cause of "the local site is
-broken but the code looks fine".
+## About the legal pages
 
-**First page compile takes ~14s** — expected. Turbopack compiles each route on first request in dev;
-subsequent loads are under a second, and production TTFB is 10-90ms.
+The privacy and terms pages describe what this site actually does: it stores what people send through
+the two forms, and it doesn't use tracking or advertising cookies. They're accurate to the code, but
+they aren't legal advice, so please have a lawyer read them before launch.
 
----
-
-## Note on the legal pages
-
-`privacy.html` and `terms.html` previously had no policy text. The new `/privacy` and `/terms` pages
-contain real content that describes what this site actually does (contact form + newsletter stored in
-Supabase, no tracking or advertising cookies). **Have a qualified lawyer review both before launch** —
-they are accurate to the codebase, not a substitute for legal advice.
-
----
-
-## License
+## Licence
 
 Proprietary. All rights reserved by AxxonTek.

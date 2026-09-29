@@ -25,7 +25,7 @@ export function Logo({
   /** The bigger size used in the footer. */
   large?: boolean;
 }) {
-  const height = large ? "h-20" : compact ? "h-10" : "h-12";
+  const height = large ? "h-12 lg:h-20" : compact ? "h-10" : "h-12";
 
   return (
     <Link

@@ -21,17 +21,18 @@ export function Situations() {
         <div className="max-w-[62ch]">
           <Reveal as="p" className="label mb-6">
             <span className="label-dot" aria-hidden />
-            Where we come in
+            Solutions using AxxonTek
           </Reveal>
           <Reveal delay={70}>
             <h2 className="text-chapter max-w-[16ch]">
-              You already know what is not working.
+              Start from the problem you have.
             </h2>
           </Reveal>
           <Reveal delay={140}>
             <p className="text-lede mt-6">
-              Find yours below. If none of them fit, describe the problem on a call
-              and we will tell you honestly whether it is one we should take.
+              Find yours below, and see how AxxonTek answers it. If none of them fit,
+              describe the problem on a call and we will tell you honestly whether
+              it is one we should take.
             </p>
           </Reveal>
         </div>

@@ -40,7 +40,7 @@ export const site = {
 export const primaryNav = [
   { label: "Products", href: "/products" },
   { label: "Work", href: "/work" },
-  { label: "Studio", href: "/studio" },
+  { label: "Inspiration", href: "/studio" },
   { label: "Lab", href: "/lab" },
   { label: "Capabilities", href: "/capabilities" },
   { label: "Pricing", href: "/pricing" },
@@ -620,6 +620,8 @@ export type StudioConcept = {
   accent: [string, string];
   /** A live, explorable build. Empty until one exists. */
   preview?: string;
+  /** A designed screen for the concept, when we have one. Falls back to the poster. */
+  image?: string;
 };
 
 export const studioCategories = [
@@ -647,6 +649,7 @@ export const studioStyles: StudioStyle[] = [
 export const studioConcepts: StudioConcept[] = [
   {
     slug: "restaurant-01",
+    image: "/assets/inspiration/restaurant.webp",
     industry: "Restaurants",
     number: "01",
     title: "A dining room that fills its own tables",
@@ -657,6 +660,7 @@ export const studioConcepts: StudioConcept[] = [
   },
   {
     slug: "hotel-01",
+    image: "/assets/inspiration/hotel.webp",
     industry: "Hotels",
     number: "01",
     title: "A stay booked before the guest arrives",
@@ -667,6 +671,7 @@ export const studioConcepts: StudioConcept[] = [
   },
   {
     slug: "real-estate-01",
+    image: "/assets/inspiration/real-estate.webp",
     industry: "Real Estate",
     number: "01",
     title: "Listings that answer the first ten questions",
@@ -677,6 +682,7 @@ export const studioConcepts: StudioConcept[] = [
   },
   {
     slug: "healthcare-01",
+    image: "/assets/inspiration/pharmacy.webp",
     industry: "Healthcare",
     number: "01",
     title: "A clinic patients can reach at 9pm",
@@ -729,3 +735,78 @@ export const studioConcepts: StudioConcept[] = [
 
 export const getStudioConcept = (slug: string) =>
   studioConcepts.find((c) => c.slug === slug);
+
+
+/* ================================================================== *
+ * What we offer, as the homepage names it
+ *
+ * Six things a visitor can ask for, each phrased as what it does for
+ * them. `focus` positions the photograph inside its frame so the part
+ * that matters survives the crop.
+ * ================================================================== */
+export type Offering = {
+  id: string;
+  name: string;
+  line: string;
+  tags: string[];
+  href: string;
+  image: string;
+  focus: string;
+};
+
+export const offerings: Offering[] = [
+  {
+    id: "web",
+    name: "Web Development",
+    line: "A website or web application your customers use without a second thought, fast on the phone in their hand.",
+    tags: ["Websites", "Web apps", "E-commerce"],
+    href: "/solutions#software",
+    image: "/assets/home/web.webp",
+    focus: "60% 40%",
+  },
+  {
+    id: "mobile",
+    name: "Mobile Development",
+    line: "An app that opens quickly, works on a weak connection and feels at home on the devices people here really own.",
+    tags: ["Android", "iOS", "Offline first"],
+    href: "/solutions#software",
+    image: "/assets/home/mobile.webp",
+    focus: "22% 50%",
+  },
+  {
+    id: "cloud",
+    name: "Cloud & Hosting Infrastructure",
+    line: "Servers, databases and deployment that stay up while you get on with the business, watched by people who answer.",
+    tags: ["Hosting", "Databases", "Monitoring"],
+    href: "/capabilities",
+    image: "/assets/home/cloud.webp",
+    focus: "70% 50%",
+  },
+  {
+    id: "saas",
+    name: "SaaS Product Development",
+    line: "Your idea, built as a product other businesses can subscribe to, with billing, accounts and scale thought through from day one.",
+    tags: ["Subscriptions", "Multi-tenant", "APIs"],
+    href: "/capabilities",
+    image: "/assets/home/saas.webp",
+    focus: "56% 50%",
+  },
+  {
+    id: "design",
+    name: "UX/UI Design & Redesign",
+    line: "Screens people understand the first time, whether the product is new or long overdue for a second look.",
+    tags: ["Research", "Interface design", "Design systems"],
+    href: "/capabilities",
+    image: "/assets/home/ux.webp",
+    focus: "50% 50%",
+  },
+  {
+    id: "smart",
+    name: "Smart Home Systems",
+    line: "Lights, locks, cameras and climate that answer to your phone, designed around your space and installed properly.",
+    tags: ["Automation", "Access control", "Cameras"],
+    href: "/solutions#smart",
+    image: "/assets/home/smart.webp",
+    focus: "45% 50%",
+  },
+];

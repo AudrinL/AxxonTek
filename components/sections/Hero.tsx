@@ -107,7 +107,7 @@ export function Hero() {
 
           <div data-hero-rise className="flex flex-wrap items-center gap-3">
             <Link
-              href="/products"
+              href="#products"
               className="group inline-flex h-[3.125rem] items-center gap-2 rounded-full bg-white px-7 text-[0.9375rem] font-semibold text-ink transition-[background-color,transform] duration-[var(--t-hover)] ease-[var(--ease-out)] hover:bg-white/90"
             >
               See our products

@@ -4,7 +4,7 @@ import { Reveal } from "@/components/system/Reveal";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 
 export const metadata: Metadata = {
-  title: "Studio",
+  title: "Inspiration",
   description:
     "Explore what is possible. Concepts AxxonTek has designed for real industries: find a direction you like, and we will make it yours.",
   alternates: { canonical: "/studio" },
@@ -21,7 +21,7 @@ export default function StudioPage() {
   return (
     <>
       <PageHero
-        label="Studio"
+        label="Inspiration"
         title={
           <>
             Explore what is <span className="text-serif text-accent">possible</span>.

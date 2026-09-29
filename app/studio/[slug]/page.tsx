@@ -48,7 +48,7 @@ export default async function StudioConceptPage({
         <div className="container-x">
           <Link href="/studio" className="label mb-10 inline-flex hover:text-accent">
             <span className="label-dot" aria-hidden />
-            Studio
+            Inspiration
           </Link>
 
           <p className="font-mono text-[0.75rem] tracking-[0.16em] text-accent uppercase">
@@ -92,7 +92,7 @@ export default async function StudioConceptPage({
                 <p className="text-[0.9375rem] leading-relaxed text-tone-mute">
                   {concept.preview
                     ? "Explore the concept as a real, working site. Everything you see can become yours, adapted to your brand, your content and your customers."
-                    : "This is a designed direction, not a live site yet. We are building explorable previews for the Studio; in the meantime, tell us this is the direction you want and we will build it around your business."}
+                    : "This is a designed direction, not a live site yet. We are building explorable previews for Inspiration; in the meantime, tell us this is the direction you want and we will build it around your business."}
                 </p>
 
                 <dl className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--r-card)] border border-line bg-line">

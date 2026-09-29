@@ -179,12 +179,14 @@ export function OurProducts() {
       for (let i = 0; i < n; i++) {
         const card = cards.current[i];
         if (!card) continue;
-        /* Wrap each card into the window [-1, n-1) so it rejoins at the back. */
-        const rel = mod(i - pos.current + 1, n) - 1;
+        /* Wrap each card into the window [-2, n-2). A card slides all the way
+           off the left of the screen before it rejoins at the back, and the
+           one just behind the front card peeks in from the left, mirroring
+           the one that peeks in from the right. */
+        const rel = mod(i - pos.current + 2, n) - 2;
         const front = Math.max(0, 1 - Math.abs(rel));
         card.style.transform = `translate3d(${(rel - i) * s}px,0,0)`;
-        card.style.opacity = rel < 0 ? String(Math.max(0, 1 + rel * 1.1)) : "1";
-        card.style.pointerEvents = rel < -0.6 || rel > 2.4 ? "none" : "";
+        card.style.pointerEvents = rel < -1.05 || rel > 2.6 ? "none" : "";
         const photo = photos.current[i];
         if (photo) {
           const push = i === activeRef.current && !reduced.current ? PLAY_ZOOM * progress.current : 0;

@@ -4,80 +4,140 @@ import { LegalBody, type LegalSection } from "@/components/sections/LegalBody";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
+  title: "Terms of Use",
   description:
-    "The terms that govern your use of the AxxonTek website and the framework for engagements with us.",
+    "The terms that govern your use of the AxxonTek website, and how they relate to agreements for our services and products.",
   alternates: { canonical: "/terms" },
 };
 
+const UPDATED = "29 September 2026";
+
+const domain = site.url.replace(/^https?:\/\//, "");
+
 const sections: LegalSection[] = [
   {
-    heading: "Acceptance of these terms",
+    heading: "About these terms",
     paragraphs: [
-      `These terms govern your use of the ${site.name} website. By browsing this site or submitting a form on it, you agree to them. If you do not agree, please do not use the site.`,
+      `These Terms of Use ("Terms") govern your access to and use of ${domain} (the "Website"), operated by ${site.name} ("${site.name}", "we", "us" or "our").`,
+      "By accessing or using the Website you agree to be bound by these Terms and by our Privacy Policy. If you do not agree, you must not use the Website.",
+      "If you use the Website on behalf of a company or other organisation, you confirm that you have authority to accept these Terms on its behalf.",
     ],
   },
   {
-    heading: "What this website is",
+    heading: "Our services and products",
     paragraphs: [
-      "This site describes our services and provides a way to contact us. Nothing on it constitutes a binding offer, a quotation, or professional advice for your specific situation.",
-      "Any engagement between us is governed by a separate written agreement covering scope, deliverables, timelines, and fees. Where that agreement and these terms conflict, the signed agreement controls.",
+      "The Website describes the services we offer and the products we operate. It is provided for general information only.",
+      "Nothing on the Website is a binding offer, quotation, warranty or professional advice for your particular situation. Prices, timelines and features shown are indicative and may change without notice.",
+      "Any work we carry out for you is governed by a separate written agreement, proposal or statement of work signed by both parties. Our products, including Floow and TalentLens, are governed by their own terms of service. If those documents conflict with these Terms, those documents prevail.",
+    ],
+  },
+  {
+    heading: "Eligibility",
+    paragraphs: [
+      "You must be at least 18 years old, or the age of legal majority where you live, to use the Website or submit information through it.",
     ],
   },
   {
     heading: "Acceptable use",
-    paragraphs: ["When using this website, you agree not to:"],
+    paragraphs: ["You agree to use the Website lawfully and not to:"],
     list: [
-      "Submit false, misleading, or unlawful information through our forms.",
-      "Attempt to gain unauthorised access to the site, its infrastructure, or its data.",
-      "Use automated systems to scrape, overload, or disrupt the service.",
-      "Use the contact form to send unsolicited commercial messages.",
+      "Submit false, misleading, defamatory or unlawful information through our forms.",
+      "Impersonate any person or organisation, or misrepresent your connection with them.",
+      "Attempt to gain unauthorised access to the Website, its servers, databases or connected systems.",
+      "Introduce viruses, malware or any other harmful code.",
+      "Scrape, copy or harvest content or data by automated means, or place an unreasonable load on our infrastructure.",
+      "Interfere with the security or proper working of the Website, including by testing its vulnerabilities without our written permission.",
+      "Use the Website or our contact details to send unsolicited marketing or spam.",
     ],
   },
   {
     heading: "Intellectual property",
     paragraphs: [
-      `All content on this site — text, design, code, graphics, and the ${site.name} name and marks — belongs to us or our licensors and is protected by copyright and trade mark law.`,
-      "You may view and print pages for your own reference. You may not republish, resell, or redistribute the content without our written permission.",
+      `The Website and everything on it, including text, graphics, designs, concept work, photographs, code, and the ${site.name} name, logo and other marks, are owned by or licensed to ${site.name} and are protected by copyright, trade mark and other intellectual property laws.`,
+      "You may view, download and print pages for your own personal, non-commercial reference. You must not copy, reproduce, modify, republish, distribute, sell or create derivative works from any part of the Website without our prior written permission.",
+      "Nothing in these Terms transfers any intellectual property rights to you.",
     ],
   },
   {
-    heading: "Submissions you send us",
+    heading: "Design concepts",
     paragraphs: [
-      "You keep ownership of anything you send through our contact form. By sending it, you grant us permission to read it, store it, and use it for the purpose of responding to you.",
-      "Please do not send confidential or sensitive material through the website form. If a project requires it, we will put a confidentiality agreement in place first.",
+      "The designs shown in the Inspiration section are concepts created by us to show what we can build. They are not client work, and any resemblance to a real business is coincidental. They remain our property and may not be copied or used without our permission. If you would like a design based on one of them, we will create it for you under a separate agreement.",
     ],
   },
   {
-    heading: "Availability and accuracy",
+    heading: "Information you send us",
     paragraphs: [
-      "We work to keep this site accurate and available, but we provide it on an as-is basis. We do not warrant that it will be uninterrupted, error-free, or that the information on it is complete or current at every moment.",
-      "We may change, suspend, or withdraw any part of the site without notice.",
+      "You keep ownership of anything you send us through the Website. By sending it, you give us permission to store it and use it to respond to you, as described in our Privacy Policy.",
+      "You confirm that anything you send is accurate and that you have the right to share it. Please do not send confidential information through our forms. Where a project requires confidential information to be shared, we will first agree a confidentiality agreement with you.",
+      "If you send us ideas or feedback about our services or products, you agree that we may use them without any obligation to you.",
+    ],
+  },
+  {
+    heading: "Third-party links and services",
+    paragraphs: [
+      "The Website contains links to third-party websites and social media profiles. We do not control them and are not responsible for their content, availability, terms or privacy practices. Following a link is at your own risk.",
+    ],
+  },
+  {
+    heading: "Availability",
+    paragraphs: [
+      "We aim to keep the Website available and accurate, but we do not guarantee that it will be uninterrupted, secure or free from errors. We may change, suspend or withdraw all or part of the Website at any time, without notice and without liability.",
+    ],
+  },
+  {
+    heading: "Disclaimer",
+    paragraphs: [
+      'To the fullest extent permitted by law, the Website and all content on it are provided "as is" and "as available", without warranties of any kind, whether express or implied, including warranties of accuracy, completeness, fitness for a particular purpose and non-infringement.',
+      "You are responsible for deciding whether any information on the Website is suitable for your needs before relying on it.",
     ],
   },
   {
     heading: "Limitation of liability",
     paragraphs: [
-      "To the fullest extent permitted by Rwandan law, we are not liable for indirect or consequential loss arising from your use of this website, including lost profits, lost data, or business interruption.",
-      "Nothing in these terms limits liability that cannot lawfully be limited, including liability for death or personal injury caused by negligence, or for fraud.",
+      `To the fullest extent permitted by law, ${site.name} and its directors, employees and partners will not be liable for any indirect, incidental, special or consequential loss, or for any loss of profit, revenue, business, data or goodwill, arising out of or in connection with your use of, or inability to use, the Website.`,
+      "Our total liability to you for any claim arising from your use of the Website is limited to one hundred US dollars (USD 100).",
+      "Nothing in these Terms excludes or limits liability that cannot be excluded or limited by law, including liability for death or personal injury caused by negligence, or for fraud.",
     ],
   },
   {
-    heading: "Third-party links",
+    heading: "Indemnity",
     paragraphs: [
-      "This site links to third-party websites. We do not control them and are not responsible for their content, terms, or privacy practices. Visiting them is at your own discretion.",
+      `You agree to indemnify ${site.name} against any claims, losses, damages and reasonable costs, including legal fees, arising from your breach of these Terms or your misuse of the Website.`,
     ],
   },
   {
-    heading: "Governing law",
+    heading: "Suspension of access",
     paragraphs: [
-      "These terms are governed by the laws of the Republic of Rwanda, and the courts of Rwanda have exclusive jurisdiction over any dispute arising from them.",
+      "We may restrict or end your access to the Website at any time if we reasonably believe you have breached these Terms.",
     ],
   },
   {
-    heading: "Contact",
+    heading: "Changes to these terms",
     paragraphs: [
-      `Questions about these terms can be sent to ${site.email}, or by post to ${site.address.line1}, ${site.address.line2}, ${site.address.city}.`,
+      "We may revise these Terms from time to time. The updated version takes effect when it is published on this page, and the date in the contents list shows when it last changed. Your continued use of the Website after a change means you accept the revised Terms.",
+    ],
+  },
+  {
+    heading: "Governing law and disputes",
+    paragraphs: [
+      "These Terms are governed by the laws of the Republic of Rwanda.",
+      "If a dispute arises, we will first try to resolve it with you in good faith. If it cannot be resolved within 30 days, it will be submitted to the competent courts of Rwanda, which will have exclusive jurisdiction, except where the law of your country of residence gives you a mandatory right to bring proceedings there.",
+    ],
+  },
+  {
+    heading: "General",
+    list: [
+      "Severability: if any part of these Terms is found to be invalid or unenforceable, the rest remains in full effect.",
+      "No waiver: if we do not enforce a right under these Terms, that does not mean we have waived it.",
+      "Assignment: we may transfer our rights and obligations under these Terms. You may not transfer yours without our written consent.",
+      "Entire agreement: these Terms, together with our Privacy Policy, are the entire agreement between you and us about your use of the Website.",
+    ],
+    paragraphs: [],
+  },
+  {
+    heading: "Contact us",
+    paragraphs: [
+      `If you have any questions about these Terms, contact us at ${site.email}, or write to ${site.name}, ${site.address.line1}, ${site.address.line2}, ${site.address.city}.`,
     ],
   },
 ];
@@ -87,10 +147,10 @@ export default function TermsPage() {
     <>
       <PageHero
         label="Legal"
-        title={"Terms of service."}
-        lede="The framework that governs your use of this site, and how it relates to the agreements behind our engagements."
+        title="Terms of use."
+        lede="The rules for using this website, and how they relate to our service agreements."
       />
-      <LegalBody sections={sections} updated="August 2026" />
+      <LegalBody sections={sections} updated={UPDATED} />
     </>
   );
 }

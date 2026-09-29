@@ -21,14 +21,11 @@ export function LegalBody({
   updated: string;
 }) {
   return (
-    <section data-chapter-ground="canvas" className="chapter-y">
+    <section data-chapter-ground="ink" className="chapter-y">
       <div className="container-x">
         <div className="grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]">
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <p className="label mb-5">
-              <span className="label-dot" aria-hidden />
-              Contents
-            </p>
+            <p className="mb-4 text-[0.875rem] font-semibold text-tone">Contents</p>
             <ol className="flex flex-col gap-2.5">
               {sections.map((section) => (
                 <li key={section.heading}>
@@ -41,7 +38,7 @@ export function LegalBody({
                 </li>
               ))}
             </ol>
-            <p className="mt-7 border-t border-line pt-5 font-mono text-[0.625rem] tracking-[0.12em] text-tone-faint uppercase">
+            <p className="mt-7 border-t border-line pt-5 text-[0.75rem] text-tone-faint">
               Updated {updated}
             </p>
           </aside>
@@ -50,13 +47,13 @@ export function LegalBody({
             {sections.map((section, i) => (
               <Reveal key={section.heading} delay={Math.min(i, 3) * 50}>
                 <div className="mb-12 scroll-mt-28" id={section.id ?? slug(section.heading)}>
-                  <h2 className="mb-4 font-display text-[1.5rem] font-semibold tracking-[-0.024em]">
+                  <h2 className="mb-4 font-display text-[1.5rem] font-semibold leading-[1.17]">
                     {section.heading}
                   </h2>
                   {section.paragraphs.map((paragraph) => (
                     <p
                       key={paragraph.slice(0, 40)}
-                      className="mb-4 leading-relaxed text-tone-mute"
+                      className="mb-4 text-[1.0625rem] leading-[1.47] text-tone-mute"
                     >
                       {paragraph}
                     </p>
@@ -64,7 +61,7 @@ export function LegalBody({
                   {section.list && (
                     <ul className="mt-4 flex flex-col gap-2.5">
                       {section.list.map((bullet) => (
-                        <li key={bullet} className="flex gap-3 text-tone-mute">
+                        <li key={bullet} className="flex gap-3 text-[1.0625rem] leading-[1.47] text-tone-mute">
                           <span
                             aria-hidden
                             className="mt-2.5 h-1 w-1 flex-none rounded-full bg-ember"

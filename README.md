@@ -142,6 +142,21 @@ Everything animated starts out visible and only hides itself once JavaScript is 
 visitor without JavaScript still gets the whole page. Anyone who has asked their device for reduced
 motion gets no smooth scroll, no parallax and no entrances.
 
+## Particles
+
+Two canvas effects, modelled on rho.co, live in `components/system`:
+
+- `DustField` fills its parent with tiny drifting specks that swirl round the cursor and scatter when
+  it gets close. Give it an `attractor` ref and the dust gathers in a breathing halo round that
+  element instead.
+- `DotMark` redraws any image as a grid of dots that part round the cursor and spring back. With
+  `color="image"` each dot keeps the image's own colour.
+
+Right now they appear in the footer only (`components/layout/FooterParticles.tsx`): dust behind
+everything and the logo in dots at the very bottom, using `public/assets/logo-dots.png`, which is the
+logo without the tagline. Both pause when off screen and stay still for visitors who ask for reduced
+motion.
+
 ## Adding photos
 
 Drop a photo into `public/assets/`. Big originals are wasteful, so for anything in

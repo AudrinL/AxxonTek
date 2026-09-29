@@ -3,39 +3,19 @@ import { primaryNav, secondaryNav, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
 import { Icon } from "@/components/Icon";
 import { SocialIcon } from "@/components/SocialIcon";
-import { ParticleField } from "@/components/system/ParticleField";
-import { StageFrame } from "@/components/system/StageFrame";
+import { FooterDust, FooterMark } from "@/components/layout/FooterParticles";
 
 /**
- * The footer opens with a brand moment: a reactive particle field that idles
- * as an organised constellation, scatters away from the cursor, and assembles
- * into the wordmark while hovered. Below it, the real work: one clear ask and
- * clean link columns. It keeps whatever ground the section above it arrived
- * on, and the particles take their colour from that ground.
+ * The footer, after rho.co: faint dust drifting behind everything, which
+ * swirls round the cursor, then the ask and the link columns, and at the very
+ * foot the logo drawn in dots that part as the cursor passes over them.
  */
 export function Footer() {
   return (
-    <footer className="relative z-[1] border-t border-line">
-      {/* Brand particle strip */}
-      <ParticleField
-        text="AXXONTEK"
-        className="stage-frame min-h-[clamp(15rem,30vw,24rem)] text-accent"
-      >
-        <StageFrame />
-        <div className="pointer-events-none absolute inset-0 flex items-end justify-between p-[var(--gutter)]">
-          <span className="font-mono text-[0.625rem] tracking-[0.16em] text-tone-faint uppercase">
-            {site.address.city}
-          </span>
-          <span className="font-mono text-[0.625rem] tracking-[0.16em] text-tone-faint uppercase">
-            Move your cursor
-          </span>
-        </div>
-        {/* Sized spacer so the strip has height; the canvas fills it. */}
-        <div className="h-[clamp(15rem,30vw,24rem)]" aria-hidden />
-        <span className="sr-only">AxxonTek</span>
-      </ParticleField>
+    <footer className="relative z-[1] overflow-hidden border-t border-line">
+      <FooterDust />
 
-      <div className="container-x py-16">
+      <div className="container-x relative py-16">
         {/* The ask */}
         <div className="flex flex-col items-start justify-between gap-8 border-b border-line pb-14 lg:flex-row lg:items-end">
           <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.01em]">
@@ -113,6 +93,14 @@ export function Footer() {
             <FooterLink href="/privacy" inline>Privacy</FooterLink>
             <FooterLink href="/terms" inline>Terms</FooterLink>
           </nav>
+        </div>
+      </div>
+
+      {/* The logo in dots, the last thing on the page. */}
+      <div className="relative pb-6">
+        <div className="relative mx-auto aspect-[958/310] w-full max-w-[calc(78.75rem+2*var(--gutter))]">
+          <FooterMark />
+          <span className="sr-only">AxxonTek</span>
         </div>
       </div>
     </footer>

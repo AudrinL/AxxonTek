@@ -36,28 +36,28 @@ export function Inspiration() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid gap-x-5 gap-y-10 md:grid-cols-2">
+        <div className="mt-14 grid gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-5">
           {shown.map((concept, i) => (
-            <Reveal key={concept.slug} delay={(i % 2) * 70}>
+            <Reveal key={concept.slug} delay={(i % 4) * 70}>
               <Link href={`/studio/${concept.slug}`} className="group block">
                 <div className="window aspect-[4/3] transition-transform duration-[var(--t-base)] ease-out group-hover:-translate-y-1.5">
                   <Image
                     src={concept.image!}
                     alt={`${concept.industry} website concept: ${concept.title}`}
                     fill
-                    sizes="(min-width: 768px) 46vw, 92vw"
+                    sizes="(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw"
                     className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out)] group-hover:scale-[1.035]"
                   />
                   <span className="absolute top-4 left-4 rounded-full bg-ink/70 px-3 py-1.5 font-mono text-[0.625rem] tracking-[0.14em] text-white uppercase backdrop-blur-md">
                     Concept
                   </span>
                 </div>
-                <div className="mt-4 flex items-start justify-between gap-6">
+                <div className="mt-4 flex items-start justify-between gap-4">
                   <div>
                     <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-tone-faint uppercase transition-colors duration-[var(--t-hover)] group-hover:text-accent">
                       {concept.industry} / {concept.number}
                     </p>
-                    <h3 className="mt-2 max-w-[28ch] font-display text-[1.25rem] font-semibold leading-[1.2] tracking-[-0.02em]">
+                    <h3 className="mt-2 max-w-[22ch] font-display text-[1.0625rem] font-semibold leading-[1.2] tracking-[-0.02em]">
                       {concept.title}
                     </h3>
                   </div>

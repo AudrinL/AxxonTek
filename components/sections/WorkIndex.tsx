@@ -24,7 +24,7 @@ export function WorkIndex() {
               >
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h2 className="font-display text-[1.875rem] leading-[1.06] font-semibold tracking-[-0.03em] transition-colors duration-[var(--t-hover)] group-hover:text-accent md:text-[2.25rem]">
+                    <h2 className="font-display text-[1.875rem] leading-[1.06] font-semibold tracking-[-0.01em] transition-colors duration-[var(--t-hover)] group-hover:text-accent md:text-[2.25rem]">
                       {item.name}
                     </h2>
                     {item.year && (

@@ -56,7 +56,7 @@ export function FeaturedProducts() {
 
                 <div className="mt-6 flex items-start justify-between gap-6">
                   <div>
-                    <h3 className="font-display text-[1.75rem] font-semibold tracking-[-0.028em]">
+                    <h3 className="font-display text-[1.75rem] font-semibold tracking-[-0.01em]">
                       {product.name}
                     </h3>
                     <p className="mt-1 font-mono text-[0.6875rem] tracking-[0.14em] text-tone-faint uppercase">

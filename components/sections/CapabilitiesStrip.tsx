@@ -69,7 +69,7 @@ export function CapabilitiesStrip() {
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-3 font-display text-[clamp(1.5rem,3vw,2.5rem)] font-semibold tracking-[-0.03em] text-tone">
+    <span className="inline-flex items-center gap-3 font-display text-[clamp(1.5rem,3vw,2.5rem)] font-semibold tracking-[-0.01em] text-tone">
       <span className="h-1.5 w-1.5 rounded-full bg-ember" aria-hidden />
       {children}
     </span>

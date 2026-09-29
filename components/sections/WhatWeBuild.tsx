@@ -53,7 +53,7 @@ export function WhatWeBuild() {
                   <p className="font-mono text-[0.6875rem] tracking-[0.14em] text-accent uppercase">
                     {level.kicker}
                   </p>
-                  <h3 className="mt-2 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.03em] transition-colors duration-[var(--t-hover)] group-hover:text-accent">
+                  <h3 className="mt-2 font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.01em] transition-colors duration-[var(--t-hover)] group-hover:text-accent">
                     {level.name}
                   </h3>
                 </div>

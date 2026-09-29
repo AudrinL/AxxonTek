@@ -65,7 +65,7 @@ export function Capabilities() {
                 className="group grid gap-x-12 gap-y-4 border-b border-line py-9 transition-colors duration-[var(--t-base)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_auto]"
               >
                 <div>
-                  <h3 className="font-display text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.028em] transition-colors duration-[var(--t-hover)] group-hover:text-accent">
+                  <h3 className="font-display text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.01em] transition-colors duration-[var(--t-hover)] group-hover:text-accent">
                     {capability.name}
                   </h3>
                   <p className="mt-2 text-[0.9375rem] text-tone-mute lg:hidden">

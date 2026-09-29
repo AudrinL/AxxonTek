@@ -62,7 +62,7 @@ export function Nav() {
         >
           <nav
             className={`container-x flex items-center justify-between gap-4 transition-[height] duration-300 ${
-              scrolled ? "h-16" : "h-20"
+              "h-12"
             }`}
             aria-label="Primary"
           >
@@ -73,7 +73,7 @@ export function Nav() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`relative flex h-9 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-[var(--t-hover)] hover:text-tone ${
+                    className={`relative flex h-9 items-center rounded-full px-3.5 text-[0.75rem] tracking-[-0.01em] transition-colors duration-[var(--t-hover)] hover:text-tone ${
                       isActive(item.href) ? "text-tone" : "text-tone-mute"
                     }`}
                   >
@@ -81,7 +81,7 @@ export function Nav() {
                     {isActive(item.href) && (
                       <span
                         aria-hidden
-                        className="absolute inset-x-4 bottom-1 h-px bg-ember"
+                        className="absolute inset-x-3.5 bottom-1.5 h-px bg-ember"
                       />
                     )}
                   </Link>
@@ -90,7 +90,7 @@ export function Nav() {
             </ul>
 
             <div className="flex items-center gap-2.5">
-              <Link href="/contact" className="pill pill-ember hidden h-11 px-6 text-sm hover:bg-ember-deep lg:inline-flex">
+              <Link href="/contact" className="pill pill-ember hidden !h-8 !px-4 !text-[0.75rem] hover:bg-ember-deep lg:inline-flex">
                 Start a project
               </Link>
 
@@ -133,7 +133,7 @@ export function Nav() {
             <Link
               key={item.href}
               href={item.href}
-              className="border-b border-line py-5 font-display text-[2rem] font-semibold tracking-[-0.03em] text-tone"
+              className="border-b border-line py-5 font-display text-[2rem] font-semibold tracking-[-0.01em] text-tone"
               style={{ transitionDelay: `${i * 30}ms` }}
             >
               {item.label}

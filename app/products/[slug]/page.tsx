@@ -56,7 +56,7 @@ export default async function ProductDetailPage({
           </Link>
 
           <div className="flex items-center gap-3">
-            <h1 className="font-display text-[clamp(3rem,8vw,6.5rem)] font-semibold leading-[0.94] tracking-[-0.038em]">
+            <h1 className="font-display text-[clamp(3rem,8vw,6.5rem)] font-semibold leading-[0.94] tracking-[-0.01em]">
               {product.name}
             </h1>
             <span className="mb-2 inline-flex items-center gap-2 self-end rounded-full border border-line-firm px-3 py-1.5 font-mono text-[0.625rem] tracking-[0.12em] text-moss uppercase">
@@ -168,7 +168,7 @@ export default async function ProductDetailPage({
       {/* Close */}
       <section className="chapter-y">
         <div className="container-x flex flex-col items-start gap-8 rounded-[var(--r-card)] border border-line p-8 md:flex-row md:items-center md:justify-between md:p-12">
-          <h2 className="max-w-[20ch] font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.03em]">
+          <h2 className="max-w-[20ch] font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.01em]">
             Want something like {product.name} for your organisation?
           </h2>
           <div className="flex flex-wrap items-center gap-3">

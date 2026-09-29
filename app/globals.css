@@ -25,8 +25,8 @@
   --bone:        #faf8f4;  /* raised rows, table headers */
   --paper:       #ffffff;
 
-  --ink:         #121110;  /* Floow's sidebar black. Warm, never neutral. */
-  --ink-soft:    #1c1a18;
+  --ink:         #000000;  /* True black, as the Mac pages use. */
+  --ink-soft:    #1d1d1f;
 
   --ember:       #f0581f;  /* Floow's orange. Fills and marks. */
   --ember-deep:  #cf430f;
@@ -46,8 +46,8 @@
   --ease-gravity: cubic-bezier(0.32, 0, 0.24, 1);
 
   /* ---- geometry ---- */
-  --r-card:    1rem;
-  --r-inner:   0.75rem;
+  --r-card:    1.75rem;  /* Apple tiles are 28px */
+  --r-inner:   1.25rem;
   --r-pill:    999px;
 
   --gutter:  clamp(1.25rem, 4.5vw, 3.5rem);
@@ -67,22 +67,22 @@
   --c-shadow:     0 1px 2px rgba(18, 17, 16, 0.03), 0 10px 26px -20px rgba(18, 17, 16, 0.18);
   /* Whatever colour the ground currently is. The nav and any drawer
      frost this rather than picking a colour of their own. */
-  --ground-veil:  var(--canvas);
+  --ground-veil:  var(--ink);
 }
 
 /* The ink chapter. Same tokens, different world. */
 :root[data-ground="ink"] {
   color-scheme: dark;
-  --c-ink:        #f6f3ee;
-  --c-mute:       #b0a89e;
-  --c-faint:      #a49b90;
-  --c-surface:    rgba(246, 238, 230, 0.07);
-  --c-surface-2:  rgba(246, 238, 230, 0.11);
-  --c-line:       rgba(246, 243, 238, 0.14);
-  --c-line-firm:  rgba(246, 243, 238, 0.24);
-  --c-accent:     #f0581f;  /* the bright one is legible here */
-  --c-dot:        rgba(246, 243, 238, 0.06);
-  --c-shadow:     0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -24px rgba(0, 0, 0, 0.6);
+  --c-ink:        #f5f5f7;  /* Apple's white-on-black */
+  --c-mute:       #a1a1a6;
+  --c-faint:      #86868b;  /* Apple's secondary gray */
+  --c-surface:    #161617;
+  --c-surface-2:  #1d1d1f;
+  --c-line:       rgba(255, 255, 255, 0.14);
+  --c-line-firm:  rgba(255, 255, 255, 0.24);
+  --c-accent:     #ff6a2e;
+  --c-dot:        rgba(255, 255, 255, 0);
+  --c-shadow:     none;
   --ground-veil:  var(--ink);
 }
 
@@ -110,10 +110,10 @@
   --color-line-firm: var(--c-line-firm);
   --color-accent: var(--c-accent);
 
-  --font-display: var(--font-outfit), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, serif;
+  --font-display: var(--font-inter), "SF Pro Display", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-sans: var(--font-inter), "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-serif: var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
   --radius-card: var(--r-card);
   --radius-inner: var(--r-inner);
@@ -144,7 +144,7 @@
 
 @layer base {
   html {
-    background: var(--canvas);
+    background: var(--ink);
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 6rem;
   }
@@ -153,6 +153,10 @@
     background: transparent;
     color: var(--c-ink);
     font-family: var(--font-sans);
+    font-size: 1.0625rem;          /* 17px, Apple's body */
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+    font-optical-sizing: auto;
     font-synthesis-weight: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -170,12 +174,12 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.024em;
-    line-height: 1.04;
+    letter-spacing: -0.005em;
+    line-height: 1.08;
     text-wrap: balance;
     margin: 0;
   }
-  h3, h4 { letter-spacing: -0.016em; }
+  h3, h4 { letter-spacing: 0; }
 
   p { text-wrap: pretty; margin: 0; }
 
@@ -192,7 +196,7 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
     background: var(--c-line-firm);
-    border: 3px solid var(--canvas);
+    border: 3px solid var(--ink);
     border-radius: var(--r-pill);
   }
 }
@@ -223,56 +227,61 @@
  * Type scale. Ratio is roughly 1.35 between steps.
  * ================================================================== */
 @utility text-display {
+  /* Apple "headline super": 96 / 100, 600, hair-tight. */
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2.75rem, 6.4vw, 5.75rem);
-  line-height: 0.96;
-  letter-spacing: -0.034em;
+  font-size: clamp(3rem, 8.4vw, 6rem);
+  line-height: 1.04;
+  letter-spacing: -0.005em;
 }
 
 @utility text-chapter {
+  /* Apple "headline": 56 / 60, 600. */
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.02;
-  letter-spacing: -0.028em;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1.07;
+  letter-spacing: -0.005em;
 }
 
 @utility text-lede {
-  font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
-  line-height: 1.58;
-  color: var(--c-mute);
+  /* Apple "intro": 28 / 32, 600, secondary gray. Wrap the phrase that
+     matters in a span coloured var(--c-ink) for the two-tone effect. */
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.007em;
+  color: var(--c-faint);
 }
 
-/* The serif accent. One emphasised word inside a display headline, warm
-   and high-contrast against the geometric sans. Used sparingly, in place
-   of the italic the house rules forbid. */
+/* The emphasised word. Apple lights a single phrase with a gradient
+   instead of a second typeface, so this does the same in the brand's ember. */
 @utility text-serif {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: inherit;
+  font-weight: inherit;
   font-style: normal;
-  letter-spacing: 0.005em;
+  letter-spacing: inherit;
+  background-image: linear-gradient(100deg, #ff9d6b 0%, #ff6a2e 55%, #f0581f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* The label device both products use: uppercase mono with an ember dot. */
 @utility label {
+  /* Apple "eyebrow": sentence case, 600, a step above body. */
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.011em;
   color: var(--c-faint);
 }
 @utility label-dot {
-  display: inline-block;
-  width: 0.3125rem;
-  height: 0.3125rem;
-  border-radius: var(--r-pill);
-  background: var(--ember);
-  flex-shrink: 0;
+  display: none;
 }
 
 /* ==================================================================
@@ -326,12 +335,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  height: 3.125rem;
-  padding-inline: 1.5rem;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding-inline: 1.3125rem;
   border-radius: var(--r-pill);
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  letter-spacing: -0.022em;
   white-space: nowrap;
   transition: background-color var(--t-hover) var(--ease-out),
               color var(--t-hover) var(--ease-out),

@@ -43,7 +43,7 @@ export default function CapabilitiesPage() {
                       <span className="label-dot" aria-hidden />
                       {String(i + 1).padStart(2, "0")}
                     </p>
-                    <h2 className="font-display text-[1.75rem] font-semibold tracking-[-0.028em] md:text-[2.25rem]">
+                    <h2 className="font-display text-[1.75rem] font-semibold tracking-[-0.01em] md:text-[2.25rem]">
                       {group.name}
                     </h2>
                     <p className="mt-4 text-lede max-w-[34ch]">{group.lede}</p>

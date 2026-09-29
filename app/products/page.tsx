@@ -69,7 +69,7 @@ export default function ProductsPage() {
 
                 <div>
                   <div className="flex items-center gap-3">
-                    <h2 className="font-display text-[clamp(2rem,3.4vw,2.75rem)] font-semibold tracking-[-0.03em]">
+                    <h2 className="font-display text-[clamp(2rem,3.4vw,2.75rem)] font-semibold tracking-[-0.01em]">
                       {product.name}
                     </h2>
                     <span className="inline-flex items-center gap-2 rounded-full border border-line-firm px-3 py-1.5 font-mono text-[0.625rem] tracking-[0.12em] text-moss uppercase">

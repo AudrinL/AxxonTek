@@ -47,7 +47,7 @@ export function ConceptPoster({
 
       <div className="relative p-5 md:p-6">
         <h3
-          className={`font-display font-semibold leading-[1.04] tracking-[-0.03em] text-white ${
+          className={`font-display font-semibold leading-[1.04] tracking-[-0.01em] text-white ${
             large ? "text-[clamp(1.75rem,3.2vw,2.75rem)] max-w-[18ch]" : "text-[1.375rem] max-w-[16ch]"
           }`}
         >

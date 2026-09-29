@@ -18,21 +18,18 @@ export function Situations() {
   return (
     <section data-chapter-ground="canvas" className="chapter-y relative">
       <div className="container-x">
-        <div className="max-w-[62ch]">
-          <Reveal as="p" className="label mb-6">
-            <span className="label-dot" aria-hidden />
+        <div className="mx-auto max-w-[44rem] text-center">
+          <Reveal as="p" className="label mb-4">
             Solutions using AxxonTek
           </Reveal>
           <Reveal delay={70}>
-            <h2 className="text-chapter max-w-[16ch]">
-              Start from the problem you have.
-            </h2>
+            <h2 className="text-chapter">Start from the problem you have.</h2>
           </Reveal>
           <Reveal delay={140}>
             <p className="text-lede mt-6">
-              Find yours below, and see how AxxonTek answers it. If none of them fit,
-              describe the problem on a call and we will tell you honestly whether
-              it is one we should take.
+              <span className="text-tone">Find yours below, and see how AxxonTek answers it.</span>{" "}
+              If none of them fit, describe the problem on a call and we will tell you
+              honestly whether it is one we should take.
             </p>
           </Reveal>
         </div>
@@ -49,10 +46,10 @@ export function Situations() {
                 href={situation.href}
                 className="card group flex h-full flex-col p-7 transition-[transform,border-color] duration-[var(--t-base)] ease-out hover:-translate-y-0.5 hover:border-line-firm"
               >
-                <p className="font-display text-[1.1875rem] leading-[1.24] font-semibold tracking-[-0.02em]">
+                <p className="font-display text-[1.3125rem] leading-[1.19] font-semibold tracking-[0.011em]">
                   {situation.said}
                 </p>
-                <p className="mt-4 text-[0.9375rem] leading-relaxed text-tone-mute">
+                <p className="mt-4 text-[1.0625rem] leading-[1.47] text-tone-mute">
                   {situation.answer}
                 </p>
                 <div className="mt-auto flex items-center justify-between gap-4 pt-7">
@@ -60,7 +57,7 @@ export function Situations() {
                     {situation.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-line-firm px-2.5 py-1 font-mono text-[0.625rem] tracking-[0.1em] text-tone-faint uppercase"
+                        className="rounded-full bg-surface-2 px-3 py-1 text-[0.75rem] leading-4 tracking-[-0.01em] text-tone-mute"
                       >
                         {tag}
                       </span>

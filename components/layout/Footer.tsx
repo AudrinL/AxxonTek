@@ -37,7 +37,7 @@ export function Footer() {
       <div className="container-x py-16">
         {/* The ask */}
         <div className="flex flex-col items-start justify-between gap-8 border-b border-line pb-14 lg:flex-row lg:items-end">
-          <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+          <h2 className="max-w-[16ch] font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.01em]">
             Have something <span className="text-serif text-accent">worth</span> building?
           </h2>
           <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">

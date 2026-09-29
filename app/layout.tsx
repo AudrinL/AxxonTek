@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { Nav } from "@/components/layout/Nav";
@@ -11,45 +11,16 @@ import { Loader } from "@/components/system/Loader";
 import { site } from "@/lib/site";
 
 /**
- * Outfit carries the headlines. It is geometric with even strokes and
- * round bowls, which is the same family of shapes as the Floow wordmark,
- * so the site reads as the company that made the products rather than as
- * a separate studio. Inter carries running text, where the job is to
- * disappear. Mono is the label face, which is the device both products
- * already use for categories, codes and counts.
+ * One family, the way Apple sets its own site. SF Pro is not licensed for
+ * the web, so Inter stands in, and its optical-size axis is what makes the
+ * match honest: at display sizes it draws the tighter, finer Display cut,
+ * at text sizes the sturdier Text cut, exactly the SF Pro Display / SF Pro
+ * Text split. Weight 600 carries every headline, 400 every paragraph.
  */
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-outfit",
-  display: "swap",
-});
-
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  axes: ["opsz"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-jetbrains",
-  display: "swap",
-});
-
-/**
- * The serif accent. One warm, high-contrast face used sparingly for a
- * single emphasised word inside a headline, the way Inzovu uses Instrument
- * Serif in gold. It is the studio's signal that a headline is being spoken,
- * not just set, and it replaces the italic the house rules forbid.
- */
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-instrument",
   display: "swap",
 });
 
@@ -91,7 +62,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2efe9" },
+    { media: "(prefers-color-scheme: light)", color: "#121110" },
     { media: "(prefers-color-scheme: dark)", color: "#121110" },
   ],
 };
@@ -109,12 +80,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      data-ground="canvas"
+      data-ground="ink"
       /* The script below adds `js` and the Ground component writes
          data-ground, both before React hydrates. Expected, not a bug. */
       suppressHydrationWarning
 
-      className={`${outfit.variable} ${inter.variable} ${jetbrains.variable} ${instrument.variable}`}
+      className={inter.variable}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: markScripted }} />

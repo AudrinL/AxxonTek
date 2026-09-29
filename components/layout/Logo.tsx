@@ -37,7 +37,7 @@ export function Logo({
         className={`w-auto transition-all duration-300 ${compact ? "h-7" : "h-8"}`}
       />
       <span
-        className={`font-display font-semibold tracking-[-0.03em] transition-all duration-300 ${
+        className={`font-display font-semibold tracking-[-0.01em] transition-all duration-300 ${
           compact ? "text-[1.0625rem]" : "text-[1.1875rem]"
         }`}
       >

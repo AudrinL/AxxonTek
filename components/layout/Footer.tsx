@@ -2,6 +2,7 @@ import Link from "next/link";
 import { primaryNav, secondaryNav, site } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
 import { Icon } from "@/components/Icon";
+import { SocialIcon } from "@/components/SocialIcon";
 import { ParticleField } from "@/components/system/ParticleField";
 import { StageFrame } from "@/components/system/StageFrame";
 
@@ -49,7 +50,7 @@ export function Footer() {
         {/* Columns */}
         <div className="mt-14 grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
-            <Logo />
+            <Logo large />
             <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
               A technology company in Kigali. We build software, cloud and smart systems.
             </p>
@@ -87,7 +88,7 @@ export function Footer() {
                 {site.email}
               </a>
             </li>
-            <li className="flex gap-2 pt-2">
+            <li className="flex flex-wrap gap-2 pt-2">
               {site.socials.map((social) => (
                 <a
                   key={social.label}
@@ -95,9 +96,9 @@ export function Footer() {
                   aria-label={social.label}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line-firm font-mono text-[0.6875rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:border-tone hover:text-tone"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line-firm text-tone-mute transition-colors duration-[var(--t-hover)] hover:border-tone hover:text-tone"
                 >
-                  {social.short}
+                  <SocialIcon name={social.label} />
                 </a>
               ))}
             </li>

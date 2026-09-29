@@ -122,7 +122,12 @@ calm headlines and lots of space.
 - **Type utilities.** `text-display`, `text-chapter`, `text-lede` and `label` are the sizes to reach
   for. In a `text-lede` paragraph, wrap the phrase that matters in `text-tone` and it turns white
   against the gray.
-- **Cards** have 28px corners and a 20px gap.
+- **Cards** have 28px corners and a 20px gap. Keep them flat: no glows or gradients on hover.
+- **Logo and icons.** The logo is the supplied lockup (mark, name and the tagline "Think Beyond
+  Tomorrow"), white on transparent, at `public/assets/logo.png`. Use the `Logo` component and never
+  retype it. The favicon and touch icons are made from the mark on black (`public/favicon.ico` and
+  the `icon`, `favicon` and `apple-touch-icon` files in `public/assets`). The originals are in
+  `assets/`.
 
 The light theme is switched off for now. `components/system/Ground.tsx` holds the whole site on the
 dark ground. The old chapter-by-chapter light and dark switching is still in git history if you want

@@ -12,7 +12,7 @@
 
 export const site = {
   name: "AxxonTek",
-  tagline: "What's next, working now",
+  tagline: "Think Beyond Tomorrow",
   description:
     "AxxonTek is a technology company in Kigali. We build software, AI, immersive learning and smart systems for organisations across Africa, and we run the products we invent.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://axxontek.com",
@@ -25,9 +25,11 @@ export const site = {
     city: "Canada",
   },
   socials: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/company/axxontek", short: "In" },
-    { label: "X", href: "https://x.com/axxontek", short: "X" },
-    { label: "GitHub", href: "https://github.com/axxontek", short: "Gh" },
+    { label: "Instagram", href: "https://www.instagram.com/axxon_tek/" },
+    { label: "X", href: "https://x.com/axxontek" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/axxontek/" },
+    { label: "YouTube", href: "https://www.youtube.com/@AxxonTek" },
+    { label: "GitHub", href: "https://github.com/axxontek" },
   ],
 } as const;
 
@@ -64,7 +66,7 @@ export const secondaryNav = [
  * `line` is the brand statement. `promise` is what it means for a reader.
  */
 export const positioning = {
-  line: "What's next, working now.",
+  line: "Think beyond tomorrow.",
   promise:
     "New technology gets announced constantly and deployed almost nowhere. We build the systems that close that gap, for schools, clinics, businesses and the people they serve.",
 } as const;

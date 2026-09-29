@@ -62,7 +62,7 @@ export function Nav() {
         >
           <nav
             className={`container-x flex items-center justify-between gap-4 transition-[height] duration-300 ${
-              "h-12"
+              "h-14"
             }`}
             aria-label="Primary"
           >
@@ -128,7 +128,7 @@ export function Nav() {
         className="fixed inset-0 z-40 lg:hidden"
       >
         <div className="absolute inset-0 bg-canvas dotgrid" style={{ backgroundColor: "var(--ground-veil, var(--canvas))" }} />
-        <div className="container-x relative flex h-full flex-col justify-center gap-1 pt-20">
+        <div className="container-x relative flex h-full flex-col justify-center gap-1 pt-24">
           {primaryNav.map((item, i) => (
             <Link
               key={item.href}

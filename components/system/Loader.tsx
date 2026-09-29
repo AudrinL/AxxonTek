@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { site } from "@/lib/site";
 
 /**
  * The front door. A warm ink curtain holds for a beat, counts itself in,
@@ -90,13 +91,13 @@ export function Loader() {
       aria-hidden
       className="fixed inset-0 z-[200] flex flex-col justify-between overflow-hidden bg-ink px-[var(--gutter)] py-8 text-[#f6f3ee]"
     >
-      <div className="flex justify-between font-mono text-[0.6875rem] tracking-[0.16em] uppercase text-white/45" data-loader-meta>
+      <div className="flex justify-between text-[0.875rem] font-semibold text-white/55" data-loader-meta>
         <span>AxxonTek</span>
-        <span>Technology, working now</span>
+        <span>{site.tagline}</span>
       </div>
 
       <div className="flex items-end justify-between gap-6">
-        <h1 className="font-display text-[clamp(2.5rem,11vw,9rem)] font-semibold leading-[0.86] tracking-[-0.04em]">
+        <h1 className="font-display text-[clamp(2.5rem,11vw,9rem)] font-semibold leading-[0.86] tracking-[-0.01em]">
           {"AXXONTEK".split("").map((c, i) => (
             <span
               key={i}
@@ -110,7 +111,7 @@ export function Loader() {
         <span
           ref={countRef}
           data-loader-meta
-          className="mb-2 font-mono text-[0.9375rem] tracking-[0.1em] text-[var(--ember)]"
+          className="mb-2 text-[1.0625rem] font-semibold tabular-nums text-[var(--ember)]"
         >
           000
         </span>

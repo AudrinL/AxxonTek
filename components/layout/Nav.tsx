@@ -127,7 +127,7 @@ export function Nav() {
         hidden={!open}
         className="fixed inset-0 z-40 lg:hidden"
       >
-        <div className="absolute inset-0 bg-canvas dotgrid" style={{ backgroundColor: "var(--ground-veil, var(--canvas))" }} />
+        <div className="absolute inset-0 bg-black" />
         <div className="container-x relative flex h-full flex-col justify-center gap-1 pt-24">
           {primaryNav.map((item, i) => (
             <Link
@@ -142,10 +142,7 @@ export function Nav() {
           <Link href="/contact" className="pill pill-ember mt-8 self-start">
             Start a project
           </Link>
-          <p className="label mt-10">
-            <span className="label-dot" aria-hidden />
-            {site.address.city}
-          </p>
+          <p className="mt-10 text-[0.875rem] font-semibold text-tone-faint">{site.tagline}</p>
         </div>
       </div>
     </>

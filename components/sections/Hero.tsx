@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { Icon } from "@/components/Icon";
 import { ScrollCue } from "@/components/system/ScrollCue";
 import { useParallax } from "@/lib/motion";
+import { site } from "@/lib/site";
 
 /**
  * The front door, on ink because this is the company speaking in its own
@@ -80,8 +81,9 @@ export function Hero() {
         />
       </div>
 
+      {/* The tagline, as Apple sets a product name above its headline. */}
       <p data-hero-rise className="mb-3 text-[clamp(1.25rem,2vw,1.75rem)] leading-[1.14] font-semibold tracking-[0.007em] text-white">
-        AxxonTek
+        {site.tagline}
       </p>
       <h1 className="max-w-[14ch] text-display">
         <Line>Technology for</Line>

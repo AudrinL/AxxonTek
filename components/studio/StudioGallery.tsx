@@ -42,9 +42,7 @@ export function StudioGallery() {
 
       {/* Style filter */}
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="mr-1 font-mono text-[0.625rem] tracking-[0.14em] text-tone-faint uppercase">
-          Style
-        </span>
+        <span className="mr-1 text-[0.875rem] text-tone-faint">Style</span>
         <FilterPill active={style === "All"} onClick={() => setStyle("All")} small>
           All
         </FilterPill>
@@ -56,21 +54,20 @@ export function StudioGallery() {
       </div>
 
       {/* Count */}
-      <p className="mt-8 font-mono text-[0.6875rem] tracking-[0.12em] text-tone-faint uppercase">
-        {shown.length} {shown.length === 1 ? "concept" : "concepts"}
+      <p className="mt-8 text-[0.875rem] text-tone-faint">
+        {shown.length} {shown.length === 1 ? "design" : "designs"}
       </p>
 
       {/* Grid */}
       {shown.length > 0 ? (
-        <div className="mt-5 grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3">
+        <div className="mt-5 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {shown.map((concept) => (
-            <ConceptCard key={concept.slug} concept={concept} trailing="View concept" />
+            <ConceptCard key={concept.slug} concept={concept} />
           ))}
         </div>
       ) : (
         <p className="mt-8 text-lede">
-          No concept in that combination yet. The shelf grows every month, and we
-          can build one to order in the meantime.
+          No design matches both yet. Try another filter, or ask us to design one for you.
         </p>
       )}
     </div>
@@ -96,7 +93,7 @@ function FilterPill({
         small ? "px-3 py-1.5 text-[0.75rem]" : "px-4 py-2 text-[0.875rem]"
       } ${
         active
-          ? "border-transparent bg-ink text-canvas"
+          ? "border-transparent bg-white text-black"
           : "border-line-firm text-tone-mute hover:border-tone hover:text-tone"
       }`}
       aria-pressed={active}

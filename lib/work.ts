@@ -34,7 +34,7 @@ export type WorkItem = {
   year: number;
   /** Live URL. Empty when there is nothing public to link to. */
   url?: string;
-  /** /assets/work/<file>.webp — 1600x1000. Empty renders type-only. */
+  /** /assets/work/<file>.webp, 1600x1000. Empty renders type-only. */
   shot?: string;
   /** What we actually did. Three to five short items, no adjectives. */
   scope: string[];
@@ -51,7 +51,7 @@ export const work: WorkItem[] = [
     slug: "talentlens",
     name: "TalentLens",
     summary:
-      "Timed practice for the reasoning tests employers actually use — and structured assessment for the organisations running them.",
+      "Timed practice for the reasoning tests employers use, and structured assessment for the organisations running them.",
     category: "products",
     client: "AxxonTek",
     year: 2024,
@@ -66,7 +66,7 @@ export const work: WorkItem[] = [
   {
     slug: "floow",
     name: "Floow",
-    summary: "A national parcel system for Rwanda — one network for businesses and individuals.",
+    summary: "A national parcel system for Rwanda: one network for businesses and individuals.",
     category: "products",
     client: "AxxonTek",
     year: 2024,

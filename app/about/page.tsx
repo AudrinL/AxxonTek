@@ -1,136 +1,136 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
-import { processSteps, site } from "@/lib/site";
+import { CloseAsk, RowHead, Section, StoryHead, Strong, Tile } from "@/components/system/Page";
+import { processSteps, products, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "AxxonTek is a technology company in Kigali building software, AI, immersive learning and smart systems for organisations across Africa.",
+    "AxxonTek is a technology company in Kigali. We build software, cloud and smart systems for businesses, schools and clinics across Africa. Think Beyond Tomorrow.",
   alternates: { canonical: "/about" },
 };
 
-/**
- * About, built on the model rho uses: trust earned from proof and
- * principles rather than from a founder gallery. There are no faces on
- * this page and it does not need any, which is what makes it possible
- * to ship before the real photography exists.
- */
-
 const principles = [
   {
-    k: "Build for the device, not the demo",
-    v: "Your customers are on mid-range Android phones on mobile data. Anything that only works on a fast laptop has not been finished.",
+    title: "Built for the phones people have.",
+    body: "Most of your customers use mid-range phones on mobile data. We design for that first.",
   },
   {
-    k: "Say no out loud",
-    v: "A smaller project, a different approach, or a different company. If that is the right answer you will hear it on the first call.",
+    title: "Honest from the first call.",
+    body: "If a smaller project or a different approach suits you better, we will say so.",
   },
   {
-    k: "Own what we invent",
-    v: "The Lab does not write papers. Ideas that survive become products we run and support, which is the only honest test of an idea.",
+    title: "We run what we build.",
+    body: "Floow and TalentLens are ours, and we host and support what we make for clients too.",
   },
   {
-    k: "Solve here, not for here",
-    v: "Imported software assumes infrastructure, habits and budgets that do not match how people actually live and work. We start from the place.",
+    title: "Made for where you are.",
+    body: "We start from how people here live and work, not from software made for somewhere else.",
   },
 ];
 
+/**
+ * About, and the home of the tagline. The page opens on "Think beyond
+ * tomorrow" as the headline, then says plainly who we are, how we work and
+ * what we have shipped. No founder gallery: trust comes from principles and
+ * proof, the way rho.co earns it.
+ */
 export default function AboutPage() {
   return (
     <>
       <PageHero
-        label="About"
+        label="About AxxonTek"
         title={
           <>
-            Technology should arrive{" "}
-            <span className="text-accent">everywhere</span>, not eventually.
+            Think beyond <span className="text-serif">tomorrow</span>.
           </>
         }
-        lede="AxxonTek is a technology company based in Kigali. We build the systems that bring modern technology into the places it has not reached yet, and we run the products we invent."
-        meta={`${site.address.line1} · ${site.address.city}`}
+        lede={
+          <>
+            <Strong>AxxonTek is a technology company in Kigali.</Strong> We build
+            software, cloud and smart systems for businesses, schools and clinics
+            across Africa.
+          </>
+        }
+        primary={{ href: "/contact", text: "Start a project" }}
+        secondary={{ href: "/products", text: "See our products" }}
       />
 
-      <section data-chapter-ground="ink" className="bloom chapter-y relative overflow-hidden">
-        <span aria-hidden className="bloom-light -top-[22rem] -right-[18rem] opacity-55" />
-        <div className="container-x">
-          <Reveal as="p" className="label mb-6">
-            <span className="label-dot" aria-hidden />
-            How we work
-          </Reveal>
-          <Reveal delay={70}>
-            <h2 className="text-chapter max-w-[16ch]">Four principles, applied literally.</h2>
-          </Reveal>
+      <Section alt>
+        <StoryHead
+          label="What we believe"
+          title="Technology should work for everyone."
+          lede={
+            <>
+              <Strong>New technology gets announced everywhere and used in very few places.</Strong>{" "}
+              We build the systems that close that gap, so schools, clinics and businesses
+              can use it today.
+            </>
+          }
+        />
+      </Section>
 
-          <dl className="mt-14 grid gap-px overflow-hidden rounded-[var(--r-card)] border border-line bg-line md:grid-cols-2">
-            {principles.map((principle, i) => (
-              <Reveal key={principle.k} delay={Math.min(i, 3) * 60}>
-                <div className="h-full bg-[var(--ground-veil)] p-8 transition-colors duration-[var(--t-ground)] ease-[var(--ease-gravity)]">
-                  <dt className="font-display text-[1.25rem] font-semibold tracking-[-0.022em]">
-                    {principle.k}
-                  </dt>
-                  <dd className="mt-3 text-[0.9375rem] leading-relaxed text-tone-mute">
-                    {principle.v}
-                  </dd>
-                </div>
-              </Reveal>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      <section data-chapter-ground="canvas" className="chapter-y">
-        <div className="container-x">
-          <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-8">
-            <div className="max-w-[20ch]">
-              <Reveal as="p" className="label mb-6">
-                <span className="label-dot" aria-hidden />
-                Working together
-              </Reveal>
-              <Reveal delay={70}>
-                <h2 className="text-chapter">Three steps, no handoffs.</h2>
-              </Reveal>
-            </div>
-            <Reveal delay={140} className="max-w-[42ch]">
-              <p className="text-lede">
-                The engineer who scopes your project is the one who builds it, and
-                you keep their direct contact after launch.
-              </p>
+      <Section>
+        <RowHead title="How we work." />
+        <ul className="grid gap-5 md:grid-cols-2">
+          {principles.map((p, i) => (
+            <Reveal as="li" key={p.title} delay={(i % 2) * 70} className="h-full">
+              <Tile>
+                <h3 className="font-display text-[1.75rem] font-semibold leading-[1.14] tracking-[0.007em]">
+                  {p.title}
+                </h3>
+                <p className="mt-3 max-w-[40ch] text-[1.0625rem] leading-[1.47] text-tone-mute">
+                  {p.body}
+                </p>
+              </Tile>
             </Reveal>
-          </div>
+          ))}
+        </ul>
+      </Section>
 
-          <ol className="mt-14 grid gap-4 md:grid-cols-3">
-            {processSteps.map((step, i) => (
-              <Reveal as="li" key={step.n} delay={i * 70} className="h-full">
-                <div className="card h-full p-7">
-                  <p className="font-mono text-[0.75rem] text-accent">{step.n}</p>
-                  <h3 className="mt-4 font-display text-[1.25rem] font-semibold tracking-[-0.022em]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-tone-mute">
-                    {step.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
+      <Section alt>
+        <RowHead title="Working with us." link={{ href: "/contact", text: "Start a project" }} />
+        <ol className="grid gap-5 md:grid-cols-3">
+          {processSteps.map((step, i) => (
+            <Reveal as="li" key={step.n} delay={i * 70} className="h-full">
+              <Tile>
+                <p className="text-[1.0625rem] font-semibold text-accent">{step.n}</p>
+                <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.17]">
+                  {step.title}.
+                </h3>
+                <p className="mt-3 text-[1.0625rem] leading-[1.47] text-tone-mute">{step.body}</p>
+              </Tile>
+            </Reveal>
+          ))}
+        </ol>
+      </Section>
 
-          <Reveal delay={80}>
-            <div className="mt-14 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">
-                Start a project
-              </Link>
-              <Link
-                href="/lab"
-                className="text-[0.9375rem] text-tone-mute underline decoration-line-firm underline-offset-[6px] transition-colors duration-[var(--t-hover)] hover:text-tone"
-              >
-                See what the Lab is working on
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <Section>
+        <RowHead title="What we have shipped." link={{ href: "/products", text: "See our products" }} />
+        <ul className="grid gap-5 md:grid-cols-2">
+          {products.map((product, i) => (
+            <Reveal as="li" key={product.slug} delay={i * 70} className="h-full">
+              <Tile>
+                <p className="flex items-center gap-2 text-[0.875rem] font-semibold text-moss">
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-moss" />
+                  {product.status}
+                </p>
+                <h3 className="mt-4 font-display text-[2rem] font-semibold leading-[1.1]">
+                  {product.name}
+                </h3>
+                <p className="mt-3 text-[1.0625rem] leading-[1.47] text-tone-mute">{product.tagline}.</p>
+              </Tile>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
+      <CloseAsk
+        title="Have a project in mind?"
+        lede={`Tell us what you need. We reply within one business day at ${site.email}.`}
+        secondary={{ href: `mailto:${site.email}`, text: "Email us" }}
+      />
     </>
   );
 }

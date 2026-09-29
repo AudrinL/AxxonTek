@@ -1,45 +1,49 @@
 import type { Metadata } from "next";
+import { PageHero } from "@/components/sections/PageHero";
 import { WorkIndex } from "@/components/sections/WorkIndex";
-import { Rule } from "@/components/layout/Rule";
+import { Reveal } from "@/components/system/Reveal";
+import { CloseAsk, Section, Strong } from "@/components/system/Page";
 import { work } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Projects AxxonTek has designed, built and shipped — websites, applications, our own products, and installed smart systems.",
+    "Projects AxxonTek has designed, built and shipped: websites, applications, our own products and installed smart systems.",
   alternates: { canonical: "/work" },
 };
 
 export default function WorkPage() {
   return (
     <>
-      <header className="container-x pt-40 pb-14 md:pt-48">
-        <div className="flex flex-wrap items-end justify-between gap-8">
-          <div>
-            <p className="label mb-7">Selected work</p>
-            <h1 className="text-display max-w-[16ch]">
-              Things we built,
-              <br />
-              still running.
-            </h1>
-          </div>
-          <p className="max-w-sm text-[0.9375rem] leading-relaxed text-tone-mute">
-            Every project here was scoped, built and is supported by the same
-            four people. Where a client has asked us not to name them, we name
-            the sector instead.
+      <PageHero
+        label="Our work"
+        title={
+          <>
+            Built by us. Still <span className="text-serif">running</span>.
+          </>
+        }
+        lede={
+          <>
+            <Strong>Every project here was built and is supported by the same team.</Strong>{" "}
+            When a client asks us not to name them, we name the sector instead.
+          </>
+        }
+      />
+
+      <Section alt>
+        <WorkIndex />
+        <Reveal delay={80}>
+          <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
+            {work.length} {work.length === 1 ? "project" : "projects"} so far. More are added as
+            they go live.
           </p>
-        </div>
-      </header>
+        </Reveal>
+      </Section>
 
-      <div className="container-x">
-        <Rule />
-        <p className="label py-5">
-          {work.length} {work.length === 1 ? "project" : "projects"} &middot; more
-          added as they go live
-        </p>
-      </div>
-
-      <WorkIndex />
+      <CloseAsk
+        title="Want something like this?"
+        lede="Tell us what you need and we will build it with you."
+      />
     </>
   );
 }

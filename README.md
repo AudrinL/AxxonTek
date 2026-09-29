@@ -69,7 +69,7 @@ components/
   studio/                  concept cards and the gallery
   layout/                  Nav, Footer, Logo
   forms/                   the two forms
-  system/                  the ground, loader, smooth scroll, reveal, marquee and other plumbing
+  system/                  Page.tsx (the shared page building blocks), dust and dot effects, loader, reveal
 
 lib/
   site.ts                  most of the copy and navigation lives here
@@ -123,6 +123,13 @@ calm headlines and lots of space.
   for. In a `text-lede` paragraph, wrap the phrase that matters in `text-tone` and it turns white
   against the gray.
 - **Cards** have 28px corners and a 20px gap. Keep them flat: no glows or gradients on hover.
+- **Inner pages** are built from `components/system/Page.tsx`: `PageHero` opens every page (small
+  heading, big headline, two-tone intro, button and text link, centred), then sections alternate
+  black and `#1d1d1f` using `Section`, with `StoryHead`, `RowHead`, `Tile`, `TextLink` and a
+  closing `CloseAsk`. New pages should use these rather than one-off markup.
+- **Tagline.** "Think Beyond Tomorrow" lives in `site.tagline`. It opens the home hero, is the
+  About headline, labels the Lab, sits in the footer copyright line and the loader, and is part of
+  the logo artwork. Use `site.tagline` rather than retyping it.
 - **Logo and icons.** The logo is the supplied lockup (mark, name and the tagline "Think Beyond
   Tomorrow"), white on transparent, at `public/assets/logo.png`. Use the `Logo` component and never
   retype it. The favicon and touch icons are made from the mark on black (`public/favicon.ico` and
@@ -146,16 +153,28 @@ motion gets no smooth scroll, no parallax and no entrances.
 
 Two canvas effects, modelled on rho.co, live in `components/system`:
 
-- `DustField` fills its parent with tiny drifting specks that swirl round the cursor and scatter when
-  it gets close. Give it an `attractor` ref and the dust gathers in a breathing halo round that
-  element instead.
+- `DustField` fills its parent with tiny drifting specks. Given `shapes`, when a mouse cursor comes
+  to rest over empty space, the dust gathers into a random shape right there and stays put. Resting
+  somewhere new forms a different shape there, and leaving dissolves it. Resting on text or a link
+  never forms one. Without shapes it swirls round the cursor the way rho's does. `dim` and `speed`
+  quieten it.
 - `DotMark` redraws any image as a grid of dots that part round the cursor and spring back. With
   `color="image"` each dot keeps the image's own colour.
 
-Right now they appear in the footer only (`components/layout/FooterParticles.tsx`): dust behind
-everything and the logo in dots at the very bottom, using `public/assets/logo-dots.png`, which is the
-logo without the tagline. Both pause when off screen and stay still for visitors who ask for reduced
-motion.
+Both are used in the footer only (`components/layout/FooterParticles.tsx`): dust behind everything,
+and the logo in dots at the very bottom (`public/assets/logo-dots.png`, the logo without its
+tagline).
+
+The robot, code and UI/UX shapes are baked dot grids in `public/assets/shapes`, one pixel per dot,
+next to the icons they were made from. They are baked rather than sampled in the browser so every
+visitor sees exactly the version that was checked. To change one, edit its icon and re-bake the
+`-grid.png`, keeping it under about 800 dots. The globe is generated live as a tilted sphere wrapped
+in rows of binary, so it can turn.
+
+On phones the footer dust is deliberately quiet: about a third as many specks, half as bright, half
+as fast, and no shapes, so it never competes with the text.
+
+Everything pauses when off screen and stays still for visitors who ask for reduced motion.
 
 ## Adding photos
 

@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
+import { SocialIcon } from "@/components/SocialIcon";
+import { Section, Strong } from "@/components/system/Page";
 import { getStudioConcept, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Have something worth building? Tell the AxxonTek team in Kigali what you are trying to make. An engineer replies within one business day.",
+    "Have a project in mind? Tell AxxonTek what you need. An engineer replies within one business day.",
   alternates: { canonical: "/contact" },
 };
 
@@ -25,115 +28,100 @@ export default async function ContactPage({
         label="Contact"
         title={
           <>
-            Have something <span className="text-serif text-accent">worth</span> building?
+            Have a <span className="text-serif">project</span> in mind?
           </>
         }
-        lede="Tell us what you are trying to make. An engineer, not a salesperson, comes back to you within one business day."
+        lede={
+          <>
+            <Strong>Tell us what you need.</Strong> An engineer, not a salesperson, replies
+            within one business day.
+          </>
+        }
       />
 
-      <section data-chapter-ground="canvas" className="pb-[clamp(6rem,13vw,11rem)]">
-        <div className="container-x">
-          <div className="grid gap-x-20 gap-y-16 lg:grid-cols-[1fr_0.72fr]">
-            <div className="order-2 lg:order-1">
-              {concept && (
-                <div className="card mb-5 flex items-center gap-4 p-5">
-                  <span
-                    aria-hidden
-                    className="h-12 w-12 flex-none rounded-[var(--r-inner)]"
-                    style={{
-                      background: `radial-gradient(120% 130% at 20% 0%, ${concept.accent[1]}, ${concept.accent[0]})`,
-                    }}
-                  />
-                  <div>
-                    <p className="font-mono text-[0.625rem] tracking-[0.14em] text-tone-faint uppercase">
-                      Studio concept · {concept.industry} / {concept.number}
-                    </p>
-                    <p className="mt-1 text-[0.9375rem] font-medium text-tone">{concept.title}</p>
-                  </div>
-                </div>
-              )}
-              <div className="card p-6 sm:p-8">
-                <ContactForm
-                  defaultEmail={email}
-                  concept={conceptSlug}
-                  defaultInterest={concept ? "Building a website" : undefined}
-                />
-              </div>
-            </div>
-
-            <div className="order-1 flex flex-col gap-8 lg:order-2">
-              <Reveal>
-                <InfoBlock label="Where we are">
-                  <address className="text-[0.9375rem] leading-relaxed text-tone-mute not-italic">
-                    {site.address.line1}
-                    <br />
-                    {site.address.line2}
-                    <br />
-                    {site.address.city}
-                  </address>
-                </InfoBlock>
-              </Reveal>
-
-              <Reveal delay={70}>
-                <InfoBlock label="Direct contact">
-                  <a
-                    href={`mailto:${site.email}`}
-                    className="block text-[0.9375rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-accent"
-                  >
-                    {site.email}
-                  </a>
-                  {site.phone && (
-                    <a
-                      href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
-                      className="block text-[0.9375rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-accent"
-                    >
-                      {site.phone}
-                    </a>
+      <Section alt className="!pt-0 md:!pt-0" >
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+          <div className="flex flex-col gap-5">
+            {concept && (
+              <div className="flex items-center gap-4 rounded-[var(--r-card)] bg-black p-5">
+                <span className="relative h-14 w-20 flex-none overflow-hidden rounded-[0.75rem] bg-surface-2">
+                  {concept.image && (
+                    <Image src={concept.image} alt="" fill sizes="80px" className="object-cover" />
                   )}
-                </InfoBlock>
-              </Reveal>
-
-              <Reveal delay={140}>
-                <InfoBlock label="Elsewhere">
-                  <div className="flex flex-col gap-2">
-                    {site.socials.map((social) => (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="text-[0.9375rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-accent"
-                      >
-                        {social.label}
-                      </a>
-                    ))}
-                  </div>
-                </InfoBlock>
-              </Reveal>
-
-              <Reveal delay={210}>
-                <div className="card p-6">
-                  <p className="text-[0.9375rem] leading-relaxed text-tone-mute">
-                    Prefer to skip the form? Email us directly. The same people read it.
-                  </p>
+                </span>
+                <div>
+                  <p className="text-[0.75rem] text-tone-faint">Design you picked</p>
+                  <p className="mt-1 text-[1.0625rem] font-semibold text-tone">{concept.title}</p>
                 </div>
-              </Reveal>
+              </div>
+            )}
+            <div className="rounded-[var(--r-card)] bg-black p-6 sm:p-10">
+              <ContactForm
+                defaultEmail={email}
+                concept={conceptSlug}
+                defaultInterest={concept ? "Building a website" : undefined}
+              />
             </div>
           </div>
+
+          <div className="flex flex-col gap-5">
+            <Reveal>
+              <InfoTile title="Email us">
+                <a href={`mailto:${site.email}`} className="text-[1.0625rem] text-[#ff8a55] hover:underline">
+                  {site.email}
+                </a>
+                {site.phone && (
+                  <a
+                    href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}
+                    className="text-[1.0625rem] text-[#ff8a55] hover:underline"
+                  >
+                    {site.phone}
+                  </a>
+                )}
+                <p className="mt-2 text-[0.875rem] text-tone-faint">The same people read the form and the inbox.</p>
+              </InfoTile>
+            </Reveal>
+
+            <Reveal delay={70}>
+              <InfoTile title="Where we are">
+                <address className="text-[1.0625rem] leading-[1.47] text-tone-mute not-italic">
+                  {site.address.line1}, {site.address.line2}
+                  <br />
+                  {site.address.city}
+                </address>
+              </InfoTile>
+            </Reveal>
+
+            <Reveal delay={140}>
+              <InfoTile title="Follow us">
+                <div className="flex flex-wrap gap-2">
+                  {site.socials.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={social.label}
+                      className="flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone"
+                    >
+                      <SocialIcon name={social.label} />
+                    </a>
+                  ))}
+                </div>
+              </InfoTile>
+            </Reveal>
+          </div>
         </div>
-      </section>
+      </Section>
     </>
   );
 }
 
-function InfoBlock({ label, children }: { label: string; children: React.ReactNode }) {
+function InfoTile({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="border-t border-line pt-6">
-      <h2 className="label mb-4">
-        <span className="label-dot" aria-hidden />
-        {label}
-      </h2>
-      <div className="flex flex-col gap-1">{children}</div>
+    <div className="rounded-[var(--r-card)] bg-black p-8">
+      <h2 className="font-display text-[1.3125rem] font-semibold">{title}</h2>
+      <div className="mt-4 flex flex-col gap-1">{children}</div>
     </div>
   );
 }

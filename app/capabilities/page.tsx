@@ -1,22 +1,21 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
-import { Icon } from "@/components/Icon";
-import { capabilityGroups } from "@/lib/site";
+import { CloseAsk, RowHead, Section, Strong, Tag, Tile } from "@/components/system/Page";
+import { capabilityGroups, offerings } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Capabilities",
   description:
-    "From idea to working technology. Product engineering, digital experiences, infrastructure, product design and emerging technology, described by outcome rather than by tool.",
+    "What AxxonTek can build for you: web and mobile apps, cloud and hosting, SaaS products, UX and UI design, smart home systems, and emerging technology.",
   alternates: { canonical: "/capabilities" },
 };
 
 /**
- * Capabilities, on canvas the whole way. Five families, described by what a
- * client gets rather than by which framework we reach for. The rule from the
- * content model holds: a client asks what can you build for me, so the
- * technologies stay out of this page and live in the case studies.
+ * Capabilities. First the six services from the homepage, each with its
+ * photograph, then the full range grouped into five families, described by
+ * what you get rather than which tools we use.
  */
 export default function CapabilitiesPage() {
   return (
@@ -25,62 +24,81 @@ export default function CapabilitiesPage() {
         label="Capabilities"
         title={
           <>
-            From idea to <span className="text-serif text-accent">working</span> technology.
+            From idea to <span className="text-serif">working</span> technology.
           </>
         }
-        lede="Five families of work. You tell us the outcome you are after. We tell you what it takes, and who does it, on the first call."
-        cta={{ href: "/contact", text: "Start a project" }}
+        lede={
+          <>
+            <Strong>Tell us what you need.</Strong> We will tell you what it takes and who
+            will build it, on the first call.
+          </>
+        }
+        primary={{ href: "/contact", text: "Start a project" }}
+        secondary={{ href: "/pricing", text: "See pricing" }}
       />
 
-      <section data-chapter-ground="canvas" className="chapter-y">
-        <div className="container-x flex flex-col gap-4">
-          {capabilityGroups.map((group, i) => (
-            <Reveal as="div" key={group.id} delay={Math.min(i, 3) * 60}>
-              <article id={group.id} className="card scroll-mt-28 p-8 md:p-10">
-                <div className="grid gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-                  <div>
-                    <p className="label mb-5">
-                      <span className="label-dot" aria-hidden />
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h2 className="font-display text-[1.75rem] font-semibold tracking-[-0.01em] md:text-[2.25rem]">
-                      {group.name}
-                    </h2>
-                    <p className="mt-4 text-lede max-w-[34ch]">{group.lede}</p>
-                  </div>
-
-                  <ul className="grid content-start gap-px self-start overflow-hidden rounded-[var(--r-inner)] border border-line bg-line sm:grid-cols-2">
-                    {group.items.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-center gap-3 bg-[var(--ground-veil)] px-5 py-4 transition-colors duration-[var(--t-ground)] ease-[var(--ease-gravity)]"
-                      >
-                        <span className="h-1.5 w-1.5 flex-none rounded-full bg-ember" aria-hidden />
-                        <span className="text-[0.9375rem] text-tone">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+      <Section alt>
+        <RowHead title="Our services." />
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {offerings.map((item, i) => (
+            <Reveal as="li" key={item.id} delay={(i % 3) * 70} className="h-full">
+              <div className="flex h-full flex-col overflow-hidden rounded-[var(--r-card)] bg-black">
+                <div className="px-7 pt-8 pb-6">
+                  <h3 className="font-display text-[1.5rem] font-semibold leading-[1.17]">
+                    {item.name}
+                  </h3>
+                  <p className="mt-2 text-[1.0625rem] leading-[1.47] text-tone-mute">{item.line}</p>
                 </div>
+                <div className="relative mx-3 mb-3 mt-auto aspect-[16/10] overflow-hidden rounded-[1.25rem]">
+                  <Image
+                    src={item.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 400px, (min-width: 640px) 46vw, 92vw"
+                    className="object-cover"
+                    style={{ objectPosition: item.focus }}
+                  />
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
+      <Section>
+        <RowHead title="Everything we can do." link={{ href: "/contact", text: "Ask about a project" }} />
+        <div className="flex flex-col gap-5">
+          {capabilityGroups.map((group, i) => (
+            <Reveal key={group.id} delay={Math.min(i, 2) * 60}>
+              <article id={group.id} className="scroll-mt-24">
+                <Tile>
+                  <div className="grid gap-x-14 gap-y-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center">
+                    <div>
+                      <h3 className="font-display text-[1.75rem] font-semibold leading-[1.14]">
+                        {group.name}
+                      </h3>
+                      <p className="mt-3 max-w-[40ch] text-[1.0625rem] leading-[1.47] text-tone-mute">
+                        {group.lede}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 lg:justify-end">
+                      {group.items.map((it) => (
+                        <Tag key={it}>{it}</Tag>
+                      ))}
+                    </div>
+                  </div>
+                </Tile>
               </article>
             </Reveal>
           ))}
-
-          <Reveal delay={80}>
-            <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Link href="/contact" className="pill pill-ember hover:bg-ember-deep">
-                Start a project
-                <Icon name="arrow" size={16} />
-              </Link>
-              <Link
-                href="/work"
-                className="text-[0.9375rem] text-tone-mute underline decoration-line-firm underline-offset-[6px] transition-colors duration-[var(--t-hover)] hover:text-tone"
-              >
-                See the work
-              </Link>
-            </div>
-          </Reveal>
         </div>
-      </section>
+      </Section>
+
+      <CloseAsk
+        title="Not sure where to start?"
+        lede="Tell us the problem. We will suggest the simplest thing that solves it."
+        secondary={{ href: "/work", text: "See our work" }}
+      />
     </>
   );
 }

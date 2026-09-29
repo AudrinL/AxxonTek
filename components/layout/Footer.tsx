@@ -31,7 +31,7 @@ export function Footer() {
         <div className="mt-14 grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
             <Logo large />
-            <p className="mt-5 max-w-xs text-[0.9375rem] leading-relaxed text-tone-mute">
+            <p className="mt-5 max-w-xs text-[0.875rem] leading-[1.43] text-tone-mute">
               A technology company in Kigali. We build software, cloud and smart systems.
             </p>
           </div>
@@ -86,8 +86,8 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-7">
-          <p className="font-mono text-[0.6875rem] tracking-[0.1em] text-tone-faint uppercase">
-            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+          <p className="text-[0.75rem] leading-4 text-tone-faint">
+            &copy; {new Date().getFullYear()} {site.name}. {site.tagline}.
           </p>
           <nav className="flex gap-6" aria-label="Legal">
             <FooterLink href="/privacy" inline>Privacy</FooterLink>

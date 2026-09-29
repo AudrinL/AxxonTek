@@ -1,12 +1,12 @@
 /**
- * The scroll hint the studio uses at the foot of a hero: a mono word and a
+ * The scroll hint the studio uses at the foot of a hero: a small word and a
  * line that draws itself left to right and back, forever. Pure CSS, and it
  * holds still under reduced motion.
  */
 export function ScrollCue({ label = "Scroll", className = "" }: { label?: string; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-3 font-mono text-[0.625rem] tracking-[0.18em] uppercase text-current/70 ${className}`}
+      className={`inline-flex items-center gap-3 text-[0.75rem] font-semibold text-current/70 ${className}`}
       aria-hidden
     >
       {label}

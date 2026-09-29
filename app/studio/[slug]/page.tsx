@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
-import { Icon } from "@/components/Icon";
+import { CloseAsk, RowHead, Section, Tag } from "@/components/system/Page";
 import { ConceptPoster } from "@/components/studio/ConceptPoster";
 import { ConceptCard } from "@/components/studio/ConceptCard";
 import { getStudioConcept, studioConcepts } from "@/lib/site";
@@ -19,18 +19,15 @@ export async function generateMetadata({
   const concept = getStudioConcept((await params).slug);
   if (!concept) return {};
   return {
-    title: `${concept.industry} / ${concept.number}`,
+    title: concept.title,
     description: concept.blurb,
     alternates: { canonical: `/studio/${concept.slug}` },
   };
 }
 
 /**
- * A single concept. It opens into the direction itself and is honest about
- * what it is: where a live, explorable build exists it is embedded; until
- * then the poster stands in and the page says so plainly rather than faking
- * a screenshot. The whole page exists to end on one question, would you like
- * this made yours, and to make saying yes a single click.
+ * One design. The name and what it does, the design itself, what is built
+ * in, and a single clear next step: ask for your own version.
  */
 export default async function StudioConceptPage({
   params,
@@ -44,138 +41,67 @@ export default async function StudioConceptPage({
 
   return (
     <>
-      <section data-chapter-ground="canvas" className="pt-40 pb-14 md:pt-48">
-        <div className="container-x">
-          <Link href="/studio" className="label mb-10 inline-flex hover:text-accent">
-            <span className="label-dot" aria-hidden />
-            Inspiration
-          </Link>
-
-          <p className="font-mono text-[0.75rem] tracking-[0.16em] text-accent uppercase">
-            {concept.industry} / {concept.number} · {concept.style}
-          </p>
-          <h1 className="mt-4 text-display max-w-[18ch]">{concept.title}</h1>
-          <p className="mt-6 max-w-[52ch] text-lede">{concept.blurb}</p>
+      <PageHero
+        label={`${concept.industry} · ${concept.style}`}
+        title={concept.title}
+        lede={concept.blurb}
+        primary={{ href: `/contact?concept=${concept.slug}`, text: "Get this design" }}
+        secondary={{ href: "/studio", text: "Browse all designs" }}
+      >
+        <div className="mx-auto max-w-[64rem]">
+          {concept.preview ? (
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--r-card)] bg-surface-2">
+              {/* A preview is third-party content, so it runs in a locked-down
+                  frame: scripts and same-origin for the demo, nothing else. */}
+              <iframe
+                src={concept.preview}
+                title={`${concept.title} live preview`}
+                className="h-full w-full"
+                loading="lazy"
+                sandbox="allow-scripts allow-same-origin"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ) : (
+            <ConceptPoster concept={concept} large priority />
+          )}
         </div>
-      </section>
+      </PageHero>
 
-      {/* The direction itself */}
-      <section data-chapter-ground="canvas" className="pb-[var(--chapter)]">
-        <div className="container-x">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start">
-            <Reveal>
-              {concept.preview ? (
-                <div className="window aspect-[16/10] w-full">
-                  {/* A concept preview is third-party content, so it runs in a
-                      locked-down frame: scripts and same-origin for the demo to
-                      work, nothing else, and no referrer leakage. */}
-                  <iframe
-                    src={concept.preview}
-                    title={`${concept.title} live preview`}
-                    className="h-full w-full"
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ) : (
-                <ConceptPoster concept={concept} large />
-              )}
-            </Reveal>
-
-            <Reveal delay={90}>
-              <div className="lg:sticky lg:top-28">
-                <p className="label mb-4">
-                  <span className="label-dot" aria-hidden />
-                  {concept.preview ? "Live preview" : "Live preview in progress"}
-                </p>
-                <p className="text-[0.9375rem] leading-relaxed text-tone-mute">
-                  {concept.preview
-                    ? "Explore the concept as a real, working site. Everything you see can become yours, adapted to your brand, your content and your customers."
-                    : "This is a designed direction, not a live site yet. We are building explorable previews for Inspiration; in the meantime, tell us this is the direction you want and we will build it around your business."}
-                </p>
-
-                <dl className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--r-card)] border border-line bg-line">
-                  <Cell k="Industry" v={concept.industry} />
-                  <Cell k="Style" v={concept.style} />
-                </dl>
-
-                <p className="mt-6 mb-3 font-mono text-[0.625rem] tracking-[0.14em] text-tone-faint uppercase">
-                  Built in
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {concept.features.map((f) => (
-                    <span
-                      key={f}
-                      className="rounded-full border border-line px-2.5 py-1 font-mono text-[0.625rem] tracking-[0.1em] text-tone-faint uppercase"
-                    >
-                      {f}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* The ask */}
-      <section data-chapter-ground="ink" className="bloom chapter-y relative overflow-hidden text-white">
-        <span aria-hidden className="bloom-light -bottom-[22rem] -right-[14rem] opacity-55" />
-        <div className="container-x">
+      <Section alt>
+        <div className="mx-auto grid max-w-[52rem] gap-10 md:grid-cols-2">
           <Reveal>
-            <p className="label mb-6">
-              <span className="label-dot" aria-hidden />
-              Like this direction?
-            </p>
-            <h2 className="text-chapter max-w-[18ch]">Start with this concept.</h2>
-            <p className="mt-5 max-w-[46ch] text-lede text-white/80">
-              We take this direction and make it yours: your brand, your content, your
-              customers, on infrastructure we run. Tell us about your business and we
-              will come back with a plan.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Link
-                href={`/contact?concept=${concept.slug}`}
-                className="pill pill-ember hover:bg-ember-deep"
-              >
-                Request a custom version
-                <Icon name="arrow" size={16} />
-              </Link>
-              <Link
-                href="/studio"
-                className="inline-flex h-[3.125rem] items-center rounded-full border border-line-firm px-7 text-[0.9375rem] font-semibold transition-colors duration-[var(--t-hover)] hover:border-white/70"
-              >
-                Keep browsing
-              </Link>
+            <p className="label mb-3">What is built in</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {concept.features.map((f) => (
+                <Tag key={f}>{f}</Tag>
+              ))}
             </div>
           </Reveal>
+          <Reveal delay={70}>
+            <p className="label mb-3">How it works</p>
+            <p className="mt-2 text-[1.0625rem] leading-[1.47] text-tone-mute">
+              We take this design and make it yours: your brand, your content, your customers.
+              Then we host it and look after it for you.
+            </p>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* More concepts */}
-      <section data-chapter-ground="canvas" className="chapter-y">
-        <div className="container-x">
-          <p className="label mb-8">
-            <span className="label-dot" aria-hidden />
-            More directions
-          </p>
-          <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-3">
-            {more.map((c) => (
-              <ConceptCard key={c.slug} concept={c} />
-            ))}
-          </div>
+      <Section>
+        <RowHead title="More designs." link={{ href: "/studio", text: "See all designs" }} />
+        <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {more.map((c) => (
+            <ConceptCard key={c.slug} concept={c} />
+          ))}
         </div>
-      </section>
+      </Section>
+
+      <CloseAsk
+        title="Like this design?"
+        lede="Tell us about your business and we will build your version."
+        primary={{ href: `/contact?concept=${concept.slug}`, text: "Get this design" }}
+      />
     </>
-  );
-}
-
-function Cell({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="bg-[var(--ground-veil)] p-5">
-      <dt className="font-mono text-[0.625rem] tracking-[0.14em] text-tone-faint uppercase">{k}</dt>
-      <dd className="mt-1.5 text-[0.9375rem] font-medium text-tone">{v}</dd>
-    </div>
   );
 }

@@ -6,10 +6,10 @@ import { CONTACT_INTERESTS } from "@/lib/validation";
 type Status = "idle" | "submitting" | "success" | "error";
 type Errors = Record<string, string>;
 
-/* Boxed fields with a visible label: the clearest affordance on a light page,
-   and the label never disappears while you type. */
+/* Boxed fields with a visible label, so the label never disappears while
+   you type. */
 const fieldBase =
-  "w-full rounded-[var(--r-inner)] border border-line-firm bg-[color-mix(in_srgb,var(--c-ink)_4%,transparent)] px-4 py-3.5 text-[1rem] text-tone outline-none transition-[border-color,box-shadow] duration-[var(--t-base)] placeholder:text-tone-faint hover:border-tone-faint focus:border-ember focus:shadow-[0_0_0_3px_var(--color-ember-wash)] disabled:opacity-60";
+  "w-full rounded-[var(--r-inner)] border border-line-firm bg-[color-mix(in_srgb,var(--c-ink)_4%,transparent)] px-4 py-3.5 text-[1rem] text-tone outline-none transition-[border-color,box-shadow] duration-[var(--t-base)] placeholder:text-tone-faint hover:border-tone-faint focus:border-ember focus:shadow-[0_0_0_3px_rgba(240,88,31,0.28)] disabled:opacity-60";
 
 const labelBase = "mb-2 block text-[0.875rem] font-medium text-tone";
 
@@ -76,8 +76,8 @@ export function ContactForm({
 
   if (status === "success") {
     return (
-      <div className="card p-10 text-center sm:p-14" role="status">
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-ember-wash">
+      <div className="p-6 text-center sm:p-10" role="status">
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-surface-2 text-accent">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path
               d="M4 12.5l5 5L20 6.5"
@@ -133,7 +133,7 @@ export function ContactForm({
                 aria-pressed={active}
                 className={`rounded-full border px-4 py-2 text-[0.875rem] transition-colors duration-[var(--t-hover)] ${
                   active
-                    ? "border-transparent bg-ink text-canvas"
+                    ? "border-transparent bg-white text-black"
                     : "border-line-firm text-tone-mute hover:border-tone hover:text-tone"
                 }`}
               >

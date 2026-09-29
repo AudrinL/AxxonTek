@@ -17,7 +17,7 @@ import { situations } from "@/lib/site";
  */
 export function Situations() {
   return (
-    <section data-chapter-ground="canvas" className="chapter-y relative">
+    <section data-chapter-ground="ink" className="chapter-y relative">
       <div className="container-x">
         <Reveal className="section-row">
           <h2 className="text-chapter">

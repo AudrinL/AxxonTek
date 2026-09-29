@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { InkPanel, Rule } from "@/components/layout/Rule";
+import { PageHero } from "@/components/sections/PageHero";
+import { Reveal } from "@/components/system/Reveal";
+import { CloseAsk, RowHead, Section, StoryHead, Strong, Tile } from "@/components/system/Page";
 import { getWorkItem, hasShot, work, workCategories } from "@/lib/work";
 
 export function generateStaticParams() {
@@ -24,10 +25,9 @@ export async function generateMetadata({
 }
 
 /**
- * A case study. Deliberately short: what it is, what we did, and the work
- * itself. The `study` block only renders when there is something true to
- * put in it, so a project can go live the day it ships and gain its
- * write-up later without the page looking unfinished.
+ * A case study, kept short: what it is, the facts, what we did, and the
+ * story once there is something true to tell. A project can go live the day
+ * it ships and gain its write-up later without the page looking unfinished.
  */
 export default async function WorkDetailPage({
   params,
@@ -38,118 +38,90 @@ export default async function WorkDetailPage({
   if (!item) notFound();
 
   const category = workCategories.find((c) => c.id === item.category);
+  const facts = [
+    { k: "Client", v: item.nda ? `${item.client} (name withheld)` : item.client },
+    { k: "Category", v: category?.label ?? "" },
+    { k: "Year", v: String(item.year) },
+  ];
 
   return (
     <>
-      <header className="container-x pt-40 pb-16 md:pt-48">
-        <Link href="/work" className="label mb-10 inline-block hover:text-accent">
-          &#8592; All work
-        </Link>
-
-        <h1 className="text-display max-w-[14ch]">{item.name}</h1>
-
-        <p className="text-lede mt-8 max-w-xl">{item.summary}</p>
-
-        <dl className="mt-14 grid max-w-3xl grid-cols-2 gap-y-8 md:grid-cols-4">
-          <Meta term="Client" value={item.nda ? `${item.client} (under NDA)` : item.client} />
-          <Meta term="Category" value={category?.label ?? ""} />
-          <Meta term="Year" value={String(item.year)} />
-          <Meta
-            term="Live"
-            value={
-              item.url ? (
-                <a href={item.url} target="_blank" rel="noreferrer" className="hover:text-accent">
-                  Visit &#8599;
-                </a>
-              ) : (
-                "Not public"
-              )
-            }
-          />
-        </dl>
-      </header>
-
-      {hasShot(item) && (
-        <div className="container-x pb-8">
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-canvas-deep">
+      <PageHero
+        label="Case study"
+        title={item.name}
+        lede={item.summary}
+        primary={item.url ? { href: item.url, text: `Visit ${item.name}` } : undefined}
+        secondary={{ href: "/work", text: "All work" }}
+      >
+        {hasShot(item) && (
+          <div className="relative mx-auto aspect-[16/10] w-full max-w-[64rem] overflow-hidden rounded-[var(--r-card)] bg-surface-2">
             <Image
               src={item.shot}
               alt={`${item.name} interface`}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 88rem"
-              className="object-cover"
+              sizes="(min-width: 1100px) 1024px, 92vw"
+              className="object-cover object-left-top"
             />
           </div>
-        </div>
+        )}
+      </PageHero>
+
+      <Section alt>
+        <dl className="mx-auto grid max-w-[52rem] grid-cols-2 gap-y-8 md:grid-cols-3">
+          {facts.map((f) => (
+            <div key={f.k}>
+              <dt className="text-[0.875rem] text-tone-faint">{f.k}</dt>
+              <dd className="mt-1 font-display text-[1.3125rem] font-semibold">{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      <Section>
+        <RowHead title="What we did." />
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {item.scope.map((line, i) => (
+            <Reveal as="li" key={line} delay={(i % 4) * 60} className="h-full">
+              <Tile>
+                <p className="text-[1.0625rem] font-semibold text-accent">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <p className="mt-8 font-display text-[1.3125rem] font-semibold leading-[1.19]">
+                  {line}
+                </p>
+              </Tile>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
+      {item.study && (
+        <Section alt>
+          <StoryHead
+            label="The story"
+            title="From problem to launch."
+            lede={<Strong>{item.study.problem}</Strong>}
+          >
+            <div className="mt-10 grid gap-8 md:grid-cols-2">
+              <div>
+                <h3 className="font-display text-[1.3125rem] font-semibold">What we did</h3>
+                <p className="mt-2 text-[1.0625rem] leading-[1.47] text-tone-mute">{item.study.approach}</p>
+              </div>
+              <div>
+                <h3 className="font-display text-[1.3125rem] font-semibold">Where it landed</h3>
+                <p className="mt-2 text-[1.0625rem] leading-[1.47] text-tone-mute">{item.study.outcome}</p>
+              </div>
+            </div>
+          </StoryHead>
+        </Section>
       )}
 
-      <InkPanel className="section-y">
-        <div className="container-x grid gap-x-16 gap-y-12 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
-          <div>
-            <p className="label text-on-ink-mute">
-              What we did
-            </p>
-          </div>
-          <ul className="max-w-2xl">
-            {item.scope.map((line) => (
-              <li key={line}>
-                <Rule tone="ink" />
-                <span className="block py-5 text-[1.0625rem]">{line}</span>
-              </li>
-            ))}
-            <Rule tone="ink" />
-          </ul>
-        </div>
-
-        {item.study && (
-          <div className="container-x mt-20 grid gap-x-16 gap-y-12 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
-            <p className="label text-on-ink-mute">
-              The story
-            </p>
-            <div className="max-w-2xl space-y-10">
-              <Passage heading="The problem" body={item.study.problem} />
-              <Passage heading="What we did" body={item.study.approach} />
-              <Passage heading="Where it landed" body={item.study.outcome} />
-            </div>
-          </div>
-        )}
-      </InkPanel>
-
-      <section className="section-y">
-        <div className="container-x">
-          <h2 className="text-heading max-w-[16ch]">
-            Want something like this for your business?
-          </h2>
-          <Link
-            href="/contact"
-            className="mt-10 inline-flex items-center gap-3 bg-ember-deep px-8 py-4 font-medium text-white transition-colors duration-300 hover:bg-ember-deep"
-          >
-            Book a call
-            <span aria-hidden>&#8594;</span>
-          </Link>
-        </div>
-      </section>
+      <CloseAsk
+        title="Want something like this?"
+        lede="Tell us what you need and we will build it with you."
+        secondary={{ href: "/work", text: "See all work" }}
+      />
     </>
-  );
-}
-
-function Meta({ term, value }: { term: string; value: React.ReactNode }) {
-  return (
-    <div>
-      <dt className="label mb-2">{term}</dt>
-      <dd className="text-[0.9375rem]">{value}</dd>
-    </div>
-  );
-}
-
-function Passage({ heading, body }: { heading: string; body: string }) {
-  return (
-    <div>
-      <h3 className="mb-3 text-[1.25rem]">{heading}</h3>
-      <p className="text-[1.0625rem] leading-relaxed text-on-ink-mute">
-        {body}
-      </p>
-    </div>
   );
 }

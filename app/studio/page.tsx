@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/system/Reveal";
+import { CloseAsk, Section, Strong } from "@/components/system/Page";
 import { StudioGallery } from "@/components/studio/StudioGallery";
 
 export const metadata: Metadata = {
   title: "Inspiration",
   description:
-    "Explore what is possible. Concepts AxxonTek has designed for real industries: find a direction you like, and we will make it yours.",
+    "Browse website designs AxxonTek has made for different industries. Pick a style you like and we will build it for your business.",
   alternates: { canonical: "/studio" },
 };
 
 /**
- * The Studio, on canvas. It is deliberately separate from Work: Work is what
- * we have built for real organisations, the Studio is what we are capable of
- * building, shown as directions you can browse. Everything here is presented
- * honestly as a concept, never dressed up as a commission, which is exactly
- * why it can grow without pretending.
+ * Inspiration: designs we have made for real industries, to browse when you
+ * do not know yet what you want. Kept separate from Work and always labelled
+ * as concepts, because none of it is client work.
  */
 export default function StudioPage() {
   return (
@@ -24,19 +23,32 @@ export default function StudioPage() {
         label="Inspiration"
         title={
           <>
-            Explore what is <span className="text-serif text-accent">possible</span>.
+            Find your <span className="text-serif">direction</span>.
           </>
         }
-        lede="Not sure what your digital presence should look like? Browse concepts we have designed for different industries. Find a direction you like, then we will make it yours."
+        lede={
+          <>
+            <Strong>Not sure what your website should look like?</Strong> Browse our designs,
+            pick one you like, and we will build it for your business.
+          </>
+        }
       />
 
-      <section data-chapter-ground="canvas" className="pb-[var(--chapter)]">
-        <div className="container-x">
-          <Reveal>
-            <StudioGallery />
-          </Reveal>
-        </div>
-      </section>
+      <Section alt>
+        <Reveal>
+          <StudioGallery />
+        </Reveal>
+        <Reveal delay={80}>
+          <p className="mt-12 text-[0.875rem] leading-5 text-tone-faint">
+            These are concepts designed by us, not client work.
+          </p>
+        </Reveal>
+      </Section>
+
+      <CloseAsk
+        title="Have your own idea?"
+        lede="Tell us about your business and we will design something just for you."
+      />
     </>
   );
 }

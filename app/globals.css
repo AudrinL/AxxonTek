@@ -289,7 +289,7 @@
 @utility section-alt {
   background: var(--ink-soft);
   --c-surface: #000;
-  --c-surface-2: #1d1d1f;
+  --c-surface-2: #000;
 }
 
 /* The row header every gallery section opens with: a 48px headline on the

@@ -17,12 +17,24 @@ export const site = {
     "AxxonTek is a technology company in Kigali. We build software, AI, immersive learning and smart systems for organisations across Africa, and we run the products we invent.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://axxontek.com",
   email: "info@axxontek.com",
-  /** Leave empty until there is a real line. The UI hides it when blank. */
+  /**
+   * Leave empty until there is a real line. The UI hides it when blank.
+   * Write it exactly as the Google Business Profile shows it, in
+   * international form (+250 ...), so Google can match the two.
+   */
   phone: "" as string,
+  /**
+   * Must read exactly as the Google Business Profile does. Google ties the
+   * site to the profile by name, address and phone, so a mismatch here
+   * costs the knowledge panel its link.
+   */
   address: {
-    line1: "Brampton",
-    line2: "Ontario",
-    city: "Canada",
+    line1: "Norrsken House",
+    line2: "1 KN 78 St",
+    city: "Kigali, Rwanda",
+    street: "Norrsken House, 1 KN 78 St",
+    locality: "Kigali",
+    country: "RW",
   },
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/axxon_tek/" },
@@ -275,7 +287,7 @@ export const hosting: HostingPlan = {
   checkoutUrl: "https://flutterwave.com/pay/t8rgtxiizwgr",
   lede:
     "Your site stays online, fast and patched, on infrastructure we run and monitor so you never have to think about it.",
-  image: "/assets/services/hosting.png",
+  image: "/assets/services/hosting.webp",
   includes: [
     "Your site online on servers we manage",
     "Free SSL certificate, renewed for you",
@@ -307,7 +319,7 @@ export const services: Service[] = [
     name: "Software development",
     blurb:
       "The system your organisation runs on, built for mid-range phones on mobile data rather than a demo laptop.",
-    image: "/assets/services/software-development.png",
+    image: "/assets/services/software-development.webp",
     href: "/contact",
   },
   {
@@ -321,7 +333,7 @@ export const services: Service[] = [
     name: "IT consultation",
     blurb:
       "Know what you need before you pay for it: an honest audit and a written recommendation you can act on with us or without us.",
-    image: "/assets/services/it-consultation.png",
+    image: "/assets/services/it-consultation.webp",
     href: "/contact",
   },
 ];

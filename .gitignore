@@ -11,3 +11,8 @@ next-env.d.ts
 Thumbs.db
 .vercel
 .netlify/
+
+# Cloudflare
+.open-next/
+.wrangler/
+.dev.vars

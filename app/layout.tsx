@@ -8,6 +8,7 @@ import { Ground } from "@/components/system/Ground";
 import { Trace } from "@/components/system/Trace";
 import { SmoothScroll } from "@/components/system/SmoothScroll";
 import { Loader } from "@/components/system/Loader";
+import { StructuredData } from "@/components/system/StructuredData";
 import { site } from "@/lib/site";
 
 /**
@@ -65,6 +66,8 @@ export const metadata: Metadata = {
     apple: { url: "/assets/apple-touch-icon.png", sizes: "180x180" },
   },
   robots: { index: true, follow: true },
+  /* Set in Netlify to verify the site in Google Search Console by meta tag. */
+  verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
 };
 
 export const viewport: Viewport = {
@@ -96,6 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: markScripted }} />
+        <StructuredData />
       </head>
       <body className="dotgrid antialiased">
         <SmoothScroll />

@@ -7,6 +7,8 @@ import { Situations } from "@/components/sections/Situations";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
+  /* What people type into Google, not the tagline. */
+  title: { absolute: `${site.name} | Software and Technology Company in Kigali, Rwanda` },
   description: site.description,
   alternates: { canonical: "/" },
 };

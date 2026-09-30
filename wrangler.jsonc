@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "axxontek",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "axxontek"
+    }
+  ],
+  "observability": { "enabled": true },
+  // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are secrets:
+  // npx wrangler secret put SUPABASE_URL
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://axxontek.com"
+  }
+}

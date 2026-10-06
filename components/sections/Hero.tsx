@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Icon } from "@/components/Icon";
-import { ScrollCue } from "@/components/system/ScrollCue";
 import { useParallax } from "@/lib/motion";
 import { site } from "@/lib/site";
 
@@ -116,10 +115,6 @@ export function Hero() {
             <Icon name="arrow" size={15} />
           </span>
         </Link>
-      </div>
-
-      <div data-hero-rise className="absolute inset-x-0 bottom-8 flex justify-center">
-        <ScrollCue />
       </div>
     </section>
   );

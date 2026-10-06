@@ -8,7 +8,7 @@ import { Icon } from "@/components/Icon";
 import { offerings } from "@/lib/site";
 
 /** How long each card holds, which is also how long its dot takes to fill. */
-const CYCLE_MS = 7000;
+const CYCLE_MS = 10000;
 /** Card gap in px, matching the 20px rhythm Apple uses between tiles. */
 const GAP = 20;
 /** How far the front card's photograph is pushed in, at rest and while it plays. */

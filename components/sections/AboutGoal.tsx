@@ -2,21 +2,18 @@
 
 import Link from "next/link";
 import { Reveal } from "@/components/system/Reveal";
-import { Icon, type IconName } from "@/components/Icon";
+import { Icon } from "@/components/Icon";
 
-const commitments: { icon: IconName; title: string; body: string }[] = [
+const commitments: { title: string; body: string }[] = [
   {
-    icon: "globe",
     title: "Built for Africa.",
     body: "Fast on basic phones and slow internet, with mobile money built in.",
   },
   {
-    icon: "shield",
     title: "Always supported.",
     body: "We host and look after everything we build.",
   },
   {
-    icon: "handshake",
     title: "Honest advice.",
     body: "If a smaller or cheaper option fits you better, we will tell you.",
   },
@@ -66,8 +63,8 @@ export function AboutGoal() {
           {commitments.map((c, i) => (
             <Reveal as="li" key={c.title} delay={i * 70} className="h-full">
               <div className="h-full rounded-[var(--r-card)] bg-ink-soft p-8 lg:p-10">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(240,88,31,0.14)] text-[#ff8a55]">
-                  <Icon name={c.icon} size={22} />
+                <span className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[#ff8a55]">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-16 font-display text-[1.75rem] font-semibold leading-[1.14] tracking-[0.007em]">
                   {c.title}

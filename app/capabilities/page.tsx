@@ -52,7 +52,7 @@ export default function CapabilitiesPage() {
                 <div className="relative mx-3 mb-3 mt-auto aspect-[16/10] overflow-hidden rounded-[1.25rem]">
                   <Image
                     src={item.image}
-                    alt=""
+                    alt={item.name}
                     fill
                     sizes="(min-width: 1024px) 400px, (min-width: 640px) 46vw, 92vw"
                     className="object-cover"

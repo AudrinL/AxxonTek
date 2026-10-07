@@ -284,7 +284,7 @@ export function OurProducts() {
                 >
                   <Image
                     src={item.image}
-                    alt=""
+                    alt={item.name}
                     fill
                     draggable={false}
                     sizes="(min-width: 768px) 620px, 82vw"

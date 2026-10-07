@@ -97,7 +97,7 @@ export function Loader() {
       </div>
 
       <div className="flex items-end justify-between gap-6">
-        <h1 className="font-display text-[clamp(2.5rem,11vw,9rem)] font-semibold leading-[0.86] tracking-[-0.01em]">
+        <div className="font-display text-[clamp(2.5rem,11vw,9rem)] font-semibold leading-[0.86] tracking-[-0.01em]">
           {"AXXONTEK".split("").map((c, i) => (
             <span
               key={i}
@@ -107,7 +107,7 @@ export function Loader() {
               {c}
             </span>
           ))}
-        </h1>
+        </div>
         <span
           ref={countRef}
           data-loader-meta

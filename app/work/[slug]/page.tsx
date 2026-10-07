@@ -18,7 +18,7 @@ export async function generateMetadata({
   const item = getWorkItem((await params).slug);
   if (!item) return {};
   return {
-    title: item.name,
+    title: `${item.name} case study`,
     description: item.summary,
     alternates: { canonical: `/work/${item.slug}` },
   };

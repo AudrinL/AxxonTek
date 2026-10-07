@@ -7,10 +7,12 @@ import { work } from "@/lib/work";
  * dynamic sections (products, studio concepts, work) are derived from the
  * same arrays the pages render from, so adding an entry there adds it here.
  * `/solutions` is intentionally absent: it is a redirect, not a page.
+ *
+ * No lastmod: on Workers this renders per request, so a timestamp would
+ * claim every page changed on every fetch and Google would learn to ignore
+ * the file. Google ignores changefreq and priority, but they cost nothing.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   const staticRoutes = [
     { path: "", priority: 1 },
     { path: "/products", priority: 0.9 },
@@ -34,7 +36,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticRoutes, ...dynamicRoutes].map((route) => ({
     url: `${site.url}${route.path}`,
-    lastModified: now,
     changeFrequency: "monthly" as const,
     priority: route.priority,
   }));

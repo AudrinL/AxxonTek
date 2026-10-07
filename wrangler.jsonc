@@ -15,6 +15,13 @@
     }
   ],
   "observability": { "enabled": true },
+  // Both hosts are bound here so a deploy keeps them. www only exists to
+  // 301 to the bare domain (see next.config.ts); without it, www stops
+  // resolving and Google cannot fetch anything under that host.
+  "routes": [
+    { "pattern": "axxontek.com", "custom_domain": true },
+    { "pattern": "www.axxontek.com", "custom_domain": true }
+  ],
   // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are secrets:
   // npx wrangler secret put SUPABASE_URL
   "vars": {

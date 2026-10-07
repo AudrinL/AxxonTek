@@ -33,11 +33,21 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   async redirects() {
-    return legacyRedirects.map(([source, destination]) => ({
-      source,
-      destination,
-      permanent: true,
-    }));
+    return [
+      // One canonical host. www answers (so old links and Search Console
+      // properties still resolve) but always lands on the bare domain.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.axxontek.com" }],
+        destination: "https://axxontek.com/:path*",
+        permanent: true,
+      },
+      ...legacyRedirects.map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
+    ];
   },
   async headers() {
     return [

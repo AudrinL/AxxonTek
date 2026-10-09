@@ -71,6 +71,7 @@ export const work: WorkItem[] = [
     client: "AxxonTek",
     year: 2024,
     shot: "/assets/work/floow.png",
+    url: "https://floow.axxontek.com/",
     scope: ["Product design", "Web and mobile apps", "Courier routing", "Operations tooling"],
   },
 ];

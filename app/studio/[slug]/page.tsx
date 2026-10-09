@@ -50,7 +50,7 @@ export default async function StudioConceptPage({
       >
         <div className="mx-auto max-w-[64rem]">
           {concept.preview ? (
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[var(--r-card)] bg-surface-2">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--r-card)] bg-surface-2 sm:aspect-[16/10]">
               {/* A preview is third-party content, so it runs in a locked-down
                   frame: scripts and same-origin for the demo, nothing else. */}
               <iframe

@@ -21,7 +21,7 @@ export function WorkIndex() {
               href={`/work/${item.slug}`}
               className="group flex h-full flex-col overflow-hidden rounded-[var(--r-card)] bg-black"
             >
-              <div className="px-8 pt-9 pb-7">
+              <div className="px-6 pt-7 pb-6 sm:px-8 sm:pt-9 sm:pb-7">
                 <p className="text-[0.75rem] text-tone-faint">
                   {item.nda ? item.client : category?.label} &middot; {item.year}
                 </p>

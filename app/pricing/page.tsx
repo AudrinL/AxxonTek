@@ -61,7 +61,7 @@ export default function PricingPage() {
 
       <Section alt>
         <Reveal>
-          <div className="mx-auto max-w-[44rem] rounded-[var(--r-card)] bg-black p-8 text-center md:p-14">
+          <div className="mx-auto max-w-[44rem] rounded-[var(--r-card)] bg-black p-6 text-center sm:p-8 md:p-14">
             <p className="label justify-center">{hosting.name}</p>
             <p className="mt-6 flex items-end justify-center gap-2">
               <span className="text-display leading-none">{priceFmt.format(hosting.price)}</span>

@@ -131,7 +131,7 @@ export function ContactForm({
                 type="button"
                 onClick={() => setInterest(option)}
                 aria-pressed={active}
-                className={`rounded-full border px-4 py-2 text-[0.875rem] transition-colors duration-[var(--t-hover)] ${
+                className={`rounded-full border px-4 py-2.5 text-[0.875rem] transition-colors lg:py-2 duration-[var(--t-hover)] ${
                   active
                     ? "border-transparent bg-white text-black"
                     : "border-line-firm text-tone-mute hover:border-tone hover:text-tone"

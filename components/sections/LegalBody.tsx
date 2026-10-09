@@ -26,12 +26,12 @@ export function LegalBody({
         <div className="grid gap-x-16 gap-y-12 lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]">
           <aside className="lg:sticky lg:top-28 lg:self-start">
             <p className="mb-4 text-[0.875rem] font-semibold text-tone">Contents</p>
-            <ol className="flex flex-col gap-2.5">
+            <ol className="flex flex-col lg:gap-2.5">
               {sections.map((section) => (
                 <li key={section.heading}>
                   <a
                     href={`#${section.id ?? slug(section.heading)}`}
-                    className="text-[0.875rem] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-accent"
+                    className="inline-block py-2 text-[0.875rem] text-tone-mute transition-colors lg:py-0 duration-[var(--t-hover)] hover:text-accent"
                   >
                     {section.heading}
                   </a>

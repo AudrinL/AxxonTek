@@ -100,7 +100,7 @@ export function Tile({
   className?: string;
 }) {
   return (
-    <div className={`h-full rounded-[var(--r-card)] bg-surface-2 p-8 lg:p-10 ${className}`}>
+    <div className={`h-full rounded-[var(--r-card)] bg-surface-2 p-6 sm:p-8 lg:p-10 ${className}`}>
       {children}
     </div>
   );
@@ -128,7 +128,7 @@ export function TextLink({
       </span>
     </>
   );
-  const cls = `group inline-flex items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline ${className}`;
+  const cls = `group inline-flex min-h-11 items-center gap-1 text-[1.0625rem] text-[#ff8a55] hover:underline ${className}`;
   return external || href.startsWith("mailto:") || href.startsWith("http") ? (
     <a href={href} className={cls} {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}>
       {inner}

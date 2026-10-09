@@ -39,7 +39,7 @@ export default async function ContactPage({
         }
       />
 
-      <Section alt className="!pt-0 md:!pt-0" >
+      <Section alt className="!pt-8 md:!pt-12">
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
           <div className="flex flex-col gap-5">
             {concept && (
@@ -119,7 +119,7 @@ export default async function ContactPage({
 
 function InfoTile({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-[var(--r-card)] bg-black p-8">
+    <div className="rounded-[var(--r-card)] bg-black p-6 sm:p-8">
       <h2 className="font-display text-[1.3125rem] font-semibold">{title}</h2>
       <div className="mt-4 flex flex-col gap-1">{children}</div>
     </div>

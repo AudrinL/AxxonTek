@@ -128,21 +128,27 @@ export function Nav() {
         className="fixed inset-0 z-40 lg:hidden"
       >
         <div className="absolute inset-0 bg-black" />
-        <div className="container-x relative flex h-full flex-col justify-center gap-1 pt-24">
-          {primaryNav.map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-b border-line py-5 font-display text-[2rem] font-semibold tracking-[-0.01em] text-tone"
-              style={{ transitionDelay: `${i * 30}ms` }}
-            >
-              {item.label}
+        {/* Scrolls when the links outgrow a short phone; centres when they fit. */}
+        <div
+          data-lenis-prevent
+          className="absolute inset-0 overflow-y-auto overscroll-contain"
+        >
+          <div className="container-x flex min-h-full flex-col justify-center gap-1 pb-10 pt-20">
+            {primaryNav.map((item, i) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="border-b border-line py-3.5 font-display text-[clamp(1.5rem,5.5vw,2rem)] font-semibold tracking-[-0.01em] text-tone [@media(min-height:760px)]:py-4"
+                style={{ transitionDelay: `${i * 30}ms` }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/contact" className="pill pill-ember mt-6 self-start">
+              Start a project
             </Link>
-          ))}
-          <Link href="/contact" className="pill pill-ember mt-8 self-start">
-            Start a project
-          </Link>
-          <p className="mt-10 text-[0.875rem] font-semibold text-tone-faint">{site.tagline}</p>
+            <p className="mt-8 text-[0.875rem] font-semibold text-tone-faint">{site.tagline}</p>
+          </div>
         </div>
       </div>
     </>

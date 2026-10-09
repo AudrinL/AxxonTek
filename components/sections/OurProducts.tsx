@@ -340,7 +340,7 @@ export function OurProducts() {
               aria-selected={i === active}
               aria-label={item.name}
               onClick={() => goTo(i)}
-              className="relative flex h-10 cursor-pointer items-center px-1"
+              className="relative flex h-11 cursor-pointer items-center px-[0.4375rem]"
             >
               <span
                 className={`relative block h-2 overflow-hidden rounded-full bg-[rgba(245,245,247,0.42)] transition-[width] duration-500 ease-[var(--ease-out)] ${

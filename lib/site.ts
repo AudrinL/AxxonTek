@@ -553,7 +553,7 @@ export const productDetails: ProductDetail[] = [
     ],
     technology: ["Web and mobile apps", "Courier routing", "Mobile money", "Operations tools"],
     vision: "A parcel network that reaches every town in Rwanda.",
-    url: "",
+    url: "https://floow.axxontek.com/",
   },
   {
     slug: "talentlens",

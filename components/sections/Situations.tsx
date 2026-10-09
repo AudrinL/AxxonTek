@@ -44,7 +44,7 @@ export function Situations() {
             >
               <Link
                 href={situation.href}
-                className="card group flex h-full flex-col p-8 lg:p-10 transition-[transform,border-color] duration-[var(--t-base)] ease-out hover:-translate-y-0.5 hover:border-line-firm"
+                className="card group flex h-full flex-col p-6 sm:p-8 lg:p-10 transition-[transform,border-color] duration-[var(--t-base)] ease-out hover:-translate-y-0.5 hover:border-line-firm"
               >
                 <p className="font-display text-[1.3125rem] leading-[1.19] font-semibold tracking-[0.011em]">
                   {situation.said}

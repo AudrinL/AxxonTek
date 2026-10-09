@@ -90,7 +90,9 @@ function FilterPill({
       type="button"
       onClick={onClick}
       className={`rounded-full border transition-colors duration-[var(--t-hover)] ${
-        small ? "px-3 py-1.5 text-[0.75rem]" : "px-4 py-2 text-[0.875rem]"
+        small
+          ? "px-3.5 py-2.5 text-[0.8125rem] lg:px-3 lg:py-1.5 lg:text-[0.75rem]"
+          : "px-4 py-2.5 text-[0.875rem] lg:py-2"
       } ${
         active
           ? "border-transparent bg-white text-black"

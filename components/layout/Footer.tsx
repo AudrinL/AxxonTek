@@ -70,7 +70,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${site.email}`}
-                className="text-[0.75rem] font-medium underline decoration-line-firm underline-offset-4 transition-colors duration-[var(--t-hover)] hover:text-accent"
+                className="inline-flex min-h-10 items-center text-[0.8125rem] font-medium underline decoration-line-firm underline-offset-4 transition-colors lg:min-h-0 lg:text-[0.75rem] duration-[var(--t-hover)] hover:text-accent"
               >
                 {site.email}
               </a>
@@ -132,8 +132,8 @@ function FooterColumn({
       <ul
         className={
           twoUp
-            ? "grid grid-cols-2 gap-x-6 gap-y-2.5 lg:flex lg:flex-col lg:gap-3"
-            : "flex flex-col gap-2.5 lg:gap-3"
+            ? "grid grid-cols-2 gap-x-6 lg:flex lg:flex-col lg:gap-3"
+            : "flex flex-col gap-1 lg:gap-3"
         }
       >
         {children}
@@ -154,7 +154,7 @@ function FooterLink({
   const link = (
     <Link
       href={href}
-      className="text-[0.75rem] leading-4 tracking-[-0.01em] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone"
+      className="inline-flex min-h-10 items-center max-lg:pr-3 text-[0.8125rem] leading-4 tracking-[-0.01em] text-tone-mute transition-colors duration-[var(--t-hover)] hover:text-tone lg:min-h-0 lg:text-[0.75rem]"
     >
       {children}
     </Link>

@@ -62,11 +62,11 @@ export function AboutGoal() {
         <ul className="mt-16 grid gap-5 md:grid-cols-3 lg:mt-20">
           {commitments.map((c, i) => (
             <Reveal as="li" key={c.title} delay={i * 70} className="h-full">
-              <div className="h-full rounded-[var(--r-card)] bg-ink-soft p-8 lg:p-10">
+              <div className="h-full rounded-[var(--r-card)] bg-ink-soft p-6 sm:p-8 lg:p-10">
                 <span className="text-[0.8125rem] font-semibold tracking-[0.08em] text-[#ff8a55]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="mt-16 font-display text-[1.75rem] font-semibold leading-[1.14] tracking-[0.007em]">
+                <h3 className="mt-10 font-display md:mt-16 text-[1.75rem] font-semibold leading-[1.14] tracking-[0.007em]">
                   {c.title}
                 </h3>
                 <p className="mt-3 max-w-[32ch] text-[1.0625rem] leading-[1.47] text-tone-mute">

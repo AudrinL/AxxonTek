@@ -16,3 +16,6 @@ Thumbs.db
 .open-next/
 .wrangler/
 .dev.vars
+
+# Claude Code local files
+.claude/
